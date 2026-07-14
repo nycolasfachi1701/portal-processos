@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --yes playwright --version)",
+      "Bash(pip show *)",
+      "PowerShell(Start-Process \"c:\\\\Users\\\\Nycolas Fachi\\\\Documents\\\\Projetos\\\\portal-processos\\\\index.html\")",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

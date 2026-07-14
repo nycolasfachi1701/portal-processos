@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Processos — Suporte Atua</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="favicon.ico">
+<script>
+(function(){
+  try{
+    var saved = localStorage.getItem('atua-theme');
+    var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if(theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  }catch(e){}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --laranja:#FF3D03;
+  --laranja-claro:#FF9D5C;
+  --laranja-escuro:#B23A1B;
+  --chumbo:#424449;
+  --preto:#000000;
+  --cinza:#C5CAD2;
+  --cinza-claro:#EDEFF2;
+  --azul:#000032;
+  --azul-2:#0a0a4a;
+  --branco:#ffffff;
+
+  --display: 'Archivo Black', 'Archivo', sans-serif;
+  --corpo: 'Archivo', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+
+  --maxw: 1240px;
+  --radius-sm: 12px;
+  --radius: 18px;
+  --radius-lg: 26px;
+  --shadow-sm: 0 1px 2px rgba(16,18,32,.04), 0 3px 8px rgba(16,18,32,.05);
+  --shadow-md: 0 4px 14px rgba(16,18,32,.06), 0 14px 34px rgba(16,18,32,.09);
+  --shadow-lg: 0 10px 30px rgba(16,18,32,.10), 0 30px 64px rgba(16,18,32,.16);
+  --ease: cubic-bezier(.16,1,.3,1);
+  --ease-out: cubic-bezier(.22,.61,.36,1);
+
+  --surface:#ffffff;
+  --surface-2:var(--cinza-claro);
+  --border-soft:#dcdfe4;
+  --ink:var(--preto);
+  --ink-dim:var(--chumbo);
+}
+
+html[data-theme="dark"]{
+  --surface:#15161c;
+  --surface-2:#1c1d25;
+  --border-soft:#2b2d36;
+  --ink:#EDEEF2;
+  --ink-dim:#A6A9B4;
+  --cinza-claro:#1c1d25;
+  --cinza:#3a3d47;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth; scroll-padding-top:88px;}
+body{
+  font-family:var(--corpo);
+  color:var(--ink);
+  background:var(--surface);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+  transition:background .25s var(--ease), color .25s var(--ease);
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+
+::selection{background:var(--laranja);color:white;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
+
+:focus-visible{
+  outline:3px solid var(--laranja);
+  outline-offset:2px;
+  border-radius:2px;
+}
+
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+/* ============ TOP STRIP ============ */
+.topstrip{
+  background:var(--preto);
+  color:var(--cinza);
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:0.04em;
+  border-bottom:1px solid #222;
+}
+.topstrip .wrap{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:8px;
+  padding-bottom:8px;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.topstrip .ts-left{display:flex;gap:22px;flex-wrap:wrap;}
+.topstrip b{color:var(--laranja-claro); font-weight:600;}
+.dot-live{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:#3DDC84; margin-right:6px; box-shadow:0 0 0 0 rgba(61,220,132,.6);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(61,220,132,.5);}
+  70%{box-shadow:0 0 0 6px rgba(61,220,132,0);}
+  100%{box-shadow:0 0 0 0 rgba(61,220,132,0);}
+}
+
+/* ============ HEADER / NAV ============ */
+header.main{
+  position:sticky; top:0; z-index:100;
+  background:color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--ink);
+  transition:background .25s var(--ease), border-color .25s var(--ease);
+}
+.nav-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 0;
+  gap:24px;
+}
+.brandblock{display:flex; align-items:center; gap:12px;}
+.brand-logo{
+  height:32px; width:auto; display:block; flex-shrink:0;
+  transition:transform .2s var(--ease);
+}
+.brandblock:hover .brand-logo{transform:translateY(-1px);}
+.brand-text{display:flex; flex-direction:column; line-height:1.15;}
+.brand-text .b1{font-family:var(--display); font-size:15px; letter-spacing:0.01em;}
+.brand-text .b2{font-family:var(--mono); font-size:10.5px; color:var(--ink-dim); letter-spacing:0.06em; text-transform:uppercase;}
+
+nav.primary{display:flex; gap:4px; flex-wrap:wrap;}
+nav.primary a{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+  padding:9px 13px;
+  border-radius:8px;
+  color:var(--ink-dim);
+  transition:background .2s var(--ease), color .2s var(--ease);
+  white-space:nowrap;
+}
+nav.primary a:hover{background:var(--cinza-claro); color:var(--ink);}
+nav.primary a.active{color:var(--laranja-escuro); background:var(--cinza-claro);}
+nav.primary a.cta{
+  background:var(--ink); color:var(--surface);
+}
+nav.primary a.cta:hover{background:var(--laranja); color:white;}
+
+.theme-toggle{
+  display:flex; align-items:center; justify-content:center;
+  width:38px; height:38px; border:1.5px solid var(--ink); border-radius:var(--radius-sm);
+  background:none; cursor:pointer; color:var(--ink); flex-shrink:0;
+  transition:background .15s, transform .15s, color .15s;
+  font-size:15px;
+}
+.theme-toggle:hover{background:var(--cinza-claro); transform:translateY(-1px);}
+.theme-toggle .icon-dark{display:none;}
+html[data-theme="dark"] .theme-toggle .icon-light{display:none;}
+html[data-theme="dark"] .theme-toggle .icon-dark{display:inline;}
+
+.nav-toggle{display:none;}
+
+nav.mobile-menu{
+  display:none;
+}
+
+@media (max-width:980px){
+  nav.primary{display:none;}
+  .nav-toggle{
+    display:flex; flex-direction:column; justify-content:center; gap:5px;
+    width:38px; height:38px; background:none; border:1.5px solid var(--ink);
+    border-radius:var(--radius-sm); cursor:pointer; flex-shrink:0;
+  }
+  .nav-toggle span{display:block; width:18px; height:2px; background:var(--ink); margin:0 auto; transition:transform .2s, opacity .2s;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  nav.mobile-menu{
+    flex-direction:column;
+    border-top:1px solid var(--border-soft);
+    background:var(--surface);
+  }
+  nav.mobile-menu.open{display:flex;}
+  nav.mobile-menu a{
+    font-family:var(--mono); font-size:13px; letter-spacing:.03em; text-transform:uppercase;
+    padding:16px 32px; border-bottom:1px solid var(--cinza-claro); color:var(--ink-dim);
+  }
+  nav.mobile-menu a.cta{color:var(--laranja-escuro); font-weight:700;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  background:
+    radial-gradient(120% 90% at 82% -15%, rgba(255,61,3,.20), transparent 58%),
+    radial-gradient(90% 70% at -5% 0%, rgba(255,157,92,.10), transparent 55%),
+    var(--azul);
+  color:white;
+  position:relative;
+  overflow:hidden;
+  border-bottom:6px solid var(--laranja);
+}
+.hero::before{
+  /* faint grid like a logistics map */
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative; z-index:2;
+  padding:84px 0 0;
+}
+.hero-eyebrow{
+  font-family:var(--mono);
+  font-size:12.5px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--laranja-claro);
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:26px;
+}
+.hero-eyebrow::before{
+  content:"";
+  width:28px; height:2px; background:var(--laranja);
+}
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(38px,6vw,76px);
+  line-height:0.98;
+  letter-spacing:-0.01em;
+  max-width:880px;
+}
+.hero h1 .hl{color:var(--laranja);}
+.hero p.lede{
+  margin-top:28px;
+  font-size:clamp(16px,1.5vw,19px);
+  line-height:1.6;
+  max-width:600px;
+  color:#C9CBE0;
+  font-weight:400;
+}
+.hero-actions{
+  display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;
+}
+.btn{
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+  padding:14px 24px;
+  border-radius:10px;
+  display:inline-flex; align-items:center; gap:10px;
+  transition:transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease), box-shadow .2s var(--ease);
+  cursor:pointer;
+  border:1px solid transparent;
+}
+.btn-primary{background:var(--laranja); color:white;}
+.btn-primary:hover{background:white; color:var(--azul); transform:translateY(-2px); box-shadow:0 12px 28px rgba(255,61,3,.28);}
+.btn-ghost{border:1px solid rgba(255,255,255,.3); color:white;}
+.btn-ghost:hover{border-color:white; background:rgba(255,255,255,.08);}
+
+/* The "route" strip — signature element preview at bottom of hero */
+.hero-route{
+  position:relative; z-index:2;
+  margin-top:64px;
+  border-top:1px solid rgba(255,255,255,.15);
+  padding:26px 0 0;
+}
+.route-track{
+  position:relative;
+  height:54px;
+  display:flex; align-items:center;
+}
+.route-line{
+  position:absolute; left:0; right:0; top:50%;
+  height:2px; background:repeating-linear-gradient(90deg, var(--laranja) 0 10px, transparent 10px 18px);
+  transform:translateY(-50%);
+}
+.route-stops{
+  position:relative; width:100%;
+  display:flex; justify-content:space-between;
+}
+.route-stop{
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.04em;
+  text-transform:uppercase; color:#9396BC;
+  flex:1;
+}
+.route-stop .pin{
+  width:11px;height:11px; border-radius:50%;
+  background:var(--azul); border:2px solid var(--laranja-claro);
+  z-index:2;
+}
+.route-stop:first-child .pin, .route-stop:last-child .pin{
+  background:var(--laranja); border-color:white;
+}
+
+.hero-stats{
+  position:relative; z-index:2;
+  display:flex;
+  border-top:1px solid rgba(255,255,255,.15);
+  margin-top:36px;
+}
+.hstat{
+  padding:22px 0 30px;
+}
+.hstat .v{font-family:var(--display); font-size:30px; color:var(--laranja-claro);}
+.hstat .l{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:#9396BC; margin-top:6px;}
+
+@media (max-width:900px){
+  .route-stops{display:none;}
+  .hero-route::after{
+    content:"Role para ver a jornada completa do atendimento ↓";
+    font-family:var(--mono); font-size:11px; color:#9396BC;
+  }
+}
+
+/* ============ SECTION GENERICS ============ */
+section{padding:clamp(72px,9vw,124px) 0;}
+.sec-head{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:24px; margin-bottom:clamp(40px,6vw,72px); flex-wrap:wrap;
+}
+.sec-tag{
+  font-family:var(--mono); font-size:12px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--laranja-escuro);
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+}
+.sec-tag::before{content:"";width:22px;height:2px;background:var(--laranja);}
+.sec-head h2{
+  font-family:var(--display);
+  font-size:clamp(28px,4vw,44px);
+  letter-spacing:-0.01em;
+  max-width:680px;
+}
+.sec-head p{color:var(--ink-dim); max-width:380px; font-size:15px; margin-top:6px;}
+
+/* ============ MISSAO ============ */
+.missao{background:var(--cinza-claro); border-bottom:1px solid var(--border-soft); transition:background .25s var(--ease);}
+.missao-grid{
+  display:grid; grid-template-columns:1.1fr 1fr; gap:64px; align-items:start;
+}
+.missao-statement{
+  font-family:var(--display);
+  font-size:clamp(22px,3vw,32px);
+  line-height:1.25;
+  color:var(--azul);
+}
+.missao-statement .accent{color:var(--laranja);}
+html[data-theme="dark"] .missao-statement{color:var(--ink);}
+.principios{display:flex; flex-direction:column; gap:0;}
+.principio{
+  display:grid; grid-template-columns:56px 1fr;
+  gap:18px; padding:22px 0; border-top:1px solid var(--border-soft);
+  transition:transform .25s var(--ease);
+}
+.principio:first-child{border-top:none;}
+.principio:hover{transform:translateX(4px);}
+.principio .pnum{font-family:var(--mono); font-size:13px; color:var(--laranja-escuro); padding-top:3px;}
+.principio h4{font-family:var(--corpo); font-weight:700; font-size:16px; margin-bottom:4px;}
+.principio p{font-size:14px; color:var(--ink-dim);}
+
+@media (max-width:900px){
+  .missao-grid{grid-template-columns:1fr; gap:40px;}
+}
+
+/* ============ ORGANOGRAMA ============ */
+.org{background:var(--surface); transition:background .25s var(--ease);}
+.org-chart{
+  display:flex; flex-direction:column; align-items:center; gap:0;
+  margin-top:24px;
+}
+.org-node{
+  font-family:var(--corpo); font-weight:700; font-size:14px;
+  padding:16px 26px;
+  border:2px solid var(--ink);
+  border-radius:var(--radius-sm);
+  background:var(--surface);
+  text-align:center;
+  position:relative;
+  min-width:220px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .25s var(--ease);
+}
+.org-node:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);}
+.org-node.top{background:var(--azul); color:white; border-color:var(--azul);}
+.org-node .sub{
+  display:block; font-family:var(--mono); font-weight:400; font-size:10.5px;
+  text-transform:uppercase; letter-spacing:.04em; color:var(--cinza); margin-top:4px;
+}
+.org-node.top .sub{color:var(--laranja-claro);}
+
+.org-vline{width:2px; height:32px; background:var(--ink);}
+.org-branch{
+  display:flex; justify-content:center; gap:0; width:100%; position:relative;
+  padding-top:0;
+}
+.org-col{
+  display:flex; flex-direction:column; align-items:center; flex:1; max-width:340px;
+  position:relative;
+}
+.org-hline-wrap{
+  position:relative; width:100%; height:32px;
+}
+.org-hline-wrap .h{
+  position:absolute; top:0; left:0; right:0; height:2px; background:var(--ink);
+}
+.org-hline-wrap .v{
+  position:absolute; top:0; left:50%; width:2px; height:32px; background:var(--ink);
+}
+.org-node.coord{border-color:var(--chumbo); background:var(--cinza-claro);}
+.org-leaf-group{display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:24px;}
+.org-leaf{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.03em;
+  padding:9px 18px; border:1px solid var(--cinza); border-radius:20px;
+  color:var(--ink-dim); background:var(--surface);
+  transition:border-color .2s, color .2s;
+}
+.org-leaf:hover{border-color:var(--laranja); color:var(--laranja-escuro);}
+
+.org-legend{
+  margin-top:64px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+}
+.org-legend-item{
+  background:var(--surface); padding:24px 26px; border:1px solid var(--border-soft);
+  border-radius:var(--radius); box-shadow:var(--shadow-sm);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.org-legend-item:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);}
+.org-legend-item h5{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--laranja-escuro); margin-bottom:8px;}
+.org-legend-item p{font-size:13.5px; color:var(--ink-dim);}
+
+@media (max-width:880px){
+  .org-branch{flex-direction:column; align-items:center; gap:36px;}
+  .org-hline-wrap{display:none;}
+  .org-col{max-width:100%;}
+  .org-legend{grid-template-columns:1fr;}
+}
+
+/* ============ ESTRUTURA TMS AGRO — role cards ============ */
+.role-grid{
+  margin-top:56px; display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+}
+.role-card{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius);
+  box-shadow:var(--shadow-sm); padding:26px 26px 28px;
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.role-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-md);}
+.role-card-head{display:flex; align-items:flex-start; gap:14px; margin-bottom:18px;}
+.role-card-head .chip{
+  width:30px; height:30px; border-radius:50%; background:var(--laranja);
+  color:white; font-family:var(--mono); font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;
+}
+.role-card-head h4{font-family:var(--display); font-size:16px; line-height:1.25;}
+.role-card-head .pos{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--laranja-escuro); margin-top:5px;}
+.role-card-section{margin-top:16px;}
+.role-card-section h6{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin-bottom:8px;}
+.role-card-section ul{display:flex; flex-direction:column; gap:5px;}
+.role-card-section li{font-size:13.5px; color:var(--ink); display:flex; gap:8px; line-height:1.4;}
+.role-card-section li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+
+@media (max-width:980px){
+  .role-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:620px){
+  .role-grid{grid-template-columns:1fr;}
+}
+
+/* ============ JORNADA — signature element ============ */
+.jornada{background:var(--azul); color:white; position:relative; overflow:hidden;}
+.jornada::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.jornada .sec-tag{color:var(--laranja-claro);}
+.jornada .sec-tag::before{background:var(--laranja-claro);}
+.jornada .sec-head h2{color:white;}
+.jornada .sec-head p{color:#9396BC;}
+
+.map{position:relative; z-index:2; margin-top:40px;}
+
+.lane{
+  position:relative;
+  display:flex; flex-direction:column; gap:0;
+}
+
+.stage{
+  display:grid; grid-template-columns:64px 1fr; gap:20px;
+  position:relative;
+}
+.stage-rail{
+  display:flex; flex-direction:column; align-items:center;
+}
+.stage-dot{
+  width:16px; height:16px; border-radius:50%;
+  background:var(--azul); border:3px solid var(--laranja);
+  flex-shrink:0; margin-top:4px;
+}
+.stage-dot.end{background:var(--laranja); border-color:white;}
+.stage-rail .rail-line{
+  flex:1; width:2px; background:rgba(255,159,92,.35); min-height:24px;
+}
+.stage-body{padding-bottom:34px;}
+.stage-km{font-family:var(--mono); font-size:11px; color:var(--laranja-claro); letter-spacing:.06em; margin-bottom:4px;}
+.stage-body h4{font-family:var(--display); font-size:19px; letter-spacing:-0.01em; margin-bottom:6px;}
+.stage-body p{font-size:14px; color:#B6B8D6; max-width:520px;}
+
+.decision{
+  margin-top:10px;
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+.decision-branch{
+  font-family:var(--mono); font-size:11.5px;
+  border:1px solid rgba(255,255,255,.25); border-radius:4px;
+  padding:9px 14px; display:flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.03);
+}
+.decision-branch.yes{border-color:rgba(61,220,132,.5); color:#9CF0BE;}
+.decision-branch.no{border-color:rgba(255,61,3,.5); color:var(--laranja-claro);}
+.decision-branch .arrow{opacity:.6;}
+
+@media (max-width:700px){
+  .stage{grid-template-columns:44px 1fr;}
+}
+
+/* ============ CATALOGO DE PROCESSOS ============ */
+.catalogo{background:var(--surface); transition:background .25s var(--ease);}
+.cat-tabs{
+  display:flex; gap:8px; margin-bottom:0; border-bottom:2px solid var(--ink);
+  flex-wrap:wrap;
+}
+.cat-tab{
+  font-family:var(--mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+  padding:12px 20px; cursor:pointer; color:var(--ink-dim); border:none; background:none;
+  border-bottom:3px solid transparent; margin-bottom:-2px;
+  transition:color .15s, border-color .15s;
+}
+.cat-tab.active{color:var(--ink); border-color:var(--laranja);}
+.cat-tab:hover{color:var(--laranja-escuro);}
+
+.cat-table{width:100%; border-collapse:collapse; margin-top:0;}
+.cat-table tr{border-bottom:1px solid var(--cinza-claro); transition:background .15s;}
+.cat-table td{padding:18px 6px; font-size:14.5px;}
+.cat-table td.proc-name{font-weight:700; width:55%;}
+.cat-table td.proc-cat{
+  font-family:var(--mono); font-size:11px; text-transform:uppercase; color:var(--laranja-escuro);
+}
+.cat-table td.proc-link{text-align:right;}
+.cat-table tr{display:none;}
+.cat-table tr.visible{display:table-row;}
+.cat-table tr:hover{background:var(--cinza-claro);}
+.link-arrow{font-family:var(--mono); font-size:12px; color:var(--ink-dim); white-space:nowrap; transition:color .15s, transform .15s; display:inline-block;}
+.cat-table tr:hover .link-arrow{color:var(--laranja-escuro); transform:translateX(3px);}
+
+@media (max-width:700px){
+  .cat-table td.proc-cat{display:none;}
+}
+
+/* ============ PROCESSO DETALHE (exemplo) ============ */
+.processo-detalhe{background:var(--cinza-claro); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); transition:background .25s var(--ease);}
+.pd-card{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); box-shadow:var(--shadow-md); overflow:hidden;}
+.pd-header{
+  display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
+  padding:32px 36px; border-bottom:1px solid var(--border-soft); flex-wrap:wrap;
+}
+.pd-header .pd-tag{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--laranja-escuro); margin-bottom:8px;}
+.pd-header h3{font-family:var(--display); font-size:24px;}
+.pd-badge{
+  font-family:var(--mono); font-size:11px; text-transform:uppercase;
+  background:var(--azul); color:white; padding:7px 14px; border-radius:var(--radius-sm); white-space:nowrap;
+}
+.pd-grid{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border-bottom:1px solid var(--border-soft);
+}
+.pd-cell{padding:26px 32px; border-right:1px solid var(--border-soft); transition:background .15s;}
+.pd-cell:hover{background:var(--cinza-claro);}
+.pd-cell:last-child{border-right:none;}
+.pd-cell h5{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin-bottom:10px;}
+.pd-cell p, .pd-cell li{font-size:14px; color:var(--ink);}
+.pd-cell ul{display:flex; flex-direction:column; gap:6px;}
+.pd-cell li{display:flex; gap:8px;}
+.pd-cell li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+
+.pd-flow{padding:32px 36px;}
+.pd-flow h5{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin-bottom:18px;}
+.flowmini{display:flex; align-items:stretch; gap:8px; flex-wrap:wrap;}
+.fm-step{
+  font-family:var(--mono); font-size:12px;
+  background:var(--cinza-claro); border:1px solid var(--border-soft);
+  border-radius:var(--radius-sm);
+  padding:11px 16px; display:flex; align-items:center; gap:10px;
+  transition:transform .15s var(--ease), box-shadow .15s var(--ease);
+}
+.fm-step:hover{transform:translateY(-2px); box-shadow:var(--shadow-sm);}
+.fm-step.decision{background:#FFF1EC; border-color:var(--laranja-claro); color:var(--laranja-escuro);}
+html[data-theme="dark"] .fm-step.decision{background:rgba(255,61,3,.12);}
+.fm-arrow{display:flex; align-items:center; padding:0 4px; color:var(--ink-dim);}
+
+@media (max-width:880px){
+  .pd-grid{grid-template-columns:1fr;}
+  .pd-cell{border-right:none; border-bottom:1px solid var(--border-soft);}
+}
+
+/* ---- Bloco extra: classificação de criticidade ---- */
+.pd-block{padding:30px 36px; border-bottom:1px solid var(--border-soft);}
+.pd-block h5{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); margin-bottom:16px;}
+.crit-table{border:1px solid var(--border-soft); border-radius:var(--radius); overflow:hidden;}
+.crit-row{display:grid; grid-template-columns:140px 1fr; border-top:1px solid var(--border-soft);}
+.crit-row:first-child{border-top:none;}
+.crit-label{
+  font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; font-weight:700;
+  padding:16px 18px; display:flex; align-items:center; border-right:1px solid var(--border-soft);
+}
+.crit-desc{padding:16px 18px; font-size:13.5px; color:var(--ink-dim); display:flex; align-items:center;}
+.crit-row.baixa .crit-label{color:var(--ink-dim); background:var(--cinza-claro);}
+.crit-row.media .crit-label{color:var(--laranja-escuro); background:rgba(255,61,3,.06);}
+.crit-row.alta .crit-label{color:white; background:var(--laranja);}
+.crit-row.critica .crit-label{color:white; background:var(--azul);}
+
+@media (max-width:620px){
+  .crit-row{grid-template-columns:1fr;}
+  .crit-label{border-right:none; border-bottom:1px solid var(--border-soft);}
+}
+
+/* ---- Bloco extra: alerta de caminhão parado ---- */
+.alert-box{
+  border:1.5px solid var(--laranja); border-radius:var(--radius);
+  background:rgba(255,61,3,.05); padding:26px 28px;
+}
+html[data-theme="dark"] .alert-box{background:rgba(255,61,3,.09);}
+.alert-box h5{
+  font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--laranja-escuro); margin-bottom:12px;
+}
+html[data-theme="dark"] .alert-box h5{color:var(--laranja-claro);}
+.alert-box ul{display:flex; flex-direction:column; gap:6px; margin-bottom:18px;}
+.alert-box ul li{font-size:13.5px; color:var(--ink); display:flex; gap:8px;}
+.alert-box ul li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+.alert-box ol{display:flex; flex-direction:column; gap:10px; counter-reset:steps;}
+.alert-box ol li{
+  counter-increment:steps; font-size:13.5px; color:var(--ink);
+  padding-left:28px; position:relative;
+}
+.alert-box ol li::before{
+  content:counter(steps); position:absolute; left:0; top:0;
+  width:19px; height:19px; border:1px solid var(--laranja); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:10.5px; color:var(--laranja-escuro);
+}
+.alert-phone{
+  font-family:var(--mono); font-weight:700; font-size:21px; letter-spacing:.02em;
+  color:var(--laranja-escuro); background:var(--surface); border:1px solid var(--laranja);
+  border-radius:var(--radius-sm); padding:10px 16px; display:inline-flex; align-items:center;
+  gap:10px; margin:4px 0 2px;
+}
+html[data-theme="dark"] .alert-phone{color:var(--laranja-claro);}
+
+/* ---- Reaproveitamento de .stage/.decision dentro do pd-card (fundo claro) ---- */
+.pd-card .stage{grid-template-columns:40px 1fr;}
+.pd-card .stage-rail .rail-line{background:var(--border-soft);}
+.pd-card .stage-dot{width:13px; height:13px;}
+.pd-card .stage-body{padding-bottom:24px;}
+.pd-card .stage-km{color:var(--laranja-escuro); font-size:10px;}
+html[data-theme="dark"] .pd-card .stage-km{color:var(--laranja-claro);}
+.pd-card .stage-body h4{font-size:15px; margin-bottom:4px;}
+.pd-card .stage-body p{color:var(--ink-dim); font-size:13.5px; max-width:560px;}
+.pd-card .decision{margin-top:8px;}
+.pd-card .decision-branch{border-color:var(--border-soft); background:var(--cinza-claro); color:var(--ink-dim); font-size:11px;}
+.pd-card .decision-branch.yes{border-color:rgba(61,220,132,.45); color:#1f8a4c;}
+.pd-card .decision-branch.no{border-color:rgba(255,61,3,.35); color:var(--laranja-escuro);}
+html[data-theme="dark"] .pd-card .decision-branch.yes{color:#6FE3A0;}
+html[data-theme="dark"] .pd-card .decision-branch.no{color:var(--laranja-claro);}
+
+@media (max-width:700px){
+  .pd-block, .pd-flow{padding:28px 22px;}
+}
+
+/* ============ PROCEDIMENTOS ============ */
+.procedimentos{background:var(--surface); transition:background .25s var(--ease);}
+.proc-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:8px;}
+.proc-col{
+  background:var(--surface); padding:30px 28px; border:1px solid var(--border-soft);
+  border-radius:var(--radius); box-shadow:var(--shadow-sm);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.proc-col:hover{transform:translateY(-4px); box-shadow:var(--shadow-md);}
+.proc-col h4{
+  font-family:var(--display); font-size:16px; margin-bottom:18px;
+  display:flex; align-items:center; gap:10px;
+}
+.proc-col h4 .chip{
+  width:28px; height:28px; border-radius:50%; background:var(--laranja);
+  color:white; font-family:var(--mono); font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.proc-col ol{display:flex; flex-direction:column; gap:0; counter-reset:steps;}
+.proc-col li{
+  counter-increment:steps;
+  font-size:14px; padding:12px 0 12px 30px; border-top:1px solid var(--cinza-claro);
+  position:relative; color:var(--ink-dim);
+}
+.proc-col li:first-child{border-top:none;}
+.proc-col li::before{
+  content:counter(steps);
+  position:absolute; left:0; top:12px;
+  font-family:var(--mono); font-size:11px; color:var(--laranja-escuro);
+  width:18px; height:18px; border:1px solid var(--laranja); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+@media (max-width:880px){
+  .proc-cols{grid-template-columns:1fr;}
+}
+
+/* ============ FLUXOS ESPECIFICOS ============ */
+.fluxos-esp{background:var(--preto); color:white;}
+.fluxos-esp .sec-tag{color:var(--laranja-claro);}
+.fluxos-esp .sec-tag::before{background:var(--laranja-claro);}
+.fluxos-esp .sec-head h2{color:white;}
+.fluxos-esp .sec-head p{color:#9b9b9b;}
+
+.fe-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.fe-card{
+  background:#101010; padding:30px 26px;
+  border:1px solid #262626; border-radius:var(--radius);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s;
+  position:relative;
+}
+.fe-card:hover{transform:translateY(-4px); border-color:var(--laranja-claro); box-shadow:0 16px 36px rgba(0,0,0,.45);}
+.fe-card .fe-num{font-family:var(--mono); font-size:11px; color:var(--laranja-claro); letter-spacing:.06em;}
+.fe-card h4{font-family:var(--display); font-size:18px; margin:14px 0 10px;}
+.fe-card p{font-size:13.5px; color:#a8a8a8;}
+.fe-card .fe-line{
+  width:100%; height:2px; background:repeating-linear-gradient(90deg, var(--laranja) 0 8px, transparent 8px 14px);
+  margin-top:20px; opacity:.6;
+}
+
+@media (max-width:880px){
+  .fe-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:560px){
+  .fe-grid{grid-template-columns:1fr;}
+}
+
+/* ============ DOCUMENTOS ============ */
+.documentos{background:var(--surface); transition:background .25s var(--ease);}
+.doc-list{display:flex; flex-direction:column; gap:14px;}
+.doc-row{
+  display:grid; grid-template-columns:40px 1fr 140px; align-items:center; gap:20px;
+  padding:18px 20px; border:1px solid var(--border-soft); border-radius:var(--radius);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s;
+}
+.doc-row:hover{transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--laranja-claro);}
+.doc-icon{
+  width:36px; height:36px; border:1.5px solid var(--ink); border-radius:var(--radius-sm);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:10px; font-weight:700;
+}
+.doc-row h4{font-size:15px; font-weight:700;}
+.doc-row span.doc-desc{font-size:13px; color:var(--ink-dim); font-weight:400; display:block; margin-top:2px;}
+.doc-dl{
+  font-family:var(--mono); font-size:11.5px; text-transform:uppercase; text-align:right;
+  color:var(--laranja-escuro); transition:transform .15s var(--ease); display:inline-block;
+}
+.doc-row:hover .doc-dl{transform:translateX(3px);}
+
+/* ============ BASE DE CONHECIMENTO ============ */
+.conhecimento{background:var(--cinza-claro); border-top:1px solid var(--border-soft); transition:background .25s var(--ease);}
+.bc-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+.bc-product{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius);
+  box-shadow:var(--shadow-sm); overflow:hidden;
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.bc-product:hover{transform:translateY(-4px); box-shadow:var(--shadow-md);}
+.bc-product-head{
+  padding:20px 26px; border-bottom:1px solid var(--border-soft);
+  font-family:var(--display); font-size:17px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bc-product-head .bc-count{font-family:var(--mono); font-size:11px; color:var(--laranja-escuro); font-weight:400;}
+.bc-product-body{padding:6px 0;}
+.bc-mod{
+  display:flex; align-items:center; gap:12px;
+  padding:13px 26px; font-size:14px; border-top:1px solid var(--cinza-claro);
+  transition:background .15s;
+}
+.bc-mod:hover{background:var(--cinza-claro);}
+.bc-mod:first-child{border-top:none;}
+.bc-mod::before{content:""; width:6px; height:6px; background:var(--laranja); border-radius:50%; flex-shrink:0;}
+.bc-product.bc-full{grid-column:1 / -1;}
+.bc-product.bc-full .bc-product-body{display:grid; grid-auto-flow:column; grid-template-rows:repeat(4,auto); column-gap:40px;}
+.bc-product.bc-full .bc-mod:nth-child(5){border-top:none;}
+
+@media (max-width:880px){
+  .bc-grid{grid-template-columns:1fr;}
+  .bc-product.bc-full .bc-product-body{grid-auto-flow:row; grid-template-rows:none;}
+  .bc-product.bc-full .bc-mod:nth-child(5){border-top:1px solid var(--cinza-claro);}
+  .doc-row{grid-template-columns:40px 1fr; }
+  .doc-dl{display:none;}
+}
+
+/* ============ INDICADORES ============ */
+.indicadores{background:var(--azul); color:white; position:relative; overflow:hidden;}
+.indicadores::before{
+  content:""; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+.indicadores .sec-tag{color:var(--laranja-claro);}
+.indicadores .sec-tag::before{background:var(--laranja-claro);}
+.indicadores .sec-head h2{color:white;}
+.indicadores .sec-head p{color:#9396BC;}
+
+/* ============ GRAFICO TICKETS POR HORA ============ */
+.chart-block{
+  position:relative; z-index:2;
+  border-top:1px solid rgba(255,255,255,.15);
+  padding:36px 0 8px;
+}
+.chart-head{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:6px; flex-wrap:wrap; gap:10px;
+}
+.chart-label{
+  font-family:var(--mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--laranja-claro); display:flex; align-items:center; gap:8px;
+}
+.chart-label .weekdot{
+  width:7px; height:7px; border-radius:50%; background:var(--laranja-claro);
+}
+.chart-source{font-family:var(--mono); font-size:10.5px; color:#6c6f9c;}
+.chart-sub{font-family:var(--mono); font-size:10.5px; color:#6c6f9c; margin-bottom:18px;}
+.chart-wrap{
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.12); border-radius:4px;
+  padding:18px 18px 8px;
+}
+.chart-wrap svg{display:block; width:100%; height:auto; overflow:visible;}
+.chart-tooltip{
+  position:absolute; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:#0a0a4a; border:1px solid var(--laranja-claro); border-radius:4px;
+  padding:8px 12px; font-family:var(--mono); font-size:11px; color:white;
+  white-space:nowrap; transform:translate(-50%, -120%); z-index:10;
+}
+.chart-tooltip .tt-v{color:var(--laranja-claro); font-weight:600;}
+.chart-legend{
+  display:flex; gap:20px; margin-top:14px; flex-wrap:wrap;
+  font-family:var(--mono); font-size:10.5px; color:#9396BC;
+}
+.chart-legend span.sw{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:-1px;}
+
+@media (max-width:700px){
+  .chart-wrap svg{height:340px; width:auto; min-width:760px;}
+  .chart-wrap{overflow-x:auto;}
+}
+
+/* ============ FAQ ============ */
+.faq{background:var(--surface); transition:background .25s var(--ease);}
+.faq-list{max-width:760px; display:flex; flex-direction:column; gap:12px;}
+.faq-item{
+  border:1px solid var(--border-soft); border-radius:var(--radius-sm);
+  transition:border-color .2s, box-shadow .2s var(--ease);
+}
+.faq-item.open{border-color:var(--laranja-claro); box-shadow:var(--shadow-sm);}
+.faq-q{
+  width:100%; text-align:left; background:none; border:none; cursor:pointer;
+  padding:20px 20px; display:flex; justify-content:space-between; align-items:center; gap:16px;
+  font-family:var(--corpo); font-weight:700; font-size:15.5px; color:var(--ink);
+}
+.faq-q .plus{font-family:var(--mono); font-size:20px; color:var(--laranja); transition:transform .2s; flex-shrink:0;}
+.faq-item.open .faq-q .plus{transform:rotate(45deg);}
+.faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.faq-a p{padding:0 20px 20px; font-size:14.5px; color:var(--ink-dim); max-width:620px;}
+
+/* ============ FOOTER ============ */
+footer{background:var(--preto); color:#888; padding:56px 0 32px;}
+.footer-top{display:flex; justify-content:space-between; align-items:flex-start; gap:32px; flex-wrap:wrap; padding-bottom:40px; border-bottom:1px solid #2a2a2a;}
+.footer-brand{display:flex; align-items:center; gap:12px;}
+.footer-brand .brand-logo{height:34px;}
+.footer-brand .b1{color:white; font-family:var(--display); font-size:14px;}
+.footer-cols{display:flex; gap:48px; flex-wrap:wrap;}
+.footer-col h6{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:#666; margin-bottom:14px;}
+.footer-col a{display:block; font-size:13.5px; color:#bbb; padding:5px 0;}
+.footer-col a:hover{color:var(--laranja-claro);}
+.footer-bottom{display:flex; justify-content:space-between; padding-top:24px; font-family:var(--mono); font-size:11.5px; color:#555; flex-wrap:wrap; gap:10px;}
+
+@media (max-width:700px){
+  .footer-cols{gap:32px;}
+}
+
+/* ============ SCROLL PROGRESS ============ */
+.scroll-progress{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg, var(--laranja-escuro), var(--laranja));
+  z-index:1000; transition:width .08s linear;
+}
+
+/* ============ REVEAL ANIMATIONS ============ */
+.reveal{opacity:0; transform:translateY(26px) scale(.985); transition:opacity .7s var(--ease), transform .7s var(--ease); transition-delay:var(--reveal-delay,0ms); will-change:opacity,transform;}
+.reveal.is-visible{opacity:1; transform:none;}
+
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ===================== TOP STATUS STRIP ===================== -->
+<div class="topstrip">
+  <div class="wrap">
+    <div class="ts-left">
+      <span><span class="dot-live"></span>PORTAL EM OPERAÇÃO</span>
+    </div>
+    <div class="ts-right">wiki.atua.com.br:8028 · atualizacoes-antt.vercel.app</div>
+  </div>
+</div>
+
+<!-- ===================== HEADER / NAV ===================== -->
+<header class="main">
+  <div class="wrap nav-row">
+    <a class="brandblock" href="#" aria-label="atua — Portal de Processos">
+      <img class="brand-logo" src="LogoUrl.png" alt="atua" width="128" height="32">
+      <div class="brand-text">
+        <span class="b1">Portal de Processos</span>
+        <span class="b2">Suporte · Atua</span>
+      </div>
+    </a>
+    <nav class="primary">
+      <a href="#estrutura-agro">TMS&nbsp;Agro</a>
+      <a href="#jornada">Fluxo</a>
+      <a href="#processos">Processos</a>
+      <a href="#procedimentos">Procedimentos</a>
+      <a href="#conhecimento">Base&nbsp;Conhec.</a>
+      <a href="#indicadores">Indicadores</a>
+      <a href="#faq" class="cta">FAQ</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro" type="button">
+      <span class="icon-light">☾</span><span class="icon-dark">☀</span>
+    </button>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="#estrutura-agro">Estrutura · TMS Agro</a>
+    <a href="#jornada">Fluxo de atendimento</a>
+    <a href="#processos">Processos</a>
+    <a href="#procedimentos">Procedimentos</a>
+    <a href="#conhecimento">Base de Conhecimento</a>
+    <a href="#indicadores">Indicadores</a>
+    <a href="#faq" class="cta">FAQ</a>
+  </nav>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow">Portal interno · Setor de Suporte</div>
+    <h1>A rota completa do<br>chamado, do <span class="hl">embarque</span><br>ao <span class="hl">encerramento</span>.</h1>
+    <p class="lede">Este ambiente reúne a estrutura organizacional, os fluxos operacionais, os procedimentos e os documentos necessários para a execução das atividades do Suporte Atua — do primeiro contato até a validação final do cliente.</p>
+    <div class="hero-actions">
+      <a href="#jornada" class="btn btn-primary">Ver fluxo de atendimento →</a>
+      <a href="#processos" class="btn btn-ghost">Catálogo de processos</a>
+    </div>
+
+    <div class="hero-route">
+      <div class="route-track">
+        <div class="route-line"></div>
+        <div class="route-stops">
+          <div class="route-stop"><span class="pin"></span>Abertura</div>
+          <div class="route-stop"><span class="pin"></span>Triagem</div>
+          <div class="route-stop"><span class="pin"></span>N1</div>
+          <div class="route-stop"><span class="pin"></span>N2</div>
+          <div class="route-stop"><span class="pin"></span>N3 / Dev</div>
+          <div class="route-stop"><span class="pin"></span>Validação</div>
+          <div class="route-stop"><span class="pin"></span>Encerrado</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hstat"><div class="v">3 níveis</div><div class="l">N1 · N2 · N3/Dev</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MISSAO / PRINCIPIOS ===================== -->
+<section class="missao">
+  <div class="wrap missao-grid">
+    <div>
+      <div class="sec-tag">Missão &amp; visão</div>
+      <p class="missao-statement">Existimos para que nenhum cliente fique parado na estrada por uma dúvida que <span class="accent">já tem resposta</span>. Atendimento técnico, regulatório e humano — nessa ordem de urgência, nunca de importância.</p>
+    </div>
+    <div class="principios">
+      <div class="principio">
+        <span class="pnum">01</span>
+        <div><h4>Resolução no menor nível possível</h4><p>Todo esforço é feito para resolver em N1. Escalonar é exceção documentada, não rotina.</p></div>
+      </div>
+      <div class="principio">
+        <span class="pnum">02</span>
+        <div><h4>Transparência regulatória</h4><p>CIOT, CT-e, MDF-e e NFS-e envolvem obrigações legais. Respostas ao cliente refletem a norma ANTT vigente, não suposições.</p></div>
+      </div>
+      <div class="principio">
+        <span class="pnum">03</span>
+        <div><h4>Rastreabilidade total</h4><p>Toda decisão de classificação ou escalonamento fica registrada e auditável — como qualquer carga em trânsito.</p></div>
+      </div>
+      <div class="principio">
+        <span class="pnum">04</span>
+        <div><h4>Conhecimento é via de mão dupla</h4><p>Todo chamado resolvido que gera aprendizado novo alimenta a Base de Conhecimento. Ninguém resolve o mesmo problema duas vezes.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ESTRUTURA ORGANIZACIONAL — SUPORTE TMS AGRO ===================== -->
+<section class="org" id="estrutura-agro">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Estrutura organizacional · TMS Agro</div>
+        <h2>Quem faz o quê no suporte do TMS Agro.</h2>
+      </div>
+      <p>Triagem separa entrada de execução, N1/N2 executam — não decidem prioridade — e prioridade só sobe por canal oficial.</p>
+    </div>
+
+    <div class="org-chart">
+      <div class="org-node top">Head de Suporte / Operações<span class="sub">Última instância de decisão · crises e exceções</span></div>
+      <div class="org-vline"></div>
+
+      <div class="org-branch">
+        <div class="org-col">
+          <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
+          <div class="org-node coord">Líder de Time</div>
+          <div class="org-leaf-group">
+            <div class="org-leaf">Assistente de Atendimento (Triagem)</div>
+            <div class="org-leaf">Assistente de Suporte (N1)</div>
+            <div class="org-leaf">Analista de Suporte (N2)</div>
+          </div>
+        </div>
+        <div class="org-col">
+          <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
+          <div class="org-node coord">Coordenador de Implantação<span class="sub">Fluxo paralelo · pré-sustentação</span></div>
+        </div>
+        <div class="org-col">
+          <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
+          <div class="org-node coord">Analista KCS<span class="sub">Transversal · apoia todos os níveis</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="role-grid">
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">1</span>
+          <div><h4>Head de Suporte / Operações</h4><div class="pos">Topo da operação de suporte e sustentação</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Definir estratégia geral do suporte e operação do TMS Agro</li>
+            <li>Garantir cumprimento de SLA e indicadores (CSAT, backlog, MTTR)</li>
+            <li>Gerenciar crise e incidentes críticos (operação parada)</li>
+            <li>Definir regras de priorização e escalonamento</li>
+            <li>Validar exceções de atendimento (fora de fluxo)</li>
+            <li>Interface com diretoria, clientes estratégicos e outras áreas</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Última instância de decisão</li>
+            <li>Atua em crises e exceções graves</li>
+            <li>Aprova mudanças estruturais de processo</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">2</span>
+          <div><h4>Coordenador de Implantação</h4><div class="pos">Coordenação paralela ao suporte (implantação e transição)</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Gerenciar projetos de implantação do TMS Agro</li>
+            <li>Garantir go-live estruturado e controlado</li>
+            <li>Coordenar tombamento para suporte</li>
+            <li>Validar entregas de implantação</li>
+            <li>Garantir alinhamento entre cliente, implantação e suporte</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Atua antes da operação virar sustentação</li>
+            <li>Responsável pela transição implantação → suporte</li>
+            <li>Interface direta com cliente em projetos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">3</span>
+          <div><h4>Líder de Time</h4><div class="pos">Gestão operacional direta de equipes (N1/N2/triagem)</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Gestão do dia a dia do time de atendimento</li>
+            <li>Distribuição e priorização interna de tickets</li>
+            <li>Garantir cumprimento de SLA operacional</li>
+            <li>Apoiar analistas em casos complexos</li>
+            <li>Validar escalonamentos para N2/N3</li>
+            <li>Acompanhar performance individual</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Primeira camada de decisão após a operação</li>
+            <li>Ajusta fila e redistribui demandas</li>
+            <li>Atua em casos críticos antes da gerência</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">6</span>
+          <div><h4>Assistente de Atendimento</h4><div class="pos">Triagem de tickets — camada inicial de filtragem</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Triagem e organização inicial dos tickets</li>
+            <li>Validação de informações mínimas obrigatórias</li>
+            <li>Identificação de urgência e categoria</li>
+            <li>Direcionamento correto para N1/N2</li>
+            <li>Evitar tickets mal classificados ou incompletos</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Primeira barreira de qualidade do atendimento</li>
+            <li>Garante que tickets cheguem corretamente estruturados ao suporte</li>
+            <li>Reduz retrabalho do N1</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">5</span>
+          <div><h4>Assistente de Suporte (N1)</h4><div class="pos">Primeiro nível de atendimento</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Registro e atendimento inicial de tickets</li>
+            <li>Classificação de chamados (operação parada: sim/não)</li>
+            <li>Execução de procedimentos da base de conhecimento</li>
+            <li>Atendimento de dúvidas operacionais simples</li>
+            <li>Garantir registro correto das informações</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Primeiro contato com o cliente</li>
+            <li>Encaminhamento para níveis superiores quando necessário</li>
+            <li>Não realiza priorização</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">4</span>
+          <div><h4>Analista de Suporte (N2)</h4><div class="pos">Nível técnico funcional intermediário</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Análise funcional aprofundada do sistema</li>
+            <li>Diagnóstico de problemas complexos</li>
+            <li>Apoio ao N1 em casos sem solução padrão</li>
+            <li>Execução de testes e validações de regra de negócio</li>
+            <li>Escalonamento técnico para N3 quando necessário</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Resolve problemas não resolvidos no N1</li>
+            <li>Atua entre operação e técnico</li>
+            <li>Reduz volume de escalonamento para N3</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">7</span>
+          <div><h4>Analista KCS (IA e Conteúdo)</h4><div class="pos">Suporte transversal à operação — não hierárquico direto</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Gestão da base de conhecimento (KCS)</li>
+            <li>Criação e atualização de artigos de suporte</li>
+            <li>Estruturação de soluções padrão (runbooks)</li>
+            <li>Treinamento de IA e melhoria de respostas automatizadas</li>
+            <li>Análise de tickets recorrentes para prevenção</li>
+            <li>Padronização de respostas do suporte</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Atua de forma transversal em todos os níveis</li>
+            <li>Alimenta N1, N2 e triagem com conhecimento</li>
+            <li>Reduz reincidência de chamados</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pd-flow" style="padding:48px 0 0;">
+      <h5>Fluxo de escalonamento</h5>
+      <div class="flowmini">
+        <span class="fm-step">Triagem</span>
+        <span class="fm-arrow">→</span>
+        <span class="fm-step">N1 · Assistente de Suporte</span>
+        <span class="fm-arrow">→</span>
+        <span class="fm-step">N2 · Analista de Suporte</span>
+        <span class="fm-arrow">→</span>
+        <span class="fm-step">Líder de Time</span>
+        <span class="fm-arrow">→</span>
+        <span class="fm-step">Head de Suporte</span>
+        <span class="fm-arrow">→</span>
+        <span class="fm-step decision">Ouvidoria — exceção formal / conflito</span>
+      </div>
+    </div>
+
+    <div class="org-legend" style="margin-top:48px;">
+      <div class="org-legend-item">
+        <h5>Triagem ≠ execução</h5>
+        <p>A triagem separa entrada de execução — garante a qualidade do fluxo antes de qualquer atendimento técnico.</p>
+      </div>
+      <div class="org-legend-item">
+        <h5>N1/N2 não decidem prioridade</h5>
+        <p>São camadas de execução. Prioridade é função de liderança, não de quem está atendendo o ticket.</p>
+      </div>
+      <div class="org-legend-item">
+        <h5>Prioridade sobe por canal oficial</h5>
+        <p>Mudança de prioridade só ocorre via liderança/Head ou ouvidoria — nunca por pedido informal ao analista.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== JORNADA DO ATENDIMENTO ===================== -->
+<section class="jornada" id="jornada">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Fluxo macro</div>
+        <h2>A jornada do chamado, parada por parada.</h2>
+      </div>
+      <p>Do clique do cliente em "abrir chamado" até a validação final — cada etapa com critério claro de avanço.</p>
+    </div>
+
+    <div class="map">
+      <div class="lane">
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 01</div>
+            <h4>Abertura do ticket</h4>
+            <p>Cliente registra a demanda via canal oficial. Ticket recebe número e timestamp — início da contagem de SLA.</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 02</div>
+            <h4>Triagem</h4>
+            <p>Identificação do tipo de demanda: dúvida, incidente, solicitação fiscal/regulatória ou bug.</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 03</div>
+            <h4>Classificação de criticidade</h4>
+            <p>Cliente informa a criticidade na abertura — Baixa, Média, Alta ou Crítica — e o SLA correspondente passa a valer. Prioridade não é definida pelo analista.</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 04</div>
+            <h4>Atendimento N1</h4>
+            <p>Primeira linha tenta resolução com base em procedimentos documentados e Base de Conhecimento.</p>
+            <div class="decision">
+              <span class="decision-branch yes">✓ Resolvido <span class="arrow">→</span> Encerramento</span>
+              <span class="decision-branch no">✕ Sem solução <span class="arrow">→</span> Escala N2</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 05</div>
+            <h4>Escalonamento N2</h4>
+            <p>Casos com falha sistêmica aparente, necessidade de acesso a banco de dados, erro sem solução documentada — ou SLA da criticidade ultrapassado, com cliente acionando o telefone oficial de escalonamento.</p>
+            <div class="decision">
+              <span class="decision-branch yes">✓ Resolvido <span class="arrow">→</span> Encerramento</span>
+              <span class="decision-branch no">✕ Sem solução <span class="arrow">→</span> Escala N3/Dev</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 06</div>
+            <h4>Escalonamento N3 / Desenvolvimento</h4>
+            <p>Customizações, correções de código e investigações profundas — com evidências e SLA acompanhados a cada etapa.</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">PARADA 07</div>
+            <h4>Validação do cliente</h4>
+            <p>Cliente confirma que a solução resolve o problema reportado antes do fechamento formal do ticket.</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-rail"><div class="stage-dot end"></div></div>
+          <div class="stage-body">
+            <div class="stage-km">DESTINO</div>
+            <h4>Encerramento</h4>
+            <p>Ticket fechado, indicadores atualizados e, se aplicável, novo artigo enviado à Base de Conhecimento.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CATALOGO DE PROCESSOS ===================== -->
+<section class="catalogo" id="processos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Catálogo</div>
+        <h2>Todos os processos, organizados por frente.</h2>
+      </div>
+      <p>Filtre por categoria ou role a lista completa dos processos do setor.</p>
+    </div>
+
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="todos">Todos</button>
+      <button class="cat-tab" data-cat="Atendimento">Atendimento</button>
+      <button class="cat-tab" data-cat="Gestão">Gestão</button>
+      <button class="cat-tab" data-cat="Qualidade">Qualidade</button>
+      <button class="cat-tab" data-cat="Conhecimento">Conhecimento</button>
+      <button class="cat-tab" data-cat="Pessoas">Pessoas</button>
+    </div>
+
+    <table class="cat-table" id="catTable">
+      <tbody>
+        <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Registro de Ticket</td></tr>
+        <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Escalonamento e Priorização de Tickets</td></tr>
+        <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Encerramento</td></tr>
+        <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de Backlog</td></tr>
+        <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de SLA</td></tr>
+        <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de Incidentes</td></tr>
+        <tr class="visible" data-cat="Qualidade"><td class="proc-cat">Qualidade</td><td class="proc-name">Auditoria de Atendimentos</td></tr>
+        <tr class="visible" data-cat="Conhecimento"><td class="proc-cat">Conhecimento</td><td class="proc-name">Criação de Base de Conhecimento</td></tr>
+        <tr class="visible" data-cat="Pessoas"><td class="proc-cat">Pessoas</td><td class="proc-name">Treinamento e Capacitação</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== PROCESSO: ESCALONAMENTO E PRIORIZAÇÃO DE TICKETS ===================== -->
+<section class="processo-detalhe" id="escalonamento-priorizacao">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Ficha de processo</div>
+        <h2>Escalonamento e priorização de tickets.</h2>
+      </div>
+      <p>Regras para registro, escalonamento por SLA e priorização — e por que pedidos fora do fluxo não são atendidos.</p>
+    </div>
+
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo · Atendimento &amp; Qualidade</div>
+          <h3>Escalonamento e Priorização de Tickets</h3>
+        </div>
+        <span class="pd-badge">Indicador: SLA por criticidade</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo</h5>
+          <p>Estabelecer regras claras para registro, acompanhamento, escalonamento e priorização de tickets, garantindo tratamento adequado das demandas e evitando priorizações indevidas.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Premissas gerais</h5>
+          <ul>
+            <li>Todo atendimento deve obrigatoriamente possuir um ticket registrado no portal de atendimento</li>
+            <li>Telefone, e-mail, WhatsApp ou comunicação verbal não substituem a abertura do ticket</li>
+            <li>O atendimento segue a ordem definida pela criticidade e pelos SLAs contratados</li>
+            <li>Priorizações fora do fluxo estabelecido não serão consideradas</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Quando escalar</h5>
+          <p>Quando o prazo de SLA previsto para a criticidade da ocorrência é ultrapassado, ou quando há situação de caminhão parado sem atendimento dentro do prazo.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Canais oficiais de priorização</h5>
+          <ul>
+            <li>Canal oficial de Ouvidoria</li>
+            <li>Canal oficial de escalonamento telefônico</li>
+            <li>Lideranças internas do Suporte</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Canais que NÃO priorizam</h5>
+          <ul>
+            <li>Equipes comerciais e administrativas</li>
+            <li>Desenvolvimento e Implantação</li>
+            <li>Mensagens particulares / WhatsApp individual</li>
+            <li>Comunicação verbal</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Diretrizes anti-priorização indevida</h5>
+          <ul>
+            <li>Nenhuma priorização por relacionamento comercial</li>
+            <li>Nenhuma priorização por solicitação informal</li>
+            <li>Toda priorização exige justificativa registrada</li>
+            <li>Casos reincidentes podem ser auditados pela gestão</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Papéis envolvidos</h5>
+          <ul><li>Cliente</li><li>Atendimento N1 / N2</li><li>Liderança do Suporte</li><li>Ouvidoria</li></ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Indicadores monitorados</h5>
+          <ul><li>SLA cumprido por criticidade</li><li>Priorizações com justificativa registrada</li><li>Reincidência de pedidos fora do fluxo</li></ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Canais / sistemas utilizados</h5>
+          <ul><li>Portal de atendimento (registro do ticket)</li><li>Telefone oficial de escalonamento</li><li>Canal de Ouvidoria</li></ul>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Classificação de criticidade — informada na abertura do ticket</h5>
+        <div class="crit-table">
+          <div class="crit-row baixa">
+            <div class="crit-label">Baixa</div>
+            <div class="crit-desc">Dúvidas ou solicitações sem impacto operacional imediato.</div>
+          </div>
+          <div class="crit-row media">
+            <div class="crit-label">Média</div>
+            <div class="crit-desc">Funcionalidade comprometida, com alternativa operacional disponível.</div>
+          </div>
+          <div class="crit-row alta">
+            <div class="crit-label">Alta</div>
+            <div class="crit-desc">Processo operacional parcialmente interrompido, sem alternativa adequada.</div>
+          </div>
+          <div class="crit-row critica">
+            <div class="crit-label">Crítica</div>
+            <div class="crit-desc">Operação totalmente parada, sem alternativa operacional disponível.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Situações de caminhão parado</h5>
+        <div class="alert-box">
+          <ul>
+            <li>Caminhão impossibilitado de seguir viagem</li>
+            <li>Impossibilidade de emissão de documentos fiscais essenciais</li>
+            <li>Impossibilidade total de faturamento ou expedição</li>
+          </ul>
+          <ol>
+            <li>O cliente registra o ticket normalmente, com a criticidade real da ocorrência.</li>
+            <li>Se o atendimento não ocorrer dentro do SLA previsto, o cliente liga para o telefone de escalonamento:<br><span class="alert-phone">☎ (54) 3045-8100 — Opção 1</span></li>
+            <li>O atendimento telefônico valida a situação e aciona a liderança responsável quando aplicável.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="pd-flow">
+        <h5>Escalonamento por SLA</h5>
+        <div class="flowmini">
+          <span class="fm-step">Nível 1 — cliente registra ticket</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Nível 2 — prazo de SLA expirado</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Cliente liga para o telefone oficial</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Nível 3 — liderança avalia tempo, impacto e criticidade</span>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-top:1px solid var(--border-soft);">
+        <h5>Fluxo da Ouvidoria</h5>
+        <div class="flowmini">
+          <span class="fm-step">Cliente registra manifestação</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Ouvidoria avalia ticket, histórico, SLA e impacto</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Aciona a liderança do Suporte</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Liderança define fila, repriorização ou escalonamento técnico</span>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-top:1px solid var(--border-soft);">
+        <h5>Fluxo resumido</h5>
+        <div class="map" style="margin-top:0;">
+          <div class="lane">
+            <div class="stage">
+              <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+              <div class="stage-body">
+                <div class="stage-km">ETAPA 01</div>
+                <h4>Cliente abre o ticket</h4>
+                <p>Suporte realiza o atendimento conforme o SLA da criticidade informada.</p>
+              </div>
+            </div>
+            <div class="stage">
+              <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+              <div class="stage-body">
+                <div class="stage-km">ETAPA 02</div>
+                <h4>SLA atendido?</h4>
+                <div class="decision">
+                  <span class="decision-branch yes">✓ Sim <span class="arrow">→</span> Atendimento normal</span>
+                  <span class="decision-branch no">✕ Não <span class="arrow">→</span> Cliente aciona o telefone oficial</span>
+                </div>
+              </div>
+            </div>
+            <div class="stage">
+              <div class="stage-rail"><div class="stage-dot"></div><div class="rail-line"></div></div>
+              <div class="stage-body">
+                <div class="stage-km">ETAPA 03</div>
+                <h4>Liderança avalia necessidade de priorização</h4>
+                <div class="decision">
+                  <span class="decision-branch no">✕ Não <span class="arrow">→</span> Mantém a fila original</span>
+                  <span class="decision-branch yes">✓ Sim <span class="arrow">→</span> Prioriza e registra justificativa</span>
+                </div>
+              </div>
+            </div>
+            <div class="stage">
+              <div class="stage-rail"><div class="stage-dot end"></div></div>
+              <div class="stage-body">
+                <div class="stage-km">CANAL ALTERNATIVO</div>
+                <h4>Solicitações recebidas por outros canais</h4>
+                <p>Direcionar obrigatoriamente para a Ouvidoria — que aciona a liderança quando necessário.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCEDIMENTOS ===================== -->
+<section class="procedimentos" id="procedimentos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Passo a passo</div>
+        <h2>Procedimentos operacionais por assunto.</h2>
+      </div>
+      <p>O "como fazer" do dia a dia — separado por área, pronto para consulta rápida durante o atendimento.</p>
+    </div>
+
+    <div class="proc-cols">
+      <div class="proc-col">
+        <h4><span class="chip">A</span>Atendimento</h4>
+        <ol>
+          <li>Como registrar um ticket</li>
+          <li>Como classificar prioridade</li>
+          <li>Como reabrir um chamado</li>
+          <li>Como realizar retorno ao cliente</li>
+        </ol>
+      </div>
+      <div class="proc-col">
+        <h4><span class="chip">G</span>Gestão</h4>
+        <ol>
+          <li>Como analisar backlog</li>
+          <li>Como realizar monitoria</li>
+          <li>Como gerar indicadores</li>
+        </ol>
+      </div>
+      <div class="proc-col">
+        <h4><span class="chip">C</span>Conhecimento</h4>
+        <ol>
+          <li>Como criar artigos</li>
+          <li>Como atualizar documentação</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FLUXOS ESPECIFICOS ===================== -->
+<section class="fluxos-esp">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Desvios e rotas alternativas</div>
+        <h2>Fluxos específicos, fora do trajeto padrão.</h2>
+      </div>
+      <p>Situações que não seguem a jornada macro — cada uma com fluxograma e responsáveis próprios.</p>
+    </div>
+
+    <div class="fe-grid">
+      <div class="fe-card"><div class="fe-num">FLUXO 01</div><h4>Incidente</h4><p>Indisponibilidade ou falha que afeta múltiplos clientes simultaneamente.</p><div class="fe-line"></div></div>
+      <div class="fe-card"><div class="fe-num">FLUXO 02</div><h4>Problema</h4><p>Causa raiz recorrente identificada após múltiplos incidentes correlatos.</p><div class="fe-line"></div></div>
+      <div class="fe-card"><div class="fe-num">FLUXO 03</div><h4>Go-live</h4><p>Acompanhamento de implantação de novo cliente ou módulo em produção.</p><div class="fe-line"></div></div>
+      <div class="fe-card"><div class="fe-num">FLUXO 04</div><h4>Reclamação / Ouvidoria</h4><p>Canal oficial para priorização e conflitos — avalia ticket, histórico e SLA antes de acionar a liderança.</p><div class="fe-line"></div></div>
+      <div class="fe-card"><div class="fe-num">FLUXO 05</div><h4>Escalonamento e priorização</h4><p>Trajeto por SLA e criticidade, com telefone oficial para caminhão parado. <a href="#escalonamento-priorizacao" style="color:var(--laranja-claro);text-decoration:underline;">Ver processo →</a></p><div class="fe-line"></div></div>
+      <div class="fe-card"><div class="fe-num">FLUXO 06</div><h4>Crise</h4><p>Protocolo de comunicação e decisão para eventos de alto impacto operacional.</p><div class="fe-line"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BASE DE CONHECIMENTO ===================== -->
+<section class="conhecimento" id="conhecimento">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Base de conhecimento</div>
+        <h2>Organizada por produto e módulo.</h2>
+      </div>
+      <p>A mesma dúvida não deveria custar duas vezes o mesmo tempo de pesquisa.</p>
+    </div>
+
+    <div class="bc-grid">
+      <div class="bc-product bc-full">
+        <div class="bc-product-head">Atua<span class="bc-count">69 artigos</span></div>
+        <div class="bc-product-body">
+          <div class="bc-mod">Financeiro</div>
+          <div class="bc-mod">Fiscal — CIOT, CT-e, MDF-e, NFS-e</div>
+          <div class="bc-mod">Logística</div>
+          <div class="bc-mod">Integrações — eFrete, TruckPad, eNotas, TOTVS</div>
+          <div class="bc-mod">Cadastros</div>
+          <div class="bc-mod">Emissão</div>
+          <div class="bc-mod">Relatórios</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INDICADORES ===================== -->
+<section class="indicadores" id="indicadores">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Governança</div>
+        <h2>Os números que guiam a operação.</h2>
+      </div>
+      <p>Base para reuniões de qualidade e planejamento de capacidade.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
+    <div class="chart-block">
+      <div class="chart-head">
+        <div class="chart-label"><span class="weekdot"></span>Volume de tickets por hora</div>
+        <div class="chart-source">Fonte: Grafana interno · atualização semanal</div>
+      </div>
+      <div class="chart-sub">17/06 a 23/06 · faixa vermelha indica horários de pico (≥ 40 tickets/h)</div>
+      <div class="chart-wrap" id="ticketsChartWrap" style="position:relative;">
+        <svg id="ticketsChart" viewBox="0 0 1180 260" preserveAspectRatio="none"></svg>
+        <div class="chart-tooltip" id="ticketsTooltip"></div>
+      </div>
+      <div class="chart-legend">
+        <span><span class="sw" style="background:var(--laranja-claro);"></span>Tickets abertos por hora</span>
+        <span><span class="sw" style="background:rgba(255,61,3,.25); border:1px solid rgba(255,61,3,.5);"></span>Zona de pico (≥ 40/h)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script id="ticketsHourData" type="application/json">[["Qua 17/06 00h", 0], ["Qua 17/06 01h", 0], ["Qua 17/06 02h", 0], ["Qua 17/06 03h", 0], ["Qua 17/06 04h", 0], ["Qua 17/06 05h", 0], ["Qua 17/06 06h", 0], ["Qua 17/06 07h", 2], ["Qua 17/06 08h", 38], ["Qua 17/06 09h", 37], ["Qua 17/06 10h", 49], ["Qua 17/06 11h", 43], ["Qua 17/06 12h", 16], ["Qua 17/06 13h", 17], ["Qua 17/06 14h", 44], ["Qua 17/06 15h", 37], ["Qua 17/06 16h", 29], ["Qua 17/06 17h", 28], ["Qua 17/06 18h", 15], ["Qua 17/06 19h", 4], ["Qua 17/06 20h", 5], ["Qua 17/06 21h", 1], ["Qua 17/06 22h", 1], ["Qua 17/06 23h", 1], ["Qui 18/06 00h", 0], ["Qui 18/06 01h", 0], ["Qui 18/06 02h", 0], ["Qui 18/06 03h", 0], ["Qui 18/06 04h", 0], ["Qui 18/06 05h", 0], ["Qui 18/06 06h", 1], ["Qui 18/06 07h", 7], ["Qui 18/06 08h", 58], ["Qui 18/06 09h", 44], ["Qui 18/06 10h", 42], ["Qui 18/06 11h", 38], ["Qui 18/06 12h", 17], ["Qui 18/06 13h", 11], ["Qui 18/06 14h", 39], ["Qui 18/06 15h", 45], ["Qui 18/06 16h", 39], ["Qui 18/06 17h", 29], ["Qui 18/06 18h", 13], ["Qui 18/06 19h", 5], ["Qui 18/06 20h", 1], ["Qui 18/06 21h", 1], ["Qui 18/06 22h", 1], ["Qui 18/06 23h", 0], ["Sex 19/06 00h", 0], ["Sex 19/06 01h", 0], ["Sex 19/06 02h", 0], ["Sex 19/06 03h", 0], ["Sex 19/06 04h", 0], ["Sex 19/06 05h", 1], ["Sex 19/06 06h", 1], ["Sex 19/06 07h", 1], ["Sex 19/06 08h", 21], ["Sex 19/06 09h", 34], ["Sex 19/06 10h", 49], ["Sex 19/06 11h", 47], ["Sex 19/06 12h", 17], ["Sex 19/06 13h", 20], ["Sex 19/06 14h", 42], ["Sex 19/06 15h", 33], ["Sex 19/06 16h", 29], ["Sex 19/06 17h", 26], ["Sex 19/06 18h", 16], ["Sex 19/06 19h", 8], ["Sex 19/06 20h", 4], ["Sex 19/06 21h", 3], ["Sex 19/06 22h", 0], ["Sex 19/06 23h", 0], ["Sáb 20/06 00h", 0], ["Sáb 20/06 01h", 0], ["Sáb 20/06 02h", 0], ["Sáb 20/06 03h", 0], ["Sáb 20/06 04h", 0], ["Sáb 20/06 05h", 0], ["Sáb 20/06 06h", 2], ["Sáb 20/06 07h", 3], ["Sáb 20/06 08h", 15], ["Sáb 20/06 09h", 31], ["Sáb 20/06 10h", 32], ["Sáb 20/06 11h", 26], ["Sáb 20/06 12h", 12], ["Sáb 20/06 13h", 4], ["Sáb 20/06 14h", 3], ["Sáb 20/06 15h", 3], ["Sáb 20/06 16h", 2], ["Sáb 20/06 17h", 1], ["Sáb 20/06 18h", 2], ["Sáb 20/06 19h", 1], ["Sáb 20/06 20h", 1], ["Sáb 20/06 21h", 1], ["Sáb 20/06 22h", 0], ["Sáb 20/06 23h", 0], ["Dom 21/06 00h", 0], ["Dom 21/06 01h", 1], ["Dom 21/06 02h", 0], ["Dom 21/06 03h", 0], ["Dom 21/06 04h", 0], ["Dom 21/06 05h", 0], ["Dom 21/06 06h", 0], ["Dom 21/06 07h", 0], ["Dom 21/06 08h", 6], ["Dom 21/06 09h", 3], ["Dom 21/06 10h", 4], ["Dom 21/06 11h", 1], ["Dom 21/06 12h", 1], ["Dom 21/06 13h", 1], ["Dom 21/06 14h", 3], ["Dom 21/06 15h", 1], ["Dom 21/06 16h", 3], ["Dom 21/06 17h", 1], ["Dom 21/06 18h", 1], ["Dom 21/06 19h", 0], ["Dom 21/06 20h", 0], ["Dom 21/06 21h", 0], ["Dom 21/06 22h", 0], ["Dom 21/06 23h", 0], ["Seg 22/06 00h", 0], ["Seg 22/06 01h", 0], ["Seg 22/06 02h", 0], ["Seg 22/06 03h", 0], ["Seg 22/06 04h", 0], ["Seg 22/06 05h", 0], ["Seg 22/06 06h", 0], ["Seg 22/06 07h", 2], ["Seg 22/06 08h", 30], ["Seg 22/06 09h", 29], ["Seg 22/06 10h", 39], ["Seg 22/06 11h", 34], ["Seg 22/06 12h", 15], ["Seg 22/06 13h", 15], ["Seg 22/06 14h", 41], ["Seg 22/06 15h", 57], ["Seg 22/06 16h", 36], ["Seg 22/06 17h", 34], ["Seg 22/06 18h", 10], ["Seg 22/06 19h", 8], ["Seg 22/06 20h", 9], ["Seg 22/06 21h", 1], ["Seg 22/06 22h", 0], ["Seg 22/06 23h", 1], ["Ter 23/06 00h", 0], ["Ter 23/06 01h", 0], ["Ter 23/06 02h", 0], ["Ter 23/06 03h", 0], ["Ter 23/06 04h", 0], ["Ter 23/06 05h", 0], ["Ter 23/06 06h", 1], ["Ter 23/06 07h", 6], ["Ter 23/06 08h", 38], ["Ter 23/06 09h", 17]]</script>
+
+
+
+<!-- ===================== FAQ ===================== -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Perguntas frequentes</div>
+        <h2>Antes de abrir um chamado interno, confira aqui.</h2>
+      </div>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q"><span>Como o ticket é classificado e priorizado após a triagem?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Na abertura, o cliente informa a criticidade da ocorrência (Baixa, Média, Alta ou Crítica). O atendimento segue a ordem definida pela criticidade e pelo SLA contratado — não há priorização fora desse fluxo. Veja a <a href="#escalonamento-priorizacao" style="color:var(--laranja-escuro);text-decoration:underline;">ficha completa do processo</a>.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>O que fazer se o SLA for ultrapassado e o caso for um caminhão parado?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Registre o ticket normalmente com a criticidade real. Se o atendimento não ocorrer dentro do SLA previsto, ligue para o telefone oficial de escalonamento — (54) 3045-8100, opção 1 — que valida a situação e aciona a liderança quando necessário.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Posso pedir prioridade para o comercial, a implantação ou por WhatsApp?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Não. Priorizações só são aceitas pelo canal oficial de Ouvidoria, pelo escalonamento telefônico ou pelas lideranças internas do Suporte. Pedidos via equipes comerciais/administrativas, desenvolvimento, implantação, WhatsApp individual ou comunicação verbal não são considerados — e devem ser redirecionados para a Ouvidoria.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Onde fica a referência regulatória da ANTT usada nas respostas?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Em atualizacoes-antt.vercel.app, mantida internamente pela equipe. Toda resposta sobre CIOT, CT-e ou MDF-e deve refletir a versão mais recente publicada lá.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Um ticket resolvido sempre precisa gerar artigo na Base de Conhecimento?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Não — apenas quando a solução representa um aprendizado novo, não documentado anteriormente. Repetições de casos já catalogados não precisam de novo artigo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="brand-logo" src="LogoUrl.png" alt="atua" width="136" height="34">
+        <span class="b1">Portal de Processos — Suporte</span>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h6>Navegação</h6>
+          <a href="#estrutura-agro">Estrutura · TMS Agro</a>
+          <a href="#jornada">Fluxo de atendimento</a>
+          <a href="#processos">Processos</a>
+          <a href="#procedimentos">Procedimentos</a>
+        </div>
+        <div class="footer-col">
+          <h6>Recursos</h6>
+          <a href="#conhecimento">Base de conhecimento</a>
+          <a href="#indicadores">Indicadores</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h6>Referências internas</h6>
+          <a href="https://wiki.atua.com.br:8028/" target="_blank" rel="noopener">Base de Conhecimento - Wiki</a>
+          <a href="https://atualizacoes-antt.vercel.app/" target="_blank" rel="noopener">Atualizações - ANTT</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© Atua · NSTECH — uso interno</span>
+      <span>Equipe de Suporte Atua</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Gráfico de Tickets por Hora — renderizado em SVG a partir dos dados embutidos (CSV Grafana)
+(function(){
+  const dataEl = document.getElementById('ticketsHourData');
+  const svg = document.getElementById('ticketsChart');
+  const tooltip = document.getElementById('ticketsTooltip');
+  const wrap = document.getElementById('ticketsChartWrap');
+  if(!dataEl || !svg) return;
+
+  const data = JSON.parse(dataEl.textContent); // [[label, value], ...]
+  const W = 1180, H = 260, PAD_L = 36, PAD_R = 10, PAD_T = 14, PAD_B = 30;
+  const innerW = W - PAD_L - PAD_R;
+  const innerH = H - PAD_T - PAD_B;
+  const maxVal = Math.max(...data.map(d => d[1]), 10);
+  const niceMax = Math.ceil(maxVal / 10) * 10;
+  const PEAK_THRESHOLD = 40;
+
+  const n = data.length;
+  const xAt = i => PAD_L + (innerW * i) / (n - 1);
+  const yAt = v => PAD_T + innerH - (innerH * v) / niceMax;
+
+  let svgns = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    const e = document.createElementNS(svgns, tag);
+    for(const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // Grid lines (horizontal, every 10 units up to niceMax, max 5 lines)
+  const step = niceMax <= 40 ? 10 : Math.ceil(niceMax/5/10)*10;
+  for(let v = 0; v <= niceMax; v += step){
+    const y = yAt(v);
+    svg.appendChild(el('line', {x1:PAD_L, x2:W-PAD_R, y1:y, y2:y, stroke:'rgba(255,255,255,.08)', 'stroke-width':1}));
+    const label = el('text', {x:PAD_L-8, y:y+3, 'text-anchor':'end', 'font-family':'JetBrains Mono, monospace', 'font-size':'9', fill:'#6c6f9c'});
+    label.textContent = v;
+    svg.appendChild(label);
+  }
+
+  // Peak zone (>= 40)
+  if(niceMax > PEAK_THRESHOLD){
+    const yPeakTop = yAt(niceMax);
+    const yPeakBottom = yAt(PEAK_THRESHOLD);
+    svg.appendChild(el('rect', {
+      x:PAD_L, y:yPeakTop, width:innerW, height:(yPeakBottom-yPeakTop),
+      fill:'rgba(255,61,3,.10)'
+    }));
+    svg.appendChild(el('line', {x1:PAD_L, x2:W-PAD_R, y1:yPeakBottom, y2:yPeakBottom, stroke:'rgba(255,61,3,.35)', 'stroke-width':1, 'stroke-dasharray':'4 4'}));
+  }
+
+  // Day separators + day labels (at midnight points)
+  data.forEach((d,i)=>{
+    const [label, val] = d;
+    if(label.endsWith('00h')){
+      const x = xAt(i);
+      svg.appendChild(el('line', {x1:x, x2:x, y1:PAD_T, y2:H-PAD_B, stroke:'rgba(255,255,255,.06)', 'stroke-width':1}));
+      const dayLabel = label.split(' ').slice(0,2).join(' ');
+      const t = el('text', {x:x, y:H-PAD_B+16, 'text-anchor':'start', 'font-family':'JetBrains Mono, monospace', 'font-size':'9.5', fill:'#9396BC'});
+      t.textContent = dayLabel;
+      svg.appendChild(t);
+    }
+  });
+
+  // Area path
+  let areaPath = `M ${xAt(0)} ${yAt(0)} `;
+  data.forEach((d,i)=>{ areaPath += `L ${xAt(i)} ${yAt(d[1])} `; });
+  areaPath += `L ${xAt(n-1)} ${yAt(0)} Z`;
+
+  const gradId = 'ticketsGrad';
+  const defs = el('defs', {});
+  const grad = el('linearGradient', {id:gradId, x1:'0', y1:'0', x2:'0', y2:'1'});
+  grad.appendChild(el('stop', {offset:'0%', 'stop-color':'#FF9D5C', 'stop-opacity':'0.45'}));
+  grad.appendChild(el('stop', {offset:'100%', 'stop-color':'#FF9D5C', 'stop-opacity':'0'}));
+  defs.appendChild(grad);
+  svg.appendChild(defs);
+
+  svg.appendChild(el('path', {d:areaPath, fill:`url(#${gradId})`, stroke:'none'}));
+
+  // Line path
+  let linePath = '';
+  data.forEach((d,i)=>{ linePath += (i===0?'M ':'L ') + xAt(i) + ' ' + yAt(d[1]) + ' '; });
+  svg.appendChild(el('path', {d:linePath, fill:'none', stroke:'#FF9D5C', 'stroke-width':2, 'stroke-linejoin':'round', 'stroke-linecap':'round'}));
+
+  // Invisible hover targets + dots on hover
+  const hoverDot = el('circle', {r:4, fill:'#FF3D03', stroke:'white', 'stroke-width':1.5, opacity:0});
+  svg.appendChild(hoverDot);
+
+  data.forEach((d,i)=>{
+    const x = xAt(i);
+    const hitW = innerW / n;
+    const hit = el('rect', {x:x-hitW/2, y:PAD_T, width:hitW, height:innerH, fill:'transparent', style:'cursor:crosshair'});
+    hit.addEventListener('mouseenter', ()=>{
+      const y = yAt(d[1]);
+      hoverDot.setAttribute('cx', x);
+      hoverDot.setAttribute('cy', y);
+      hoverDot.setAttribute('opacity', 1);
+      if(tooltip){
+        tooltip.innerHTML = `${d[0]}<br><span class="tt-v">${d[1]} tickets</span>`;
+        tooltip.style.opacity = 1;
+        const wrapRect = wrap.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+        const relX = (x / W) * svgRect.width;
+        const relY = (y / H) * svgRect.height;
+        tooltip.style.left = relX + 'px';
+        tooltip.style.top = relY + 'px';
+      }
+    });
+    hit.addEventListener('mouseleave', ()=>{
+      hoverDot.setAttribute('opacity', 0);
+      if(tooltip) tooltip.style.opacity = 0;
+    });
+    svg.appendChild(hit);
+  });
+})();
+</script>
+
+<script>
+// Menu mobile
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', ()=>{
+  const isOpen = navToggle.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', isOpen);
+});
+mobileMenu.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    navToggle.setAttribute('aria-expanded','false');
+  });
+});
+
+// Catálogo de processos — filtro por categoria
+document.querySelectorAll('.cat-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const cat = tab.dataset.cat;
+    document.querySelectorAll('#catTable tr').forEach(row=>{
+      if(cat === 'todos' || row.dataset.cat === cat){
+        row.classList.add('visible');
+      } else {
+        row.classList.remove('visible');
+      }
+    });
+  });
+});
+
+// Alternância de tema claro/escuro
+const themeToggle = document.getElementById('themeToggle');
+function applyTheme(theme){
+  if(theme === 'dark'){
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  try{ localStorage.setItem('atua-theme', theme); }catch(e){}
+}
+themeToggle.addEventListener('click', ()=>{
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  applyTheme(isDark ? 'light' : 'dark');
+});
+
+// Barra de progresso de leitura
+const scrollProgress = document.getElementById('scrollProgress');
+function updateScrollProgress(){
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  scrollProgress.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateScrollProgress, {passive:true});
+updateScrollProgress();
+
+// Scrollspy — destaca o link do menu correspondente à seção visível
+const navLinks = document.querySelectorAll('nav.primary a[href^="#"]');
+const spySections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+if('IntersectionObserver' in window && spySections.length){
+  const spyObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = '#' + entry.target.id;
+        navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === id));
+      }
+    });
+  }, {rootMargin:'-40% 0px -55% 0px'});
+  spySections.forEach(sec => spyObserver.observe(sec));
+}
+
+// Animações de entrada ao rolar a página
+const revealTargets = document.querySelectorAll('.sec-head, .principio, .org-col, .stage, .fe-card, .doc-row, .bc-product, .faq-item, .pd-cell, .proc-col, .org-legend-item, .role-card');
+revealTargets.forEach(el=>{
+  el.classList.add('reveal');
+  // Stagger: atrasa cada item conforme sua posição entre os irmãos reveláveis
+  let idx = 0, sib = el.previousElementSibling;
+  while(sib){ if(sib.classList && sib.classList.contains('reveal')) idx++; sib = sib.previousElementSibling; }
+  el.style.setProperty('--reveal-delay', Math.min(idx,6)*70 + 'ms');
+});
+if('IntersectionObserver' in window){
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+  revealTargets.forEach(el=>revealObserver.observe(el));
+} else {
+  revealTargets.forEach(el=>el.classList.add('is-visible'));
+}
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item=>{
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', ()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>{
+      i.classList.remove('open');
+      i.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      a.style.maxHeight = a.scrollHeight + 'px';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
