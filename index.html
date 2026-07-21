@@ -962,7 +962,10 @@ html[data-theme="dark"] .role-ficha-link{color:var(--laranja-claro);}
 .ficha-src{display:none;}
 .pmodal{position:fixed; inset:0; z-index:2000; display:none; align-items:flex-start; justify-content:center; padding:clamp(12px,4vw,56px);}
 .pmodal.open{display:flex;}
-.pmodal-backdrop{position:absolute; inset:0; background:rgba(4,4,20,.62); backdrop-filter:blur(4px); animation:pmodal-fade .25s var(--ease);}
+/* Blur de viewport inteira ativo enquanto o modal está aberto: cada frame de
+   rolagem do diálogo obrigava a recompor a pilha toda. Escurecemos um pouco
+   mais para manter a separação visual sem custo de GPU. */
+.pmodal-backdrop{position:absolute; inset:0; background:rgba(4,4,20,.72); animation:pmodal-fade .25s var(--ease);}
 .pmodal-dialog{
   position:relative; width:min(980px,100%); max-height:90vh; display:flex; flex-direction:column;
   background:var(--surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden;
@@ -971,7 +974,10 @@ html[data-theme="dark"] .role-ficha-link{color:var(--laranja-claro);}
 .pmodal-bar{
   display:flex; align-items:center; justify-content:space-between; gap:16px;
   padding:15px 22px; border-bottom:1px solid var(--border-soft); flex-shrink:0;
-  background:color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter:blur(6px);
+  /* Sem backdrop-filter: a barra fica logo acima de .pmodal-body, então o
+     navegador teria que reamostrar e desfocar o conteúdo que rola por baixo
+     dela a CADA frame. Com fundo opaco não há nada para desfocar. */
+  background:var(--surface);
 }
 .pmodal-eyebrow{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--laranja-escuro);}
 .pmodal-close{
@@ -980,7 +986,13 @@ html[data-theme="dark"] .role-ficha-link{color:var(--laranja-claro);}
   transition:background .18s var(--ease), color .18s, border-color .18s, transform .18s var(--ease);
 }
 .pmodal-close:hover{background:var(--laranja); color:white; border-color:var(--laranja); transform:rotate(90deg);}
-.pmodal-body{overflow-y:auto; padding:clamp(14px,3vw,26px); -webkit-overflow-scrolling:touch;}
+.pmodal-body{
+  overflow-y:auto; padding:clamp(14px,3vw,26px);
+  /* contain:paint isola o repaint dentro da caixa — sem isso a invalidação
+     escapa do scroller e o navegador repinta o diálogo inteiro a cada frame.
+     overscroll-behavior corta o encadeamento com a rolagem da página. */
+  contain:paint; overscroll-behavior:contain;
+}
 .pmodal-body .pd-card{box-shadow:none;}
 @keyframes pmodal-fade{from{opacity:0;} to{opacity:1;}}
 @keyframes pmodal-rise{from{opacity:0; transform:translateY(18px) scale(.98);} to{opacity:1; transform:none;}}
@@ -1057,7 +1069,6 @@ header.main .nav-row{transition:padding .35s var(--ease);}
 header.main .brand-logo{transition:transform .2s var(--ease), height .35s var(--ease);}
 header.main.is-stuck{
   background:color-mix(in srgb, var(--surface) 82%, transparent);
-  backdrop-filter:blur(18px) saturate(1.6);
   box-shadow:0 4px 20px rgba(16,18,32,.07);
 }
 html[data-theme="dark"] header.main.is-stuck{box-shadow:0 4px 22px rgba(0,0,0,.42);}
@@ -1074,13 +1085,12 @@ nav.primary a::after{
 nav.primary a.active::after{transform:scaleX(1);}
 nav.primary a.cta::after{display:none;}
 
-/* ---- Reveal com desfoque leve ---- */
-.reveal{
-  filter:blur(5px);
-  transition:opacity .7s var(--ease), transform .7s var(--ease), filter .7s var(--ease);
-  transition-delay:var(--reveal-delay,0ms);
-}
-.reveal.is-visible{filter:blur(0);}
+/* ---- Reveal: entrada por opacidade + deslocamento ---- */
+/* Sem filter:blur aqui — ele forçava rasterização de cada card a cada frame.
+   opacity/transform (definidos acima) rodam na GPU. Liberamos a camada de
+   composição assim que a entrada termina, senão dezenas de cards ficam
+   promovidos para sempre. */
+.reveal.is-visible{will-change:auto;}
 
 /* ---- Entrada do hero: máscara por linha ---- */
 .h-line{display:block; overflow:hidden; padding-bottom:.06em;}
@@ -1163,8 +1173,8 @@ nav.primary a.cta::after{display:none;}
 .pmodal-backdrop{animation:pmodal-fade .3s var(--ease);}
 .pmodal-dialog{animation:pmodal-rise .45s var(--ease);}
 @keyframes pmodal-rise{
-  from{opacity:0; transform:translateY(26px) scale(.965); filter:blur(6px);}
-  to{opacity:1; transform:none; filter:blur(0);}
+  from{opacity:0; transform:translateY(26px) scale(.965);}
+  to{opacity:1; transform:none;}
 }
 .pmodal-progress{
   position:absolute; left:0; top:0; height:3px; width:0%; z-index:5;
@@ -3544,15 +3554,48 @@ themeToggle.addEventListener('click', ()=>{
 
 // Barra de progresso de leitura
 const scrollProgress = document.getElementById('scrollProgress');
-function updateScrollProgress(){
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-  scrollProgress.style.width = pct + '%';
-  // Evita o brilho residual quando a barra ainda está zerada
-  scrollProgress.style.opacity = pct > 0.3 ? '1' : '0';
+// scrollHeight é medido fora do evento de scroll: lê-lo a cada frame obriga o
+// navegador a refazer o layout da página inteira antes de responder.
+let alturaRolavel = 0;
+function medirAlturaRolavel(){
+  alturaRolavel = document.documentElement.scrollHeight - window.innerHeight;
 }
-window.addEventListener('scroll', updateScrollProgress, {passive:true});
-updateScrollProgress();
+let ultimoPct = -1;
+function pintarScrollProgress(){
+  const pct = alturaRolavel > 0 ? (window.scrollY / alturaRolavel) * 100 : 0;
+  // Só escreve quando o valor realmente muda de décimo — evita invalidar
+  // estilo a cada frame durante a rolagem.
+  const arred = Math.round(pct * 10) / 10;
+  if(arred === ultimoPct) return;
+  ultimoPct = arred;
+  scrollProgress.style.width = arred + '%';
+  // Evita o brilho residual quando a barra ainda está zerada
+  scrollProgress.style.opacity = arred > 0.3 ? '1' : '0';
+}
+
+/* Um único listener de scroll para a página inteira, sincronizado com o
+   repaint via rAF. Vários listeners soltos disparavam dezenas de vezes por
+   frame e cada um escrevia no DOM na hora — era a causa das travadas. */
+const tarefasScroll = [];
+let scrollAgendado = false;
+function aoRolar(fn){ tarefasScroll.push(fn); fn(); }
+function despachar(){
+  scrollAgendado = false;
+  for(const fn of tarefasScroll) fn();
+}
+window.addEventListener('scroll', ()=>{
+  if(scrollAgendado) return;
+  scrollAgendado = true;
+  requestAnimationFrame(despachar);
+}, {passive:true});
+
+// Remede o documento quando ele pode ter mudado de altura (nunca no scroll).
+medirAlturaRolavel();
+window.addEventListener('resize', ()=>{ medirAlturaRolavel(); ultimoPct = -1; pintarScrollProgress(); }, {passive:true});
+if('ResizeObserver' in window){
+  new ResizeObserver(medirAlturaRolavel).observe(document.body);
+}
+aoRolar(pintarScrollProgress);
 
 // Scrollspy — destaca o link do menu correspondente à seção visível
 const navLinks = document.querySelectorAll('nav.primary a[href^="#"]');
@@ -3616,6 +3659,7 @@ document.querySelectorAll('.faq-item').forEach(item=>{
   const body = document.getElementById('pmodalBody');
   const eyebrow = document.getElementById('pmodalEyebrow');
   let lastFocus = null;
+  let medirFicha = null; // definida adiante, junto da barra de progresso
 
   function openFicha(id, label){
     const src = document.getElementById(id);
@@ -3627,6 +3671,8 @@ document.querySelectorAll('.faq-item').forEach(item=>{
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('pmodal-lock');
     body.scrollTop = 0;
+    // A ficha só tem altura depois que o modal está visível (display:flex).
+    if(medirFicha) medirFicha();
     const closeBtn = modal.querySelector('.pmodal-close');
     if(closeBtn) closeBtn.focus();
   }
@@ -3652,10 +3698,25 @@ document.querySelectorAll('.faq-item').forEach(item=>{
     const prog = document.createElement('div');
     prog.className = 'pmodal-progress';
     dialog.prepend(prog);
+    // Altura medida ao abrir a ficha, não a cada frame: ler scrollHeight
+    // durante a rolagem força o navegador a refazer o layout antes de pintar.
+    let maxScroll = 0, ultimaLargura = -1;
+    medirFicha = ()=>{ maxScroll = body.scrollHeight - body.clientHeight; };
+    // Reflui se a janela mudar de tamanho ou se algo dentro da ficha crescer.
+    window.addEventListener('resize', ()=>{ if(modal.classList.contains('open')) medirFicha(); }, {passive:true});
+    if('ResizeObserver' in window) new ResizeObserver(()=>{ if(modal.classList.contains('open')) medirFicha(); }).observe(body);
+    let agendado = false, rolado = false;
     body.addEventListener('scroll', ()=>{
-      const max = body.scrollHeight - body.clientHeight;
-      prog.style.width = (max > 0 ? (body.scrollTop / max) * 100 : 0) + '%';
-      dialog.classList.toggle('body-scrolled', body.scrollTop > 4);
+      if(agendado) return;
+      agendado = true;
+      requestAnimationFrame(()=>{
+        agendado = false;
+        const pct = maxScroll > 0 ? (body.scrollTop / maxScroll) * 100 : 0;
+        const arred = Math.round(pct * 10) / 10;
+        if(arred !== ultimaLargura){ ultimaLargura = arred; prog.style.width = arred + '%'; }
+        const agora = body.scrollTop > 4;
+        if(agora !== rolado){ rolado = agora; dialog.classList.toggle('body-scrolled', agora); }
+      });
     }, {passive:true});
   }
 })();
@@ -3667,9 +3728,16 @@ document.querySelectorAll('.faq-item').forEach(item=>{
   // 1. Header compacta ao sair do topo
   const header = document.querySelector('header.main');
   if(header){
-    const marcarHeader = ()=> header.classList.toggle('is-stuck', window.scrollY > 24);
-    window.addEventListener('scroll', marcarHeader, {passive:true});
-    marcarHeader();
+    // Histerese: sem a faixa morta entre 18 e 30 o header alterna a classe
+    // repetidamente em torno do limite, e cada troca refaz o layout da barra.
+    let preso = false;
+    aoRolar(()=>{
+      const y = window.scrollY;
+      const novo = preso ? y > 18 : y > 30;
+      if(novo === preso) return;
+      preso = novo;
+      header.classList.toggle('is-stuck', preso);
+    });
   }
 
   // 2. Título do hero entra linha por linha, atrás de uma máscara
