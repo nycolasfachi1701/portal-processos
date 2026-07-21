@@ -5,7 +5,15 @@
       "Bash(pip show *)",
       "PowerShell(Start-Process \"c:\\\\Users\\\\Nycolas Fachi\\\\Documents\\\\Projetos\\\\portal-processos\\\\index.html\")",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "PowerShell(Start-Process \"index.html\")",
+      "PowerShell(\"opened\")",
+      "Bash(cd \"c:\\\\Users\\\\Nycolas Fachi\\\\Documents\\\\Projetos\\\\portal-processos\" && ls \".claude\" 2>/dev/null; ls \"C:\\\\Users\\\\Nycolas Fachi\\\\.claude\\\\projects\\\\c--Users-Nycolas-Fachi-Documents-Projetos-portal-processos\\\\memory\\\\\" 2>/dev/null && echo \"---MEMORY.md---\" && cat \"C:\\\\Users\\\\Nycolas Fachi\\\\.claude\\\\projects\\\\c--Users-Nycolas-Fachi-Documents-Projetos-portal-processos\\\\memory\\\\MEMORY.md\" 2>/dev/null || echo \"no memory yet\")",
+      "Read(//c/Users/Nycolas Fachi/.claude/projects/c--Users-Nycolas-Fachi-Documents-Projetos-portal-processos/memory\" 2>/dev/**)"
     ]
   }
 }

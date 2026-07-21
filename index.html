@@ -924,6 +924,105 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
 .reveal{opacity:0; transform:translateY(26px) scale(.985); transition:opacity .7s var(--ease), transform .7s var(--ease); transition-delay:var(--reveal-delay,0ms); will-change:opacity,transform;}
 .reveal.is-visible{opacity:1; transform:none;}
 
+/* ============ PROCESSOS POR FUNÇÃO ============ */
+.funcoes{background:var(--cinza-claro); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); transition:background .25s var(--ease);}
+.func-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+.func-card{
+  text-align:left; width:100%; cursor:pointer; font-family:var(--corpo); color:var(--ink);
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius);
+  padding:28px 30px; box-shadow:var(--shadow-sm);
+  display:flex; flex-direction:column; gap:14px; min-height:100%;
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+}
+.func-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:var(--laranja-claro);}
+.func-card-top{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;}
+.func-eyebrow{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--laranja-escuro);}
+.func-idx{font-family:var(--mono); font-size:12px; color:var(--ink-dim);}
+.func-card h3{font-family:var(--display); font-size:21px; line-height:1.2;}
+.func-card .func-obj{font-size:14px; color:var(--ink-dim); line-height:1.5;}
+.func-meta{display:flex; flex-wrap:wrap; gap:8px;}
+.func-tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-dim); background:var(--cinza-claro); border:1px solid var(--border-soft); border-radius:100px; padding:5px 11px;}
+.func-cta{margin-top:auto; display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; font-weight:600; color:var(--laranja); padding-top:6px;}
+.func-cta .arr{transition:transform .2s var(--ease);}
+.func-card:hover .func-cta .arr{transform:translateX(4px);}
+@media (max-width:880px){ .func-grid{grid-template-columns:1fr;} }
+.role-ficha-link{
+  margin-top:18px; align-self:flex-start; cursor:pointer;
+  background:none; border:none; padding:0; font-family:var(--mono);
+  font-size:11.5px; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
+  color:var(--laranja-escuro); display:inline-flex; align-items:center; gap:8px;
+  transition:color .15s var(--ease);
+}
+html[data-theme="dark"] .role-ficha-link{color:var(--laranja-claro);}
+.role-ficha-link .arr{transition:transform .2s var(--ease);}
+.role-ficha-link:hover{color:var(--laranja);}
+.role-ficha-link:hover .arr{transform:translateX(4px);}
+
+/* ============ MODAL DE FICHA ============ */
+.ficha-src{display:none;}
+.pmodal{position:fixed; inset:0; z-index:2000; display:none; align-items:flex-start; justify-content:center; padding:clamp(12px,4vw,56px);}
+.pmodal.open{display:flex;}
+.pmodal-backdrop{position:absolute; inset:0; background:rgba(4,4,20,.62); backdrop-filter:blur(4px); animation:pmodal-fade .25s var(--ease);}
+.pmodal-dialog{
+  position:relative; width:min(980px,100%); max-height:90vh; display:flex; flex-direction:column;
+  background:var(--surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden;
+  animation:pmodal-rise .35s var(--ease);
+}
+.pmodal-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:15px 22px; border-bottom:1px solid var(--border-soft); flex-shrink:0;
+  background:color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter:blur(6px);
+}
+.pmodal-eyebrow{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--laranja-escuro);}
+.pmodal-close{
+  width:38px; height:38px; border-radius:50%; border:1px solid var(--border-soft); background:var(--surface);
+  color:var(--ink); font-size:15px; cursor:pointer; flex-shrink:0; line-height:1;
+  transition:background .18s var(--ease), color .18s, border-color .18s, transform .18s var(--ease);
+}
+.pmodal-close:hover{background:var(--laranja); color:white; border-color:var(--laranja); transform:rotate(90deg);}
+.pmodal-body{overflow-y:auto; padding:clamp(14px,3vw,26px); -webkit-overflow-scrolling:touch;}
+.pmodal-body .pd-card{box-shadow:none;}
+@keyframes pmodal-fade{from{opacity:0;} to{opacity:1;}}
+@keyframes pmodal-rise{from{opacity:0; transform:translateY(18px) scale(.98);} to{opacity:1; transform:none;}}
+body.pmodal-lock{overflow:hidden;}
+
+/* ---- Ficha: componentes internos ---- */
+.ficha-steps{counter-reset:fstep; display:flex; flex-direction:column; gap:12px;}
+.ficha-steps>li{position:relative; padding:14px 18px 14px 52px; border:1px solid var(--border-soft); border-radius:var(--radius-sm); background:var(--surface); font-size:14px; line-height:1.5;}
+.ficha-steps>li::before{counter-increment:fstep; content:counter(fstep,decimal-leading-zero); position:absolute; left:16px; top:13px; font-family:var(--mono); font-size:12px; font-weight:600; color:var(--laranja);}
+.sit-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.sit-card{border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:18px 20px; background:var(--surface);}
+.sit-card h6{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px; color:var(--ink-dim);}
+.sit-card.ok{border-color:rgba(61,220,132,.45);}
+.sit-card.ok h6{color:#1f8a4c;}
+html[data-theme="dark"] .sit-card.ok h6{color:#6FE3A0;}
+.sit-card.warn{border-color:var(--laranja-claro); background:#FFF1EC;}
+html[data-theme="dark"] .sit-card.warn{background:rgba(255,61,3,.10);}
+.sit-card.warn h6{color:var(--laranja-escuro);}
+html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
+.sit-card ul{display:flex; flex-direction:column; gap:6px;}
+.sit-card li{font-size:13.5px; color:var(--ink); display:flex; gap:8px; line-height:1.45;}
+.sit-card li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+.reg-quote{margin-top:14px; border-left:3px solid var(--laranja); background:var(--cinza-claro); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:14px 18px; font-family:var(--mono); font-size:13px; line-height:1.6; color:var(--ink-dim);}
+.rotina-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.rotina-card{border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:18px 20px; background:var(--surface);}
+.rotina-card .rnum{font-family:var(--mono); font-size:10.5px; color:var(--laranja-escuro); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;}
+.rotina-card h6{font-family:var(--corpo); font-weight:700; font-size:14.5px; margin-bottom:9px;}
+.rotina-card ul{display:flex; flex-direction:column; gap:5px;}
+.rotina-card li{font-size:13px; color:var(--ink-dim); display:flex; gap:7px; line-height:1.4;}
+.rotina-card li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+.kpi-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+.kpi-item{display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border:1px solid var(--border-soft); border-radius:var(--radius-sm); background:var(--surface); font-size:13.5px; line-height:1.4; color:var(--ink);}
+.kpi-item .kdot{width:7px; height:7px; border-radius:50%; background:var(--laranja); margin-top:5px; flex-shrink:0;}
+.dbl-list{display:grid; grid-template-columns:1fr 1fr; gap:8px 24px;}
+.dbl-list li{font-size:13.5px; display:flex; gap:8px; line-height:1.45; color:var(--ink);}
+.dbl-list li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+.cat-table tr.has-ficha{cursor:pointer;}
+.cat-table tr.has-ficha .proc-name::after{content:" ›"; color:var(--laranja); opacity:0; transition:opacity .15s;}
+.cat-table tr.has-ficha:hover .proc-name::after{opacity:1;}
+@media (max-width:880px){ .rotina-grid{grid-template-columns:1fr;} }
+@media (max-width:620px){ .sit-grid, .kpi-grid, .dbl-list{grid-template-columns:1fr;} }
+
 </style>
 </head>
 <body>
@@ -952,6 +1051,7 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
     </a>
     <nav class="primary">
       <a href="#estrutura-agro">TMS&nbsp;Agro</a>
+      <a href="#funcoes">Funções</a>
       <a href="#jornada">Fluxo</a>
       <a href="#processos">Processos</a>
       <a href="#procedimentos">Procedimentos</a>
@@ -968,6 +1068,7 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
   </div>
   <nav class="mobile-menu" id="mobileMenu">
     <a href="#estrutura-agro">Estrutura · TMS Agro</a>
+    <a href="#funcoes">Processos por função</a>
     <a href="#jornada">Fluxo de atendimento</a>
     <a href="#processos">Processos</a>
     <a href="#procedimentos">Procedimentos</a>
@@ -1045,7 +1146,7 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
         <div class="sec-tag">Estrutura organizacional · TMS Agro</div>
         <h2>Quem faz o quê no suporte do TMS Agro.</h2>
       </div>
-      <p>Triagem separa entrada de execução, N1/N2 executam — não decidem prioridade — e prioridade só sobe por canal oficial.</p>
+      <p>O atendimento recepciona e acompanha, N1/N2 executam — não decidem prioridade — e prioridade só sobe por canal oficial.</p>
     </div>
 
     <div class="org-chart">
@@ -1057,7 +1158,7 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
           <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
           <div class="org-node coord">Líder de Time</div>
           <div class="org-leaf-group">
-            <div class="org-leaf">Assistente de Atendimento (Triagem)</div>
+            <div class="org-leaf">Assistente de Atendimento (Relacionamento)</div>
             <div class="org-leaf">Assistente de Suporte (N1)</div>
             <div class="org-leaf">Analista de Suporte (N2)</div>
           </div>
@@ -1128,7 +1229,7 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
       <div class="role-card">
         <div class="role-card-head">
           <span class="chip">3</span>
-          <div><h4>Líder de Time</h4><div class="pos">Gestão operacional direta de equipes (N1/N2/triagem)</div></div>
+          <div><h4>Líder de Time</h4><div class="pos">Gestão operacional direta de equipes (N1/N2/atendimento)</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
@@ -1154,26 +1255,27 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
       <div class="role-card">
         <div class="role-card-head">
           <span class="chip">6</span>
-          <div><h4>Assistente de Atendimento</h4><div class="pos">Triagem de tickets — camada inicial de filtragem</div></div>
+          <div><h4>Assistente de Atendimento</h4><div class="pos">Atendimento inicial e relacionamento com o cliente</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
           <ul>
-            <li>Triagem e organização inicial dos tickets</li>
-            <li>Validação de informações mínimas obrigatórias</li>
-            <li>Identificação de urgência e categoria</li>
-            <li>Direcionamento correto para N1/N2</li>
-            <li>Evitar tickets mal classificados ou incompletos</li>
+            <li>Recepcionar contatos (Telefone Opção 5 e WhatsApp Ouvidoria)</li>
+            <li>Identificar o ticket e verificar o SLA</li>
+            <li>Comunicar a liderança para priorização quando o SLA é excedido</li>
+            <li>Registrar toda interação no campo Atendimento do ticket</li>
+            <li>Monitorar mensagens pendentes, ligações perdidas e Ouvidoria</li>
           </ul>
         </div>
         <div class="role-card-section">
           <h6>Atuação no fluxo</h6>
           <ul>
-            <li>Primeira barreira de qualidade do atendimento</li>
-            <li>Garante que tickets cheguem corretamente estruturados ao suporte</li>
-            <li>Reduz retrabalho do N1</li>
+            <li>Ponto de contato do cliente com o suporte</li>
+            <li>Garante que nenhum contato fique sem resposta ou acompanhamento</li>
+            <li>Aciona a liderança quando o SLA é excedido — não é atuação técnica</li>
           </ul>
         </div>
+        <button class="role-ficha-link" type="button" data-ficha="ficha-assistente" data-ficha-label="Atendimento &amp; Relacionamento">Ver ficha completa <span class="arr">→</span></button>
       </div>
 
       <div class="role-card">
@@ -1246,17 +1348,18 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
           <h6>Atuação no fluxo</h6>
           <ul>
             <li>Atua de forma transversal em todos os níveis</li>
-            <li>Alimenta N1, N2 e triagem com conhecimento</li>
+            <li>Alimenta N1, N2 e o atendimento com conhecimento</li>
             <li>Reduz reincidência de chamados</li>
           </ul>
         </div>
+        <button class="role-ficha-link" type="button" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA">Ver ficha completa <span class="arr">→</span></button>
       </div>
     </div>
 
     <div class="pd-flow" style="padding:48px 0 0;">
       <h5>Fluxo de escalonamento</h5>
       <div class="flowmini">
-        <span class="fm-step">Triagem</span>
+        <span class="fm-step">Atendimento inicial</span>
         <span class="fm-arrow">→</span>
         <span class="fm-step">N1 · Assistente de Suporte</span>
         <span class="fm-arrow">→</span>
@@ -1272,8 +1375,8 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
 
     <div class="org-legend" style="margin-top:48px;">
       <div class="org-legend-item">
-        <h5>Triagem ≠ execução</h5>
-        <p>A triagem separa entrada de execução — garante a qualidade do fluxo antes de qualquer atendimento técnico.</p>
+        <h5>Atendimento ≠ execução</h5>
+        <p>O atendimento recepciona e acompanha o cliente; a execução técnica é do N1/N2. Uma camada cuida do relacionamento, a outra resolve.</p>
       </div>
       <div class="org-legend-item">
         <h5>N1/N2 não decidem prioridade</h5>
@@ -1282,6 +1385,409 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
       <div class="org-legend-item">
         <h5>Prioridade sobe por canal oficial</h5>
         <p>Mudança de prioridade só ocorre via liderança/Head ou ouvidoria — nunca por pedido informal ao analista.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCESSOS POR FUNÇÃO ===================== -->
+<section class="funcoes" id="funcoes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Processos por função</div>
+        <h2>Como cada função opera, em detalhe.</h2>
+      </div>
+      <p>Cada cargo tem sua ficha operacional completa — objetivo, fluxo, rotina diária e responsabilidades. Clique para abrir; a leitura acontece sem sair da página.</p>
+    </div>
+
+    <div class="func-grid">
+      <button class="func-card" type="button" data-ficha="ficha-assistente" data-ficha-label="Atendimento &amp; Relacionamento" aria-haspopup="dialog">
+        <div class="func-card-top">
+          <span class="func-eyebrow">Atendimento &amp; Relacionamento</span>
+          <span class="func-idx">01</span>
+        </div>
+        <h3>Assistente de Atendimento</h3>
+        <p class="func-obj">Atendimento inicial nos canais de relacionamento — recepciona, acompanha e direciona cada solicitação, garantindo que nenhum contato do cliente fique sem retorno.</p>
+        <div class="func-meta">
+          <span class="func-tag">Telefone · Opção 5</span>
+          <span class="func-tag">WhatsApp Ouvidoria</span>
+          <span class="func-tag">Acompanhamento de SLA</span>
+        </div>
+        <span class="func-cta">Abrir ficha completa <span class="arr">→</span></span>
+      </button>
+
+      <button class="func-card" type="button" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA" aria-haspopup="dialog">
+        <div class="func-card-top">
+          <span class="func-eyebrow">Conhecimento &amp; IA</span>
+          <span class="func-idx">02</span>
+        </div>
+        <h3>Analista KCS · IA</h3>
+        <p class="func-obj">Mantém a base de conhecimento atualizada e sincronizada entre Wiki Atua e Moveo, ampliando o autoatendimento e reduzindo a dependência do suporte humano.</p>
+        <div class="func-meta">
+          <span class="func-tag">Wiki Atua</span>
+          <span class="func-tag">Moveo (IA)</span>
+          <span class="func-tag">Releases &amp; KPIs</span>
+        </div>
+        <span class="func-cta">Abrir ficha completa <span class="arr">→</span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Conteúdo das fichas (carregado no modal) ===== -->
+  <div class="ficha-src" id="ficha-assistente" hidden>
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo Operacional · Atendimento &amp; Relacionamento</div>
+          <h3>Assistente de Atendimento</h3>
+        </div>
+        <span class="pd-badge">Atuação: relacionamento e acompanhamento</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo da função</h5>
+          <p>Realizar o atendimento inicial dos clientes nos canais de relacionamento, garantindo que toda solicitação seja recepcionada, acompanhada e direcionada corretamente — atuando como facilitador na comunicação entre o cliente e as equipes de atendimento.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Natureza da atuação</h5>
+          <p>Não é técnica. É de relacionamento, acompanhamento e gestão da comunicação. O assistente não resolve o chamado — garante que ele seja recepcionado, registrado e encaminhado corretamente.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Canais de entrada</h5>
+          <ul>
+            <li>Telefone — Suporte, Opção 5</li>
+            <li>WhatsApp — Relacionamento / Ouvidoria</li>
+            <li>Portal de Ouvidoria (registros)</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Registro obrigatório</h5>
+          <p>Todo contato é registrado no campo <strong>Atendimento</strong> do ticket: data/hora, canal, motivo, informação repassada ao cliente e — se houver — o escalonamento realizado.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Papéis envolvidos</h5>
+          <ul><li>Cliente</li><li>Assistente de Atendimento</li><li>Liderança do time responsável</li><li>Ouvidoria</li></ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Regra de ouro</h5>
+          <p>Nenhum contato do cliente pode permanecer sem resposta ou acompanhamento.</p>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-bottom:1px solid var(--border-soft);">
+        <h5>Fluxo geral da função</h5>
+        <div class="flowmini">
+          <span class="fm-step">Cliente entra em contato</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Recepcionar (Tel. Opção 5 ou WhatsApp)</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Identificar o ticket</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Dentro do SLA?</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Sim — orientar e registrar</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Não — comunicar liderança p/ priorização</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Registrar no campo "Atendimento"</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Encerrar contato</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>1 · Atendimento telefônico — Suporte, Opção 5</h5>
+        <ol class="ficha-steps">
+          <li><strong>Recepcionar o cliente.</strong> Identificar empresa, nome, telefone e número do ticket (quando existir). Se o cliente não tiver o número, localizar pelo sistema.</li>
+          <li><strong>Consultar o ticket.</strong> Verificar status, responsável, última interação e tempo desde o último atendimento.</li>
+          <li><strong>Comparar o tempo transcorrido com o SLA</strong> e agir conforme a situação abaixo.</li>
+        </ol>
+        <div class="sit-grid" style="margin-top:16px;">
+          <div class="sit-card ok">
+            <h6>✓ Situação A — dentro do SLA</h6>
+            <ul>
+              <li>Informar ao cliente que o chamado está dentro do prazo previsto.</li>
+              <li>Registrar o contato no ticket.</li>
+            </ul>
+          </div>
+          <div class="sit-card warn">
+            <h6>! Situação B — SLA excedido</h6>
+            <ul>
+              <li>Comunicar imediatamente a liderança do time.</li>
+              <li>Informar nº do ticket, cliente, motivo e pedido de priorização.</li>
+              <li>Registrar a comunicação no campo Atendimento.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="reg-quote">"Cliente entrou em contato via telefone solicitando posicionamento do ticket. Liderança do time XX comunicada às HH:MM para priorização da análise."</div>
+      </div>
+
+      <div class="pd-block">
+        <h5>2 · Atendimento WhatsApp — Relacionamento / Ouvidoria</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:16px;">Segue exatamente a mesma lógica do atendimento telefônico.</p>
+        <div class="flowmini">
+          <span class="fm-step">Receber a mensagem</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Localizar o ticket</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Verificar o SLA</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Fora do prazo — comunicar liderança e registrar</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Responder que a solicitação foi encaminhada p/ acompanhamento</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>3 · Rotina diária — início do expediente</h5>
+        <div class="rotina-grid">
+          <div class="rotina-card">
+            <div class="rnum">Verificação 01</div>
+            <h6>WhatsApp Relacionamento/Ouvidoria</h6>
+            <ul>
+              <li>Conferir mensagens não respondidas do período anterior</li>
+              <li>Responder o cliente</li>
+              <li>Dar andamento conforme o fluxo</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Verificação 02</div>
+            <h6>Ligações perdidas</h6>
+            <ul>
+              <li>Acessar o ramal telefônico</li>
+              <li>Retornar o contato</li>
+              <li>Identificar a necessidade e registrar</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Verificação 03</div>
+            <h6>Portal de Ouvidoria</h6>
+            <ul>
+              <li>Início → Suporte → Ouvidoria → Listagem de Registros</li>
+              <li>Analisar cada nova manifestação</li>
+              <li>Encaminhar e acompanhar o tratamento inicial</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Comunicação com as lideranças</h5>
+        <div class="alert-box">
+          <h5>Ticket com SLA excedido + novo contato do cliente = comunicar a liderança do time responsável solicitando priorização.</h5>
+          <ul>
+            <li>Número do ticket</li>
+            <li>Nome do cliente / empresa</li>
+            <li>Tempo sem atendimento</li>
+            <li>Motivo do contato</li>
+            <li>Solicitação de priorização</li>
+          </ul>
+          <p style="font-size:13px; color:var(--ink-dim); margin-top:4px;">Após a comunicação, registrar obrigatoriamente a ação no campo Atendimento do ticket.</p>
+        </div>
+      </div>
+
+      <div class="pd-block" style="border-bottom:none;">
+        <h5>Responsabilidades do Assistente de Atendimento</h5>
+        <ul class="dbl-list">
+          <li>Recepcionar todos os contatos telefônicos (Opção 5)</li>
+          <li>Atender o WhatsApp Relacionamento/Ouvidoria</li>
+          <li>Acompanhar tickets com clientes aguardando retorno</li>
+          <li>Verificar diariamente mensagens pendentes e ligações perdidas</li>
+          <li>Monitorar novos registros da Ouvidoria pelo portal</li>
+          <li>Comunicar lideranças em ticket com SLA excedido</li>
+          <li>Registrar todas as interações no campo Atendimento</li>
+          <li>Garantir que nenhum contato fique sem resposta</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ficha-src" id="ficha-kcs" hidden>
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo Operacional · Conhecimento &amp; IA</div>
+          <h3>Analista KCS — Aprimoramento das Ferramentas de IA</h3>
+        </div>
+        <span class="pd-badge">Registros: Cliente Atua</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo da função</h5>
+          <p>Garantir que a base de conhecimento esteja sempre atualizada, completa e eficiente, promovendo o uso da IA (Moveo) e da Wiki Atua como principais canais de autoatendimento.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Metas centrais</h5>
+          <ul>
+            <li>Manter a documentação sempre atualizada</li>
+            <li>Ampliar continuamente a base</li>
+            <li>Melhorar a assertividade da IA</li>
+            <li>Reduzir a necessidade de atendimento humano</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Ferramentas</h5>
+          <ul><li>Wiki Atua — base de conhecimento</li><li>Moveo — IA de autoatendimento</li><li>Portal de tickets (registro interno)</li></ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Princípio KCS</h5>
+          <p>Toda atividade executada deve gerar conhecimento reutilizável para clientes e equipes. Nenhuma funcionalidade nova permanece sem documentação.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Sincronização</h5>
+          <p>Não deve existir divergência entre Wiki Atua e Moveo. Sempre validar se a IA está usando a versão mais recente da documentação.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Registro das atividades</h5>
+          <p>Toda atividade possui ticket próprio, criado com <strong>Cliente: Atua</strong> — um ticket por assunto específico.</p>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-bottom:1px solid var(--border-soft);">
+        <h5>Fluxo geral da função</h5>
+        <div class="flowmini">
+          <span class="fm-step">Identificar necessidade</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Analisar origem (ticket, release, liderança, IA ou cliente)</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Produzir / atualizar conteúdo</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Validar (Wiki + Moveo)</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Publicar</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Comunicar equipes</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Registrar ticket (Cliente: Atua)</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Gestão da base &amp; produção de conteúdo</h5>
+        <div class="sit-grid">
+          <div class="sit-card">
+            <h6>Documentação (texto)</h6>
+            <ul>
+              <li>Criar, revisar, atualizar, complementar e remover conteúdos obsoletos</li>
+              <li>Procedimentos, funcionalidades do TMS, parametrizações e integrações</li>
+              <li>Erros conhecidos, FAQ e boas práticas</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Conteúdo multimídia</h6>
+            <ul>
+              <li>Vídeos rápidos de funcionalidades</li>
+              <li>Tutoriais passo a passo e videoaulas de módulos</li>
+              <li>Demonstrações de novas funcionalidades e fluxos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Gestão de releases</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:16px;">A cada nova versão do sistema disponibilizada — nenhuma funcionalidade nova fica sem documentação.</p>
+        <div class="flowmini">
+          <span class="fm-step">Analisar as entregas</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Produzir / atualizar documentação</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Validar</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Publicar na Wiki Atua</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Sincronizar na Moveo</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Comunicar as equipes</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Rotina diária — início do expediente</h5>
+        <div class="rotina-grid">
+          <div class="rotina-card">
+            <div class="rnum">Etapa 01</div>
+            <h6>Revisar interações da Moveo</h6>
+            <ul>
+              <li>Perguntas não respondidas e respostas incorretas</li>
+              <li>Baixa assertividade e encaminhamentos p/ humano</li>
+              <li>Revisar a documentação e revalidar a resposta da IA</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapa 02</div>
+            <h6>Alinhamento com lideranças</h6>
+            <ul>
+              <li>Principais dúvidas e assuntos recorrentes do dia anterior</li>
+              <li>Dificuldades encontradas pelos clientes</li>
+              <li>Transformar as informações em novos conteúdos</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapa 03</div>
+            <h6>Revisão das entregas (releases)</h6>
+            <ul>
+              <li>Novas funcionalidades, correções e melhorias</li>
+              <li>Produzir / atualizar documentação</li>
+              <li>Sincronizar Wiki e Moveo e comunicar a operação</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Registro das atividades — ticket com Cliente "Atua"</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:14px;">Cada ticket representa um assunto específico. Exemplos:</p>
+        <div class="func-meta" style="margin-bottom:18px;">
+          <span class="func-tag">Atualização documentação CIOT</span>
+          <span class="func-tag">Documentação MDF-e</span>
+          <span class="func-tag">Vídeo emissão CT-e</span>
+          <span class="func-tag">FAQ Integração NS Pedágio</span>
+          <span class="func-tag">Revisão Ouvidoria</span>
+        </div>
+        <p style="font-size:13px; color:var(--ink-dim); margin-bottom:10px;">Cada registro deve conter:</p>
+        <ul class="dbl-list">
+          <li>Motivo da atualização</li>
+          <li>Origem da necessidade (ticket, release, liderança ou IA)</li>
+          <li>Atividades executadas</li>
+          <li>Links das documentações publicadas</li>
+          <li>Evidências da sincronização Wiki ↔ Moveo</li>
+          <li>Data da publicação e comunicação às equipes</li>
+        </ul>
+      </div>
+
+      <div class="pd-block">
+        <h5>Indicadores de desempenho (KPIs)</h5>
+        <div class="kpi-grid">
+          <div class="kpi-item"><span class="kdot"></span>Documentações criadas</div>
+          <div class="kpi-item"><span class="kdot"></span>Documentações revisadas</div>
+          <div class="kpi-item"><span class="kdot"></span>Vídeos produzidos</div>
+          <div class="kpi-item"><span class="kdot"></span>Tempo médio entre necessidade e publicação</div>
+          <div class="kpi-item"><span class="kdot"></span>% de sincronização Wiki ↔ Moveo</div>
+          <div class="kpi-item"><span class="kdot"></span>Comunicações realizadas às equipes</div>
+          <div class="kpi-item"><span class="kdot"></span>Taxa de assertividade da IA (Moveo)</div>
+          <div class="kpi-item"><span class="kdot"></span>Redução de atendimentos humanos p/ assuntos já documentados</div>
+          <div class="kpi-item"><span class="kdot"></span>Melhorias originadas de tickets e interações da IA</div>
+          <div class="kpi-item"><span class="kdot"></span>% de consultas resolvidas só pela IA (sem escalonamento)</div>
+        </div>
+      </div>
+
+      <div class="pd-block" style="border-bottom:none;">
+        <h5>Responsabilidades do Analista KCS</h5>
+        <ul class="dbl-list">
+          <li>Manter Wiki Atua e Moveo atualizadas e sincronizadas</li>
+          <li>Criar e revisar documentações técnicas e operacionais</li>
+          <li>Produzir conteúdo em texto e vídeo para clientes e equipes</li>
+          <li>Documentar todas as funcionalidades de novas releases</li>
+          <li>Analisar diariamente as interações da IA</li>
+          <li>Revisar tickets com as lideranças</li>
+          <li>Comunicar a operação sobre novos conteúdos</li>
+          <li>Registrar todas as atividades em tickets (Cliente: Atua)</li>
+          <li>Ampliar o uso da IA e reduzir a dependência do suporte humano</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -1410,12 +1916,14 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
       <tbody>
         <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Registro de Ticket</td></tr>
         <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Escalonamento e Priorização de Tickets</td></tr>
+        <tr class="visible has-ficha" data-cat="Atendimento" data-ficha="ficha-assistente" data-ficha-label="Atendimento &amp; Relacionamento"><td class="proc-cat">Atendimento</td><td class="proc-name">Atendimento e Relacionamento — Assistente de Atendimento</td></tr>
         <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Encerramento</td></tr>
         <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de Backlog</td></tr>
         <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de SLA</td></tr>
         <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de Incidentes</td></tr>
         <tr class="visible" data-cat="Qualidade"><td class="proc-cat">Qualidade</td><td class="proc-name">Auditoria de Atendimentos</td></tr>
         <tr class="visible" data-cat="Conhecimento"><td class="proc-cat">Conhecimento</td><td class="proc-name">Criação de Base de Conhecimento</td></tr>
+        <tr class="visible has-ficha" data-cat="Conhecimento" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA"><td class="proc-cat">Conhecimento</td><td class="proc-name">Aprimoramento da Base &amp; IA — Analista KCS</td></tr>
         <tr class="visible" data-cat="Pessoas"><td class="proc-cat">Pessoas</td><td class="proc-name">Treinamento e Capacitação</td></tr>
       </tbody>
     </table>
@@ -1808,6 +2316,18 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
   </div>
 </footer>
 
+<!-- ===================== MODAL DE FICHA DE PROCESSO ===================== -->
+<div class="pmodal" id="fichaModal" aria-hidden="true">
+  <div class="pmodal-backdrop" data-close></div>
+  <div class="pmodal-dialog" role="dialog" aria-modal="true" aria-labelledby="pmodalEyebrow">
+    <div class="pmodal-bar">
+      <div class="pmodal-eyebrow" id="pmodalEyebrow">Ficha de processo</div>
+      <button class="pmodal-close" type="button" data-close aria-label="Fechar ficha">✕</button>
+    </div>
+    <div class="pmodal-body" id="pmodalBody"></div>
+  </div>
+</div>
+
 <script>
 // Gráfico de Tickets por Hora — renderizado em SVG a partir dos dados embutidos (CSV Grafana)
 (function(){
@@ -1997,7 +2517,7 @@ if('IntersectionObserver' in window && spySections.length){
 }
 
 // Animações de entrada ao rolar a página
-const revealTargets = document.querySelectorAll('.sec-head, .principio, .org-col, .stage, .fe-card, .doc-row, .bc-product, .faq-item, .pd-cell, .proc-col, .org-legend-item, .role-card');
+const revealTargets = Array.from(document.querySelectorAll('.sec-head, .principio, .org-col, .stage, .fe-card, .doc-row, .bc-product, .faq-item, .pd-cell, .proc-col, .org-legend-item, .role-card, .func-card')).filter(el => !el.closest('.ficha-src'));
 revealTargets.forEach(el=>{
   el.classList.add('reveal');
   // Stagger: atrasa cada item conforme sua posição entre os irmãos reveláveis
@@ -2035,6 +2555,44 @@ document.querySelectorAll('.faq-item').forEach(item=>{
     }
   });
 });
+
+// Modal de ficha de processo — abre o conteúdo detalhado sem alongar a página
+(function(){
+  const modal = document.getElementById('fichaModal');
+  if(!modal) return;
+  const body = document.getElementById('pmodalBody');
+  const eyebrow = document.getElementById('pmodalEyebrow');
+  let lastFocus = null;
+
+  function openFicha(id, label){
+    const src = document.getElementById(id);
+    if(!src) return;
+    body.innerHTML = src.innerHTML;
+    eyebrow.innerHTML = label || 'Ficha de processo';
+    lastFocus = document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('pmodal-lock');
+    body.scrollTop = 0;
+    const closeBtn = modal.querySelector('.pmodal-close');
+    if(closeBtn) closeBtn.focus();
+  }
+  function closeFicha(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('pmodal-lock');
+    body.innerHTML = '';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.querySelectorAll('[data-ficha]').forEach(trigger=>{
+    trigger.addEventListener('click', ()=> openFicha(trigger.dataset.ficha, trigger.dataset.fichaLabel));
+  });
+  modal.querySelectorAll('[data-close]').forEach(x=> x.addEventListener('click', closeFicha));
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape' && modal.classList.contains('open')) closeFicha();
+  });
+})();
 </script>
 
 </body>
