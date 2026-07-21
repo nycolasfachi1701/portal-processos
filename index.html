@@ -1023,6 +1023,169 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
 @media (max-width:880px){ .rotina-grid{grid-template-columns:1fr;} }
 @media (max-width:620px){ .sit-grid, .kpi-grid, .dbl-list{grid-template-columns:1fr;} }
 
+/* ==========================================================================
+   ACABAMENTO — refinamentos de fluidez e detalhe
+   ========================================================================== */
+
+/* ---- Tipografia: quebras de linha equilibradas e sem viúvas ---- */
+h1, h2, h3, h4, .sec-head h2, .func-card h3{text-wrap:balance;}
+p, .func-obj, .lede, .pd-cell p, .sit-card li, .rotina-card li{text-wrap:pretty;}
+.hero h1{letter-spacing:-0.028em;}
+.sec-head h2{letter-spacing:-0.022em;}
+.func-card h3, .pd-header h3{letter-spacing:-0.015em;}
+
+/* ---- Scrollbar discreta, no tom da marca ---- */
+html{scrollbar-gutter:stable; scrollbar-color:var(--cinza) transparent; scrollbar-width:thin;}
+::-webkit-scrollbar{width:11px; height:11px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{
+  background:var(--cinza); border-radius:100px;
+  border:3px solid var(--surface); background-clip:padding-box;
+  transition:background .2s;
+}
+::-webkit-scrollbar-thumb:hover{background:var(--laranja-claro); background-clip:padding-box;}
+
+/* ---- Barra de progresso com brilho ---- */
+.scroll-progress{
+  border-radius:0 4px 4px 0;
+  box-shadow:0 0 10px rgba(255,61,3,.55), 0 0 2px rgba(255,61,3,.9);
+}
+
+/* ---- Header que encolhe ao rolar ---- */
+header.main{transition:background .3s var(--ease), border-color .25s var(--ease), box-shadow .3s var(--ease);}
+header.main .nav-row{transition:padding .35s var(--ease);}
+header.main .brand-logo{transition:transform .2s var(--ease), height .35s var(--ease);}
+header.main.is-stuck{
+  background:color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter:blur(18px) saturate(1.6);
+  box-shadow:0 4px 20px rgba(16,18,32,.07);
+}
+html[data-theme="dark"] header.main.is-stuck{box-shadow:0 4px 22px rgba(0,0,0,.42);}
+header.main.is-stuck .nav-row{padding:9px 0;}
+header.main.is-stuck .brand-logo{height:26px;}
+
+/* Sublinhado que cresce sob o item de menu ativo */
+nav.primary a{position:relative;}
+nav.primary a::after{
+  content:""; position:absolute; left:13px; right:13px; bottom:4px; height:2px;
+  background:var(--laranja); border-radius:2px;
+  transform:scaleX(0); transform-origin:left; transition:transform .3s var(--ease);
+}
+nav.primary a.active::after{transform:scaleX(1);}
+nav.primary a.cta::after{display:none;}
+
+/* ---- Reveal com desfoque leve ---- */
+.reveal{
+  filter:blur(5px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease), filter .7s var(--ease);
+  transition-delay:var(--reveal-delay,0ms);
+}
+.reveal.is-visible{filter:blur(0);}
+
+/* ---- Entrada do hero: máscara por linha ---- */
+.h-line{display:block; overflow:hidden; padding-bottom:.06em;}
+.h-line-in{
+  display:block; transform:translateY(108%);
+  animation:h-rise 1s var(--ease) both; animation-delay:var(--d,0ms);
+}
+@keyframes h-rise{to{transform:translateY(0);}}
+.hero-boot{
+  opacity:0; transform:translateY(16px);
+  animation:boot-up .85s var(--ease) both; animation-delay:var(--d,0ms);
+}
+@keyframes boot-up{to{opacity:1; transform:none;}}
+
+/* ---- Rota do hero: tracejado em movimento ---- */
+.route-line{background-size:18px 100%; animation:route-flow 1.6s linear infinite;}
+@keyframes route-flow{to{background-position:-18px 0;}}
+.route-stop .pin{transition:transform .25s var(--ease), box-shadow .25s var(--ease);}
+.route-stop:hover .pin{transform:scale(1.45); box-shadow:0 0 0 5px rgba(255,61,3,.22);}
+
+/* ---- Spotlight: o card acompanha o cursor ---- */
+.spot{position:relative; isolation:isolate; overflow:hidden;}
+.spot::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  border-radius:inherit;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%),
+             color-mix(in srgb, var(--laranja) 13%, transparent), transparent 68%);
+  opacity:0; transition:opacity .4s var(--ease);
+}
+.spot:hover::before{opacity:1;}
+.spot > *{position:relative; z-index:1;}
+.fe-card.spot::before{background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%), rgba(255,61,3,.20), transparent 68%);}
+
+/* ---- Cards de função: número de destaque e traço inferior ---- */
+.func-card .func-idx{transition:color .3s var(--ease), transform .3s var(--ease);}
+.func-card:hover .func-idx{color:var(--laranja); transform:scale(1.15);}
+.func-card::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:3px; z-index:2;
+  background:linear-gradient(90deg, var(--laranja), var(--laranja-claro));
+  transform:scaleX(0); transform-origin:left; transition:transform .4s var(--ease);
+}
+.func-card:hover::after{transform:scaleX(1);}
+.func-tag{transition:border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);}
+.func-card:hover .func-tag{border-color:var(--laranja-claro); color:var(--ink);}
+
+/* ---- Catálogo: marcador lateral no hover ---- */
+.cat-table td.proc-cat, .cat-table td:first-child{position:relative;}
+.cat-table tr td:first-child::before{
+  content:""; position:absolute; left:-10px; top:10px; bottom:10px; width:3px;
+  background:var(--laranja); border-radius:2px;
+  transform:scaleY(0); transform-origin:center; transition:transform .28s var(--ease);
+}
+.cat-table tr:hover td:first-child::before{transform:scaleY(1);}
+.cat-table tr.visible{animation:row-in .45s var(--ease) both;}
+@keyframes row-in{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:none;}}
+.cat-table tr.has-ficha .proc-name::after{transition:opacity .2s var(--ease), transform .2s var(--ease); display:inline-block;}
+.cat-table tr.has-ficha:hover .proc-name::after{transform:translateX(3px);}
+
+/* ---- Botões: brilho que atravessa ---- */
+.btn{position:relative; overflow:hidden;}
+.btn::before{
+  content:""; position:absolute; top:0; left:-120%; width:60%; height:100%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:skewX(-18deg); pointer-events:none;
+}
+.btn:hover::before{animation:btn-sheen .7s var(--ease);}
+@keyframes btn-sheen{from{left:-120%;} to{left:150%;}}
+
+/* ---- Microinterações nos componentes das fichas ---- */
+.fm-step:hover{border-color:var(--laranja-claro);}
+.kpi-item, .sit-card, .rotina-card, .ficha-steps>li{
+  transition:border-color .2s var(--ease), transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.kpi-item:hover, .ficha-steps>li:hover{border-color:var(--laranja-claro); transform:translateX(3px);}
+.sit-card:hover, .rotina-card:hover{border-color:var(--laranja-claro); box-shadow:var(--shadow-sm);}
+.kpi-item .kdot{transition:transform .2s var(--ease), box-shadow .2s var(--ease);}
+.kpi-item:hover .kdot{transform:scale(1.35); box-shadow:0 0 0 4px rgba(255,61,3,.18);}
+
+/* ---- Modal: entrada mais suave + progresso de leitura da ficha ---- */
+.pmodal-backdrop{animation:pmodal-fade .3s var(--ease);}
+.pmodal-dialog{animation:pmodal-rise .45s var(--ease);}
+@keyframes pmodal-rise{
+  from{opacity:0; transform:translateY(26px) scale(.965); filter:blur(6px);}
+  to{opacity:1; transform:none; filter:blur(0);}
+}
+.pmodal-progress{
+  position:absolute; left:0; top:0; height:3px; width:0%; z-index:5;
+  background:linear-gradient(90deg, var(--laranja-escuro), var(--laranja));
+  border-radius:0 4px 4px 0; transition:width .1s linear;
+}
+.pmodal-bar{transition:box-shadow .25s var(--ease);}
+.pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6px 18px rgba(16,18,32,.09);}
+html[data-theme="dark"] .pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6px 18px rgba(0,0,0,.45);}
+
+/* ---- Transição de tema em círculo (navegadores com View Transitions) ---- */
+::view-transition-old(root), ::view-transition-new(root){animation:none; mix-blend-mode:normal;}
+::view-transition-old(root){z-index:1;}
+::view-transition-new(root){z-index:2147483646;}
+
+@media (prefers-reduced-motion: reduce){
+  .route-line{animation:none;}
+  .spot::before{display:none;}
+  .h-line-in, .hero-boot{animation:none; transform:none; opacity:1;}
+}
+
 </style>
 </head>
 <body>
@@ -1143,33 +1306,35 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="sec-tag">Estrutura organizacional · TMS Agro</div>
-        <h2>Quem faz o quê no suporte do TMS Agro.</h2>
+        <div class="sec-tag">Manual de cargos e responsabilidades · Operação TMS Agro</div>
+        <h2>Quem faz o quê na Operação TMS Agro.</h2>
       </div>
-      <p>O atendimento recepciona e acompanha, N1/N2 executam — não decidem prioridade — e prioridade só sobe por canal oficial.</p>
+      <p>A operação se organiza em Atendimento, Suporte, Setup (Implantação), Consultoria, Gestão do Conhecimento (KCS) e Ferramentas de IA. O atendimento recepciona e acompanha, N1/N2 executam — não decidem prioridade — e prioridade só sobe por canal oficial.</p>
     </div>
 
     <div class="org-chart">
-      <div class="org-node top">Head de Suporte / Operações<span class="sub">Última instância de decisão · crises e exceções</span></div>
+      <div class="org-node top">Head de Operações e Suporte — TMS Agro<span class="sub">Última instância de decisão · estratégia, crises e exceções</span></div>
       <div class="org-vline"></div>
 
       <div class="org-branch">
         <div class="org-col">
           <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
-          <div class="org-node coord">Líder de Time</div>
+          <div class="org-node coord">Coordenador de Implantação<span class="sub">Setup, Consultoria e KCS · pré-sustentação</span></div>
           <div class="org-leaf-group">
-            <div class="org-leaf">Assistente de Atendimento (Relacionamento)</div>
-            <div class="org-leaf">Assistente de Suporte (N1)</div>
-            <div class="org-leaf">Analista de Suporte (N2)</div>
+            <div class="org-leaf">Consultores</div>
+            <div class="org-leaf">Analistas de Setup</div>
+            <div class="org-leaf">Assistentes de Setup</div>
+            <div class="org-leaf">Analista de KCS e Ferramentas de IA</div>
           </div>
         </div>
         <div class="org-col">
           <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
-          <div class="org-node coord">Coordenador de Implantação<span class="sub">Fluxo paralelo · pré-sustentação</span></div>
-        </div>
-        <div class="org-col">
-          <div class="org-hline-wrap"><span class="h"></span><span class="v"></span></div>
-          <div class="org-node coord">Analista KCS<span class="sub">Transversal · apoia todos os níveis</span></div>
+          <div class="org-node coord">Líderes de Time<span class="sub">Atendimento e Suporte · sustentação</span></div>
+          <div class="org-leaf-group">
+            <div class="org-leaf">Assistentes de Suporte (N1)</div>
+            <div class="org-leaf">Analistas de Suporte (N2)</div>
+            <div class="org-leaf">Assistente de Atendimento</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1178,25 +1343,41 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       <div class="role-card">
         <div class="role-card-head">
           <span class="chip">1</span>
-          <div><h4>Head de Suporte / Operações</h4><div class="pos">Topo da operação de suporte e sustentação</div></div>
+          <div><h4>Head de Operações e Suporte — TMS Agro</h4><div class="pos">Topo da operação · estratégia, pessoas e experiência do cliente</div></div>
         </div>
         <div class="role-card-section">
-          <h6>Responsabilidades principais</h6>
+          <h6>Gestão estratégica</h6>
           <ul>
-            <li>Definir estratégia geral do suporte e operação do TMS Agro</li>
-            <li>Garantir cumprimento de SLA e indicadores (CSAT, backlog, MTTR)</li>
-            <li>Gerenciar crise e incidentes críticos (operação parada)</li>
-            <li>Definir regras de priorização e escalonamento</li>
-            <li>Validar exceções de atendimento (fora de fluxo)</li>
-            <li>Interface com diretoria, clientes estratégicos e outras áreas</li>
+            <li>Definir a estratégia operacional da unidade e o planejamento estratégico</li>
+            <li>Definir indicadores, metas, processos e políticas operacionais</li>
+            <li>Gerenciar orçamento e promover melhoria contínua</li>
+            <li>Apoiar a evolução dos produtos e serviços</li>
           </ul>
         </div>
         <div class="role-card-section">
-          <h6>Atuação no fluxo</h6>
+          <h6>Gestão operacional</h6>
           <ul>
-            <li>Última instância de decisão</li>
-            <li>Atua em crises e exceções graves</li>
-            <li>Aprova mudanças estruturais de processo</li>
+            <li>Gerenciar Atendimento, Suporte, Setup, Consultoria, KCS e Ferramentas de IA</li>
+            <li>Garantir cumprimento dos SLAs e acompanhar indicadores operacionais</li>
+            <li>Monitorar backlog, produtividade e qualidade</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Pessoas, cliente e inovação</h6>
+          <ul>
+            <li>Desenvolver Coordenadores e Líderes; planejar estrutura e contratações</li>
+            <li>Conduzir avaliações de desempenho e apoiar planos de carreira</li>
+            <li>Acompanhar clientes estratégicos e atuar em escalonamentos críticos</li>
+            <li>Promover uso de IA, automação, evolução do KCS e autosserviço</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Indicadores</h6>
+          <ul>
+            <li>SLA de Atendimento, Implantação e Consultoria · Backlog</li>
+            <li>Tempo médio de resolução de chamados e de onboarding</li>
+            <li>CSAT · Produtividade · Performance operacional</li>
+            <li>Eficiência das ferramentas de IA · Resolução por autosserviço · Evolução da base de conhecimento</li>
           </ul>
         </div>
       </div>
@@ -1204,16 +1385,19 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       <div class="role-card">
         <div class="role-card-head">
           <span class="chip">2</span>
-          <div><h4>Coordenador de Implantação</h4><div class="pos">Coordenação paralela ao suporte (implantação e transição)</div></div>
+          <div><h4>Coordenador de Implantação</h4><div class="pos">Coordena Setup, Consultoria e KCS · pré-sustentação</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
           <ul>
-            <li>Gerenciar projetos de implantação do TMS Agro</li>
-            <li>Garantir go-live estruturado e controlado</li>
-            <li>Coordenar tombamento para suporte</li>
-            <li>Validar entregas de implantação</li>
-            <li>Garantir alinhamento entre cliente, implantação e suporte</li>
+            <li>Coordenar as equipes de Setup e Consultoria</li>
+            <li>Coordenar a Gestão do Conhecimento (KCS) e as Ferramentas de IA</li>
+            <li>Planejar implantações, distribuir projetos e balancear carteiras</li>
+            <li>Acompanhar cronogramas e validar entregas</li>
+            <li>Acompanhar Go Lives</li>
+            <li>Gerenciar capacidade operacional</li>
+            <li>Desenvolver processos e acompanhar indicadores</li>
+            <li>Garantir o registro das atividades em tickets</li>
           </ul>
         </div>
         <div class="role-card-section">
@@ -1229,17 +1413,18 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       <div class="role-card">
         <div class="role-card-head">
           <span class="chip">3</span>
-          <div><h4>Líder de Time</h4><div class="pos">Gestão operacional direta de equipes (N1/N2/atendimento)</div></div>
+          <div><h4>Líder de Time</h4><div class="pos">Gestão operacional direta · Atendimento e Suporte</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
           <ul>
-            <li>Gestão do dia a dia do time de atendimento</li>
-            <li>Distribuição e priorização interna de tickets</li>
-            <li>Garantir cumprimento de SLA operacional</li>
-            <li>Apoiar analistas em casos complexos</li>
-            <li>Validar escalonamentos para N2/N3</li>
-            <li>Acompanhar performance individual</li>
+            <li>Distribuir atividades, gerenciar filas e priorizar atendimentos</li>
+            <li>Apoiar tecnicamente a equipe e validar escalonamentos</li>
+            <li>Acompanhar SLAs e monitorar indicadores</li>
+            <li>Realizar feedbacks e desenvolver colaboradores</li>
+            <li>Garantir qualidade dos atendimentos</li>
+            <li>Apoiar a atualização do KCS</li>
+            <li>Garantir cumprimento dos processos</li>
           </ul>
         </div>
         <div class="role-card-section">
@@ -1254,43 +1439,123 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
 
       <div class="role-card">
         <div class="role-card-head">
-          <span class="chip">6</span>
-          <div><h4>Assistente de Atendimento</h4><div class="pos">Atendimento inicial e relacionamento com o cliente</div></div>
+          <span class="chip">4</span>
+          <div><h4>Consultor</h4><div class="pos">Onboarding Gold e Platinum · consultoria recorrente e avulsa</div></div>
         </div>
         <div class="role-card-section">
-          <h6>Responsabilidades principais</h6>
+          <h6>Onboarding Gold e Platinum</h6>
           <ul>
-            <li>Recepcionar contatos (Telefone Opção 5 e WhatsApp Ouvidoria)</li>
-            <li>Identificar o ticket e verificar o SLA</li>
-            <li>Comunicar a liderança para priorização quando o SLA é excedido</li>
-            <li>Registrar toda interação no campo Atendimento do ticket</li>
-            <li>Monitorar mensagens pendentes, ligações perdidas e Ouvidoria</li>
+            <li>Conduzir o onboarding dos clientes Gold e Platinum e validar o escopo contratado</li>
+            <li>Conduzir Kick-off e levantar os processos do cliente</li>
+            <li>Elaborar plano de implantação e validar integrações</li>
+            <li>Planejar treinamentos e executar homologações</li>
+            <li>Conduzir Go Live, acompanhar estabilização e realizar o tombamento ao Suporte</li>
           </ul>
         </div>
         <div class="role-card-section">
-          <h6>Atuação no fluxo</h6>
+          <h6>Consultoria recorrente</h6>
           <ul>
-            <li>Ponto de contato do cliente com o suporte</li>
-            <li>Garante que nenhum contato fique sem resposta ou acompanhamento</li>
-            <li>Aciona a liderança quando o SLA é excedido — não é atuação técnica</li>
+            <li>Executar pacotes consultivos contratados e conduzir reuniões periódicas</li>
+            <li>Elaborar planos de ação e revisar processos</li>
+            <li>Analisar indicadores e elaborar reports executivos</li>
+            <li>Recomendar melhorias e acompanhar a evolução do cliente</li>
           </ul>
         </div>
-        <button class="role-ficha-link" type="button" data-ficha="ficha-assistente" data-ficha-label="Atendimento &amp; Relacionamento">Ver ficha completa <span class="arr">→</span></button>
+        <div class="role-card-section">
+          <h6>Consultoria avulsa e gestão das atividades</h6>
+          <ul>
+            <li>Executar serviços conforme proposta comercial e controlar horas contratadas</li>
+            <li>Elaborar pareceres técnicos e formalizar encerramento dos serviços</li>
+            <li>Registrar todas as atividades e horas em tickets</li>
+            <li>Atualizar clientes, controlar cronogramas e manter documentação atualizada</li>
+          </ul>
+        </div>
+        <button class="role-ficha-link" type="button" data-ficha="ficha-consultoria" data-ficha-label="Consultoria">Ver ficha completa <span class="arr">→</span></button>
       </div>
 
       <div class="role-card">
         <div class="role-card-head">
           <span class="chip">5</span>
+          <div><h4>Analista de Setup</h4><div class="pos">Onboarding Bronze e Silver · implantação ponta a ponta</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Conduzir onboarding Bronze e Silver e executar o Kick-off</li>
+            <li>Levantar processos e parametrizar o ambiente</li>
+            <li>Configurar cadastros e validar integrações</li>
+            <li>Ministrar treinamentos e homologar processos</li>
+            <li>Executar Go Live e acompanhar a estabilização</li>
+            <li>Realizar o tombamento ao Suporte</li>
+            <li>Registrar todas as atividades em tickets</li>
+          </ul>
+        </div>
+        <button class="role-ficha-link" type="button" data-ficha="ficha-setup" data-ficha-label="Setup &amp; Implantação">Ver ficha completa <span class="arr">→</span></button>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">6</span>
+          <div><h4>Assistente de Setup</h4><div class="pos">Apoio às implantações · execução e testes</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Apoiar implantações e configurar o ambiente</li>
+            <li>Executar parametrizações básicas e validar cadastros</li>
+            <li>Apoiar treinamentos e auxiliar homologações</li>
+            <li>Executar testes e apoiar integrações</li>
+            <li>Liberar usuários</li>
+            <li>Atualizar tickets e registrar as atividades executadas</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">7</span>
+          <div><h4>Analista de KCS e Ferramentas de IA</h4><div class="pos">Reporta ao Coordenador de Implantação · atuação transversal</div></div>
+        </div>
+        <div class="role-card-section">
+          <h6>Responsabilidades principais</h6>
+          <ul>
+            <li>Criar e atualizar documentações e publicar conteúdos na Wiki Atua</li>
+            <li>Atualizar a base da IA Moveo</li>
+            <li>Elaborar documentação de releases</li>
+            <li>Produzir vídeos e videoaulas</li>
+            <li>Revisar tickets junto às lideranças</li>
+            <li>Monitorar interações da IA e identificar lacunas de conhecimento</li>
+            <li>Atualizar documentações conforme feedback dos atendimentos</li>
+            <li>Comunicar novas documentações às equipes e registrar atividades em tickets internos</li>
+          </ul>
+        </div>
+        <div class="role-card-section">
+          <h6>Atuação no fluxo</h6>
+          <ul>
+            <li>Atua de forma transversal em todos os níveis</li>
+            <li>Alimenta N1, N2 e o atendimento com conhecimento</li>
+            <li>Reduz reincidência de chamados</li>
+          </ul>
+        </div>
+        <button class="role-ficha-link" type="button" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA">Ver ficha completa <span class="arr">→</span></button>
+      </div>
+
+      <div class="role-card">
+        <div class="role-card-head">
+          <span class="chip">8</span>
           <div><h4>Assistente de Suporte (N1)</h4><div class="pos">Primeiro nível de atendimento</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
           <ul>
-            <li>Registro e atendimento inicial de tickets</li>
-            <li>Classificação de chamados (operação parada: sim/não)</li>
-            <li>Execução de procedimentos da base de conhecimento</li>
-            <li>Atendimento de dúvidas operacionais simples</li>
-            <li>Garantir registro correto das informações</li>
+            <li>Atender chamados de baixa e média complexidade</li>
+            <li>Validar informações e evidências</li>
+            <li>Esclarecer dúvidas operacionais e orientar clientes</li>
+            <li>Executar testes funcionais e reproduzir cenários</li>
+            <li>Encaminhar chamados ao Analista quando necessário</li>
+            <li>Apoiar a organização das filas</li>
+            <li>Identificar oportunidades de documentação e usar KCS e IA como apoio</li>
+            <li>Atualizar tickets e registrar integralmente todas as atividades</li>
           </ul>
         </div>
         <div class="role-card-section">
@@ -1305,17 +1570,19 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
 
       <div class="role-card">
         <div class="role-card-head">
-          <span class="chip">4</span>
+          <span class="chip">9</span>
           <div><h4>Analista de Suporte (N2)</h4><div class="pos">Nível técnico funcional intermediário</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
           <ul>
-            <li>Análise funcional aprofundada do sistema</li>
-            <li>Diagnóstico de problemas complexos</li>
-            <li>Apoio ao N1 em casos sem solução padrão</li>
-            <li>Execução de testes e validações de regra de negócio</li>
-            <li>Escalonamento técnico para N3 quando necessário</li>
+            <li>Atender chamados N1 e N2 e validar requisitos</li>
+            <li>Diagnosticar problemas e executar análises técnicas</li>
+            <li>Utilizar IA (Claude) como apoio</li>
+            <li>Resolver incidentes e escalonar para Desenvolvimento ou Produto</li>
+            <li>Validar correções, atualizar clientes e encerrar tickets</li>
+            <li>Apoiar os Assistentes de Suporte</li>
+            <li>Registrar parecer técnico completo</li>
           </ul>
         </div>
         <div class="role-card-section">
@@ -1330,30 +1597,32 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
 
       <div class="role-card">
         <div class="role-card-head">
-          <span class="chip">7</span>
-          <div><h4>Analista KCS (IA e Conteúdo)</h4><div class="pos">Suporte transversal à operação — não hierárquico direto</div></div>
+          <span class="chip">10</span>
+          <div><h4>Assistente de Atendimento</h4><div class="pos">Atendimento inicial e relacionamento com o cliente</div></div>
         </div>
         <div class="role-card-section">
           <h6>Responsabilidades principais</h6>
           <ul>
-            <li>Gestão da base de conhecimento (KCS)</li>
-            <li>Criação e atualização de artigos de suporte</li>
-            <li>Estruturação de soluções padrão (runbooks)</li>
-            <li>Treinamento de IA e melhoria de respostas automatizadas</li>
-            <li>Análise de tickets recorrentes para prevenção</li>
-            <li>Padronização de respostas do suporte</li>
+            <li>Atender ligações do canal de Suporte e contatos via WhatsApp</li>
+            <li>Recepcionar solicitações e retornar ligações perdidas</li>
+            <li>Monitorar chamados com SLA excedido</li>
+            <li>Comunicar líderes para priorização</li>
+            <li>Acompanhar a Ouvidoria e monitorar os registros do Portal da Ouvidoria</li>
+            <li>Atualizar clientes e registrar as comunicações no ticket</li>
+            <li>Registrar todas as interações realizadas</li>
           </ul>
         </div>
         <div class="role-card-section">
           <h6>Atuação no fluxo</h6>
           <ul>
-            <li>Atua de forma transversal em todos os níveis</li>
-            <li>Alimenta N1, N2 e o atendimento com conhecimento</li>
-            <li>Reduz reincidência de chamados</li>
+            <li>Ponto de contato do cliente com o suporte</li>
+            <li>Garante que nenhum contato fique sem resposta ou acompanhamento</li>
+            <li>Aciona a liderança quando o SLA é excedido — não é atuação técnica</li>
           </ul>
         </div>
-        <button class="role-ficha-link" type="button" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA">Ver ficha completa <span class="arr">→</span></button>
+        <button class="role-ficha-link" type="button" data-ficha="ficha-assistente" data-ficha-label="Atendimento &amp; Relacionamento">Ver ficha completa <span class="arr">→</span></button>
       </div>
+
     </div>
 
     <div class="pd-flow" style="padding:48px 0 0;">
@@ -1385,6 +1654,28 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       <div class="org-legend-item">
         <h5>Prioridade sobe por canal oficial</h5>
         <p>Mudança de prioridade só ocorre via liderança/Head ou ouvidoria — nunca por pedido informal ao analista.</p>
+      </div>
+    </div>
+
+    <div class="role-grid" style="margin-top:32px;">
+      <div class="role-card" style="grid-column:1/-1;">
+        <div class="role-card-head">
+          <span class="chip">∴</span>
+          <div><h4>Responsabilidades gerais da operação</h4><div class="pos">Valem para todos os cargos, independentemente da função</div></div>
+        </div>
+        <div class="role-card-section">
+          <ul>
+            <li>Cumprir os processos operacionais estabelecidos</li>
+            <li>Manter comunicação clara, ética e profissional com clientes e equipes internas</li>
+            <li>Registrar integralmente todas as atividades executadas em tickets, garantindo a rastreabilidade das informações</li>
+            <li>Atualizar continuamente o andamento das demandas sob sua responsabilidade</li>
+            <li>Cumprir os SLAs definidos para sua função</li>
+            <li>Compartilhar conhecimento e colaborar com a evolução da Base de Conhecimento (KCS)</li>
+            <li>Utilizar as ferramentas de Inteligência Artificial como apoio às atividades, sempre que aplicável</li>
+            <li>Zelar pela qualidade das entregas, pela satisfação do cliente e pela melhoria contínua dos processos</li>
+            <li>Cumprir as políticas internas, normas de segurança da informação e diretrizes da empresa</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -1422,12 +1713,57 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
           <span class="func-eyebrow">Conhecimento &amp; IA</span>
           <span class="func-idx">02</span>
         </div>
-        <h3>Analista KCS · IA</h3>
+        <h3>Analista de KCS e Ferramentas de IA</h3>
         <p class="func-obj">Mantém a base de conhecimento atualizada e sincronizada entre Wiki Atua e Moveo, ampliando o autoatendimento e reduzindo a dependência do suporte humano.</p>
         <div class="func-meta">
           <span class="func-tag">Wiki Atua</span>
           <span class="func-tag">Moveo (IA)</span>
           <span class="func-tag">Releases &amp; KPIs</span>
+        </div>
+        <span class="func-cta">Abrir ficha completa <span class="arr">→</span></span>
+      </button>
+
+      <button class="func-card" type="button" data-ficha="ficha-n1n2" data-ficha-label="Suporte Técnico" aria-haspopup="dialog">
+        <div class="func-card-top">
+          <span class="func-eyebrow">Suporte Técnico</span>
+          <span class="func-idx">03</span>
+        </div>
+        <h3>Atendimento N1 e N2</h3>
+        <p class="func-obj">Analisa, trata e resolve cada ticket no menor nível possível — escalando para Desenvolvimento ou Produto apenas quando todas as validações já foram esgotadas.</p>
+        <div class="func-meta">
+          <span class="func-tag">Portal &amp; Opção 1</span>
+          <span class="func-tag">Parecer técnico</span>
+          <span class="func-tag">Claude como apoio</span>
+        </div>
+        <span class="func-cta">Abrir ficha completa <span class="arr">→</span></span>
+      </button>
+
+      <button class="func-card" type="button" data-ficha="ficha-setup" data-ficha-label="Onboarding · Bronze &amp; Silver" aria-haspopup="dialog">
+        <div class="func-card-top">
+          <span class="func-eyebrow">Onboarding · Bronze &amp; Silver</span>
+          <span class="func-idx">04</span>
+        </div>
+        <h3>Analista de Setup</h3>
+        <p class="func-obj">Conduz o onboarding dos clientes Bronze e Silver do recebimento da venda ao Go Live, entregando ao Suporte apenas clientes aptos a operar a solução.</p>
+        <div class="func-meta">
+          <span class="func-tag">Kick-off &amp; aderência</span>
+          <span class="func-tag">Parametrização</span>
+          <span class="func-tag">Go Live &amp; tombamento</span>
+        </div>
+        <span class="func-cta">Abrir ficha completa <span class="arr">→</span></span>
+      </button>
+
+      <button class="func-card" type="button" data-ficha="ficha-consultoria" data-ficha-label="Consultoria · Gold &amp; Platinum" aria-haspopup="dialog">
+        <div class="func-card-top">
+          <span class="func-eyebrow">Consultoria · Gold &amp; Platinum</span>
+          <span class="func-idx">05</span>
+        </div>
+        <h3>Consultor</h3>
+        <p class="func-obj">Conduz o onboarding consultivo dos clientes Gold e Platinum e executa as consultorias recorrentes e avulsas, atuando na evolução estratégica da operação.</p>
+        <div class="func-meta">
+          <span class="func-tag">Diagnóstico operacional</span>
+          <span class="func-tag">Reports executivos</span>
+          <span class="func-tag">Gestão de horas</span>
         </div>
         <span class="func-cta">Abrir ficha completa <span class="arr">→</span></span>
       </button>
@@ -1609,7 +1945,7 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       <div class="pd-header">
         <div>
           <div class="pd-tag">Processo Operacional · Conhecimento &amp; IA</div>
-          <h3>Analista KCS — Aprimoramento das Ferramentas de IA</h3>
+          <h3>Analista de KCS e Ferramentas de IA — Aprimoramento da Base e da IA</h3>
         </div>
         <span class="pd-badge">Registros: Cliente Atua</span>
       </div>
@@ -1776,7 +2112,7 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       </div>
 
       <div class="pd-block" style="border-bottom:none;">
-        <h5>Responsabilidades do Analista KCS</h5>
+        <h5>Responsabilidades do Analista de KCS e Ferramentas de IA</h5>
         <ul class="dbl-list">
           <li>Manter Wiki Atua e Moveo atualizadas e sincronizadas</li>
           <li>Criar e revisar documentações técnicas e operacionais</li>
@@ -1788,6 +2124,700 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
           <li>Registrar todas as atividades em tickets (Cliente: Atua)</li>
           <li>Ampliar o uso da IA e reduzir a dependência do suporte humano</li>
         </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ficha-src" id="ficha-n1n2" hidden>
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo Operacional · Suporte Técnico</div>
+          <h3>Atendimento N1 e N2</h3>
+        </div>
+        <span class="pd-badge">Resolver no menor nível possível</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo da função</h5>
+          <p>Garantir que toda solicitação seja analisada, tratada e resolvida no menor nível possível, realizando escalonamentos apenas quando estritamente necessários.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Gatilho do processo</h5>
+          <p>Inicia após o registro do ticket pelo Portal do Cliente ou pelo atendimento telefônico de Prioridade Alta — <strong>Opção 1, Caminhão Parado</strong>.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Níveis de atuação</h5>
+          <ul>
+            <li>N1 — análise inicial, base de conhecimento e testes</li>
+            <li>N2 — análise técnica especializada</li>
+            <li>Dev / Produto — apenas após esgotar o N2</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Regra do escalonamento</h5>
+          <p>O repasse nunca deve ocorrer sem análise. Cada escalonamento precisa agregar valor — nunca apenas encaminhar o ticket.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Apoio de IA</h5>
+          <p>O Claude é usado pelo N2 antes de envolver Dev ou Produto: interpretar regras, revisar documentação e validar cenários. <strong>A decisão final é sempre do analista.</strong></p>
+        </div>
+        <div class="pd-cell">
+          <h5>Ciclo de conhecimento</h5>
+          <p>Solução recorrente ou novo conhecimento → acionar KCS / IA para documentar na Wiki Atua e sincronizar com a Moveo. Ver <strong>Analista de KCS e Ferramentas de IA</strong>.</p>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-bottom:1px solid var(--border-soft);">
+        <h5>Fluxo geral da função</h5>
+        <div class="flowmini">
+          <span class="fm-step">Portal / Telefone Opção 1</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Ticket registrado</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Atendimento Nível 1</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Resolveu o chamado?</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Sim — encerrar ticket</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Não — escalonar N2 (análise técnica)</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Resolveu sem outras áreas?</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Não — Claude + documentação</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Dev ou Produto</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Retorno ao N2</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Validação final</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Encerramento</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Nível 1 · Etapas 1 a 5</h5>
+        <ol class="ficha-steps">
+          <li><strong>Receber o ticket.</strong> Identificar prioridade, cliente, produto, módulo, descrição, anexos e evidências. Antes de qualquer análise, verificar se todas as informações necessárias foram informadas.</li>
+          <li><strong>Análise inicial.</strong> Ler toda a descrição, avaliar os anexos, verificar o histórico do chamado, consultar atendimentos anteriores relacionados e confirmar exatamente qual é a necessidade do cliente.</li>
+          <li><strong>Validar os requisitos.</strong> Confirmar empresa, usuário, filial, documento envolvido, CT-e, MDF-e, viagem, embarque, prints, vídeos, logs, horário da ocorrência e mensagens de erro. Faltando algo: solicitar complementação, registrar no ticket e aguardar retorno.</li>
+          <li><strong>Consultar a base de conhecimento.</strong> Wiki Atua, documentação operacional, FAQ, documentação de release e procedimentos internos. Havendo documentação: executar o procedimento, orientar o cliente e validar a solução.</li>
+          <li><strong>Tentar resolver.</strong> Validar parâmetros, conferir configurações, reproduzir o cenário, testar o ambiente e validar a regra operacional. Resolvendo: registrar causa, procedimento e solução, comunicar o cliente e encerrar o ticket.</li>
+        </ol>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapa 6 · Parecer obrigatório para escalonar ao N2</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:16px;">O parecer deve permitir que a próxima equipe continue a análise sem retrabalho.</p>
+        <ul class="dbl-list">
+          <li><strong>Resumo da solicitação</strong> — descrição objetiva do problema</li>
+          <li><strong>Requisitos validados</strong> — quais validações foram realizadas</li>
+          <li><strong>Testes executados</strong> — todos os testes efetuados</li>
+          <li><strong>Resultado encontrado</strong> — comportamento observado</li>
+          <li><strong>Resultado esperado</strong> — como deveria funcionar</li>
+          <li><strong>Evidências</strong> — prints, vídeos, logs e documentos</li>
+          <li><strong>Motivo do escalonamento</strong> — justificativa do repasse</li>
+        </ul>
+      </div>
+
+      <div class="pd-block">
+        <h5>Nível 2 · Etapas 7 e 8</h5>
+        <div class="sit-grid">
+          <div class="sit-card">
+            <h6>Análise especializada</h6>
+            <ul>
+              <li>Revisar parecer do N1, histórico e documentação</li>
+              <li>Revisar regras de negócio e parametrizações</li>
+              <li>Reproduzir novamente o cenário quando necessário</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Validação com IA (Claude)</h6>
+            <ul>
+              <li>Interpretar regras e revisar documentação</li>
+              <li>Validar cenários e auxiliar na investigação</li>
+              <li>Uso obrigatório antes de acionar Dev ou Produto</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapa 9 · Definir o destino</h5>
+        <div class="rotina-grid">
+          <div class="rotina-card">
+            <div class="rnum">Situação 01</div>
+            <h6>N2 solucionou</h6>
+            <ul>
+              <li>Registrar toda a análise</li>
+              <li>Responder o cliente</li>
+              <li>Encerrar o ticket</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Situação 02</div>
+            <h6>BUG → Desenvolvimento</h6>
+            <ul>
+              <li>Descrição e passos de reprodução</li>
+              <li>Evidências, impacto e testes realizados</li>
+              <li>Comportamento esperado × encontrado</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Situação 03</div>
+            <h6>Melhoria → Produto</h6>
+            <ul>
+              <li>Necessidade, benefício e impacto</li>
+              <li>Justificativa e contexto operacional</li>
+              <li>Produto realiza a análise de viabilidade</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapa 10 · Retorno das áreas especializadas</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:16px;">Após manifestação de Desenvolvimento ou Produto, o ticket retorna ao N2.</p>
+        <div class="flowmini">
+          <span class="fm-step">Validar o retorno</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Executar novos testes</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Confirmar a solução</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Registrar evidências</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Comunicar o cliente</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapa 11 · Checklist de encerramento</h5>
+        <ul class="dbl-list">
+          <li>✅ Cliente informado</li>
+          <li>✅ Solução registrada</li>
+          <li>✅ Parecer técnico completo</li>
+          <li>✅ Evidências anexadas</li>
+          <li>✅ Categoria correta</li>
+          <li>✅ Tempo registrado</li>
+          <li>✅ Ticket atualizado</li>
+        </ul>
+        <div class="alert-box" style="margin-top:18px;">
+          <h5>Novo conhecimento ou situação recorrente = acionar KCS / Aprimoramento das Ferramentas de IA.</h5>
+          <ul>
+            <li>Criação ou atualização da documentação na Wiki Atua</li>
+            <li>Sincronização com a Moveo</li>
+            <li>Objetivo: atendimentos futuros mais rápidos ou por autoatendimento</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pd-block" style="border-bottom:none;">
+        <h5>Boas práticas do atendimento N1 e N2</h5>
+        <ul class="dbl-list">
+          <li>Resolver no menor nível possível — N1 sempre que viável</li>
+          <li>Escalar apenas após todas as validações iniciais</li>
+          <li>Cada escalonamento deve agregar valor</li>
+          <li>Todo parecer deve evitar retrabalho da próxima equipe</li>
+          <li>Consultar a base e o Claude antes de envolver Dev ou Produto</li>
+          <li>Toda solução recorrente gera atualização da base de conhecimento</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ficha-src" id="ficha-setup" hidden>
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo Operacional · Onboarding</div>
+          <h3>Time de Setup — Analista de Setup</h3>
+        </div>
+        <span class="pd-badge">Segmentos: Bronze e Silver</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo da área</h5>
+          <p>Conduzir o onboarding dos clientes Bronze e Silver, garantindo implantação estruturada, usuários capacitados e transferência ao Suporte somente quando o cliente estiver apto a operar a solução.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Resultado esperado</h5>
+          <p>Entrada organizada, menos dificuldade no início da operação, maior adoção da plataforma e menor necessidade de suporte corretivo após o Go Live.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Escopo da atuação</h5>
+          <p>Do recebimento do cliente após a venda até a transição definitiva para a equipe de Sustentação.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Gestão da carteira</h5>
+          <p>Distribuída pelo Líder considerando quantidade de clientes, complexidade das implantações, etapa do onboarding e carga de trabalho. <strong>Cada cliente tem um responsável único.</strong></p>
+        </div>
+        <div class="pd-cell">
+          <h5>Premissas operacionais</h5>
+          <ul>
+            <li>Toda atividade possui registro em ticket</li>
+            <li>Todo contato gera devolutiva registrada</li>
+            <li>Nenhuma etapa conclui sem atualizar o ticket</li>
+            <li>Todo ticket tem início, acompanhamento e encerramento formal</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Rastreabilidade</h5>
+          <p>O histórico dos tickets deve permitir compreender toda a jornada do cliente, do recebimento da venda ao tombamento para a Sustentação.</p>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-bottom:1px solid var(--border-soft);">
+        <h5>Fluxo geral do processo</h5>
+        <div class="flowmini">
+          <span class="fm-step">Recebimento do cliente</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Análise do escopo comercial</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Kick-off / entrevista inicial</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Validação de aderência</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Configuração da base</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Validação das integrações</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Liberação dos usuários</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Treinamentos</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Validação operacional</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Go Live</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Acompanhamento inicial</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Tombamento para o Suporte</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapas 1 a 4 · Recebimento, kick-off, aderência e base</h5>
+        <ol class="ficha-steps">
+          <li><strong>Recebimento do cliente.</strong> Analisar a proposta comercial, validar o escopo contratado, verificar módulos adquiridos, identificar integrações previstas e revisar observações do Comercial. <em>Registrar:</em> data de início, responsável, escopo recebido, prazo previsto e primeira devolutiva ao cliente.</li>
+          <li><strong>Entrevista de Kick-off.</strong> Validar objetivos do cliente, dificuldades atuais e resultados esperados; mapear emissão, viagens, faturamento, financeiro, operação logística, integrações e demais rotinas; confirmar que o entendimento do cliente está alinhado ao contrato. Expectativas fora do escopo devem ser orientadas imediatamente. <em>Registrar:</em> ata, expectativas, processos levantados, escopo validado, riscos, pendências e plano de ação.</li>
+          <li><strong>Validação de aderência.</strong> Comparar os processos do cliente com os processos suportados pelo TMS — orientar adequações, sugerir boas práticas e ajustar parametrizações. Necessidade de evolução do produto: registrar, abrir ou relacionar ticket para Produto e informar o cliente.</li>
+          <li><strong>Configuração da base.</strong> Parâmetros gerais, cadastros, tabelas, configurações fiscais, regras operacionais, perfis e parametrizações específicas. <em>Registrar:</em> configurações realizadas, pendências, evidências e devolutiva de conclusão da etapa.</li>
+        </ol>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapas 5 a 8 · Integrações, usuários, treinamentos e validação</h5>
+        <div class="rotina-grid">
+          <div class="rotina-card">
+            <div class="rnum">Etapa 05</div>
+            <h6>Validação das integrações</h6>
+            <ul>
+              <li>Validar requisitos e configurar integrações</li>
+              <li>Executar testes e homologar o funcionamento</li>
+              <li>Registrar dependências de cliente ou terceiros</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapa 06</div>
+            <h6>Liberação dos usuários</h6>
+            <ul>
+              <li>Liberar acessos conforme o perfil contratado</li>
+              <li>Validar usuários, perfis, permissões e módulos</li>
+              <li>Registrar liberações, evidências e devolutiva</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapa 07</div>
+            <h6>Treinamentos</h6>
+            <ul>
+              <li>Base Twygo e apoio dos Agentes de Atendimento</li>
+              <li>Registrar data, participantes e conteúdo ministrado</li>
+              <li>Dúvidas, materiais enviados e próximos treinamentos</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapa 08</div>
+            <h6>Validação operacional</h6>
+            <ul>
+              <li>Configurações concluídas e usuários treinados</li>
+              <li>Integrações funcionando e parametrizações homologadas</li>
+              <li>Pendências críticas → replanejar o Go Live</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapas 9 e 10 · Go Live e acompanhamento inicial</h5>
+        <div class="sit-grid">
+          <div class="sit-card ok">
+            <h6>✓ Go Live</h6>
+            <ul>
+              <li>Acompanhar primeiras emissões, integrações e operações</li>
+              <li>Observar dificuldades dos usuários</li>
+              <li>Registrar data, ocorrências, ajustes e validação do cliente</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Acompanhamento inicial</h6>
+            <ul>
+              <li>Esclarecer dúvidas e corrigir parametrizações</li>
+              <li>Apoiar a operação e validar a adaptação dos usuários</li>
+              <li>Cada contato gera atualização no ticket</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapa 11 · Tombamento para o Suporte</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:14px;">Antes do tombamento confirmar: implantação concluída, usuários treinados, integrações homologadas, acessos liberados, pendências tratadas e cliente apto para operação.</p>
+        <div class="alert-box">
+          <h5>Resumo executivo entregue à Sustentação</h5>
+          <ul>
+            <li>Particularidades da operação</li>
+            <li>Configurações relevantes</li>
+            <li>Integrações existentes</li>
+            <li>Demandas encaminhadas ao Produto</li>
+            <li>Riscos conhecidos</li>
+            <li>Contatos principais</li>
+          </ul>
+          <p style="font-size:13px; color:var(--ink-dim); margin-top:4px;">Após a confirmação do recebimento pelo Suporte: registrar a conclusão do onboarding, formalizar a transferência e encerrar o ticket.</p>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Regra geral de registro das atividades</h5>
+        <ul class="dbl-list">
+          <li>Objetivo da atividade</li>
+          <li>Data de execução</li>
+          <li>Responsável</li>
+          <li>Descrição detalhada das ações realizadas</li>
+          <li>Evidências, quando aplicável</li>
+          <li>Devolutiva enviada ao cliente</li>
+          <li>Pendências existentes</li>
+          <li>Próximos passos</li>
+          <li>Data de conclusão</li>
+          <li>Encerramento formal da atividade</li>
+        </ul>
+        <div class="reg-quote">Atividade que gere demanda para Produto, Desenvolvimento, Infraestrutura, Suporte ou KCS deve ter ticket criado ou vinculado, garantindo rastreabilidade completa do processo.</div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Responsabilidades do Analista de Setup</h5>
+        <ul class="dbl-list">
+          <li>Gerenciar sua carteira de clientes Bronze e Silver</li>
+          <li>Conduzir o onboarding de ponta a ponta</li>
+          <li>Validar expectativas e aderência ao escopo contratado</li>
+          <li>Parametrizar o ambiente do cliente</li>
+          <li>Coordenar e homologar integrações</li>
+          <li>Planejar e acompanhar treinamentos</li>
+          <li>Garantir que os usuários estejam aptos a operar o sistema</li>
+          <li>Conduzir o Go Live</li>
+          <li>Acompanhar o período inicial de utilização</li>
+          <li>Formalizar a transição para a equipe de Suporte</li>
+          <li>Registrar atividades, devolutivas e conclusões em tickets</li>
+          <li>Encaminhar melhorias identificadas ao Produto</li>
+        </ul>
+      </div>
+
+      <div class="pd-block" style="border-bottom:none;">
+        <h5>Indicadores de desempenho (KPIs)</h5>
+        <div class="kpi-grid">
+          <div class="kpi-item"><span class="kdot"></span>Tempo médio de onboarding por segmento</div>
+          <div class="kpi-item"><span class="kdot"></span>% de Go Lives realizados na data planejada</div>
+          <div class="kpi-item"><span class="kdot"></span>% de integrações homologadas no prazo</div>
+          <div class="kpi-item"><span class="kdot"></span>Taxa de conclusão dos treinamentos</div>
+          <div class="kpi-item"><span class="kdot"></span>CSAT do onboarding</div>
+          <div class="kpi-item"><span class="kdot"></span>Chamados abertos nos primeiros 30 dias pós Go Live</div>
+          <div class="kpi-item"><span class="kdot"></span>Tempo médio até o tombamento para o Suporte</div>
+          <div class="kpi-item"><span class="kdot"></span>% de clientes que iniciam sem pendências críticas</div>
+          <div class="kpi-item"><span class="kdot"></span>Melhorias encaminhadas ao Produto no onboarding</div>
+          <div class="kpi-item"><span class="kdot"></span>% de atividades registradas corretamente em tickets</div>
+          <div class="kpi-item"><span class="kdot"></span>Tempo médio de atualização das devolutivas ao cliente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ficha-src" id="ficha-consultoria" hidden>
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo Operacional · Consultoria</div>
+          <h3>Consultoria — Consultor</h3>
+        </div>
+        <span class="pd-badge">Segmentos: Gold e Platinum</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo da área</h5>
+          <p>Conduzir integralmente o onboarding dos clientes Gold e Platinum, além das consultorias recorrentes previstas em contrato e das consultorias avulsas comercializadas pela empresa.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Diferença para o Setup</h5>
+          <p>O Setup atende Bronze e Silver. A Consultoria acompanha Gold e Platinum desde o início do projeto, com implantação consultiva alinhada às necessidades estratégicas do cliente.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Frentes de atuação</h5>
+          <ul>
+            <li>Onboarding Gold e Platinum</li>
+            <li>Consultorias recorrentes (pacotes de acompanhamento)</li>
+            <li>Consultorias avulsas (projetos específicos)</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Gestão da carteira</h5>
+          <p>Distribuída pelo Líder considerando complexidade operacional, quantidade de usuários, segmento, horas contratadas, projetos em andamento e balanceamento. <strong>Um consultor responsável por toda a execução.</strong></p>
+        </div>
+        <div class="pd-cell">
+          <h5>Premissas operacionais</h5>
+          <ul>
+            <li>Toda atividade com registro em ticket</li>
+            <li>Todo contato com devolutiva registrada</li>
+            <li>Toda reunião com ata e todo treinamento com registro</li>
+            <li>Todo report anexado ao ticket</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Consultoria × Sustentação</h5>
+          <p>O atendimento consultivo não substitui a Sustentação. O Suporte segue responsável pelo operacional, incidentes e dúvidas do dia a dia; a Consultoria atua de forma estratégica.</p>
+        </div>
+      </div>
+
+      <div class="pd-flow" style="border-bottom:1px solid var(--border-soft);">
+        <h5>Fluxo geral</h5>
+        <div class="flowmini">
+          <span class="fm-step">Venda concluída</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Recebimento do cliente</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Kick-off</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Diagnóstico operacional</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Mapeamento dos processos</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Configuração da base</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Integrações</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Liberação dos usuários</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Treinamentos</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Validação operacional</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Go Live</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Estabilização</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Tombamento para o Suporte</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step decision">Possui pacote consultivo?</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Não — encerramento</span>
+          <span class="fm-arrow">→</span>
+          <span class="fm-step">Sim — consultoria recorrente e melhoria contínua</span>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapas 1 a 4 · Recebimento, kick-off, diagnóstico e aderência</h5>
+        <ol class="ficha-steps">
+          <li><strong>Recebimento do cliente.</strong> Analisar proposta comercial, contrato, escopo vendido, módulos adquiridos, integrações, cronograma e observações do Comercial. <em>Registrar:</em> início do projeto, responsável, escopo contratado, cronograma previsto e primeira devolutiva.</li>
+          <li><strong>Reunião de Kick-off.</strong> Compreender objetivos estratégicos, processos atuais, expectativas, indicadores, cronograma, responsáveis e riscos. Ao final, elaborar o plano inicial do projeto. <em>Registrar:</em> ata, participantes, decisões, plano de ação inicial e pendências.</li>
+          <li><strong>Diagnóstico operacional.</strong> Levantamento detalhado da operação — processos, utilização do TMS, parametrizações, integrações, dificuldades e oportunidades. Ao final, elaborar parecer técnico.</li>
+          <li><strong>Análise de aderência.</strong> Comparar os processos do cliente com as funcionalidades do sistema; orientar adequações, revisar processos e sugerir melhores práticas. Necessidade de evolução do produto: registrar ticket, encaminhar ao Produto e comunicar o cliente.</li>
+        </ol>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapas 5 a 9 · Base, integrações, usuários, treinamentos e validação</h5>
+        <div class="rotina-grid">
+          <div class="rotina-card">
+            <div class="rnum">Etapas 05–06</div>
+            <h6>Base e integrações</h6>
+            <ul>
+              <li>Parametrizações previstas no escopo</li>
+              <li>Configuração, testes, homologação e validação funcional</li>
+              <li>Registrar configurações, validações, evidências e devolutiva</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapas 07–08</div>
+            <h6>Usuários e treinamentos</h6>
+            <ul>
+              <li>Liberar usuários, perfis e permissões</li>
+              <li>Treinar com os ambientes e materiais definidos pela empresa</li>
+              <li>Registrar participantes, conteúdo, materiais, gravações e dúvidas</li>
+            </ul>
+          </div>
+          <div class="rotina-card">
+            <div class="rnum">Etapa 09</div>
+            <h6>Validação operacional</h6>
+            <ul>
+              <li>Ambiente, usuários, integrações e parametrizações</li>
+              <li>Processos e treinamentos validados</li>
+              <li>Só prosseguir com todos os requisitos atendidos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Etapas 10 a 12 · Go Live, estabilização e tombamento</h5>
+        <div class="sit-grid">
+          <div class="sit-card ok">
+            <h6>✓ Go Live e estabilização</h6>
+            <ul>
+              <li>Acompanhar o início oficial da operação</li>
+              <li>Apoio operacional, dúvidas, ajustes e validações</li>
+              <li>Registrar atividades, ocorrências e aprovação do cliente</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Tombamento para a Sustentação</h6>
+            <ul>
+              <li>Entregar resumo da implantação e configurações</li>
+              <li>Integrações, particularidades, riscos e pendências</li>
+              <li>Contatos principais; após o aceite, encerrar o onboarding</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Consultoria recorrente · pacotes de acompanhamento</h5>
+        <p style="font-size:14px; color:var(--ink-dim); margin-bottom:16px;">Após o tombamento, o Suporte assume o atendimento do dia a dia. Clientes com pacote consultivo seguem atendidos pela Consultoria, exclusivamente para os serviços do pacote — de forma complementar ao Suporte, com foco em evolução e melhoria contínua.</p>
+        <div class="sit-grid">
+          <div class="sit-card">
+            <h6>Objetivos</h6>
+            <ul>
+              <li>Evoluir a operação e maximizar a utilização do TMS</li>
+              <li>Melhorar processos e apoiar novas funcionalidades</li>
+              <li>Capacitar usuários e monitorar indicadores</li>
+              <li>Apoiar decisões estratégicas</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Atividades — conforme o pacote</h6>
+            <ul>
+              <li>Reuniões periódicas e diagnósticos operacionais</li>
+              <li>Revisão de processos e parametrizações consultivas</li>
+              <li>Treinamentos complementares e workshops</li>
+              <li>Reports executivos, indicadores e planos de ação</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Gestão das horas e reports executivos</h5>
+        <div class="sit-grid">
+          <div class="sit-card warn">
+            <h6>! Gestão das horas</h6>
+            <ul>
+              <li>Horas contratadas e horas consumidas</li>
+              <li>Saldo disponível e previsão de consumo</li>
+              <li>Comunicar o cliente sobre o consumo sempre que necessário</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Conteúdo do report</h6>
+            <ul>
+              <li>Resumo executivo e atividades realizadas</li>
+              <li>Horas consumidas, saldo e indicadores</li>
+              <li>Pendências, riscos e melhorias implementadas</li>
+              <li>Plano de ação e próximos passos</li>
+            </ul>
+          </div>
+        </div>
+        <div class="reg-quote">Todo report deverá ser anexado ao ticket correspondente.</div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Registro obrigatório das atividades</h5>
+        <ul class="dbl-list">
+          <li>Objetivo da atividade</li>
+          <li>Responsável</li>
+          <li>Horas consumidas</li>
+          <li>Descrição detalhada das ações</li>
+          <li>Evidências e documentos produzidos</li>
+          <li>Atas das reuniões</li>
+          <li>Materiais de treinamento</li>
+          <li>Devolutivas ao cliente</li>
+          <li>Pendências e próximos passos</li>
+          <li>Data da próxima atividade, quando aplicável</li>
+          <li>Encerramento formal da atividade</li>
+        </ul>
+        <div class="reg-quote">Demandas para Produto, Desenvolvimento, KCS, Infraestrutura ou Suporte devem ter tickets criados ou vinculados.</div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Encerramento da consultoria</h5>
+        <div class="sit-grid">
+          <div class="sit-card">
+            <h6>Quando ocorre</h6>
+            <ul>
+              <li>Conclusão do onboarding (clientes sem pacote consultivo)</li>
+              <li>Término da vigência do pacote contratado</li>
+              <li>Consumo integral das horas previstas</li>
+              <li>Encerramento solicitado pelo cliente</li>
+            </ul>
+          </div>
+          <div class="sit-card">
+            <h6>Relatório final</h6>
+            <ul>
+              <li>Resumo das atividades e entregas realizadas</li>
+              <li>Horas consumidas e resultados alcançados</li>
+              <li>Pendências e recomendações</li>
+              <li>Após validação do cliente, encerrar formalmente os tickets</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Responsabilidades do Consultor</h5>
+        <ul class="dbl-list">
+          <li>Conduzir integralmente o onboarding dos clientes Gold e Platinum</li>
+          <li>Gerenciar sua carteira de clientes</li>
+          <li>Executar consultorias recorrentes e avulsas</li>
+          <li>Garantir o cumprimento do escopo contratado</li>
+          <li>Elaborar diagnósticos, planos de ação e reports executivos</li>
+          <li>Ministrar treinamentos e workshops</li>
+          <li>Controlar as horas contratadas</li>
+          <li>Registrar todas as atividades em tickets</li>
+          <li>Manter comunicação contínua com o cliente</li>
+          <li>Encaminhar demandas para Produto, Dev, KCS e Suporte</li>
+        </ul>
+      </div>
+
+      <div class="pd-block" style="border-bottom:none;">
+        <h5>Indicadores de desempenho (KPIs)</h5>
+        <div class="kpi-grid">
+          <div class="kpi-item"><span class="kdot"></span>Tempo médio de onboarding</div>
+          <div class="kpi-item"><span class="kdot"></span>Go Lives realizados no prazo</div>
+          <div class="kpi-item"><span class="kdot"></span>CSAT do onboarding</div>
+          <div class="kpi-item"><span class="kdot"></span>CSAT da consultoria</div>
+          <div class="kpi-item"><span class="kdot"></span>Horas executadas × contratadas</div>
+          <div class="kpi-item"><span class="kdot"></span>% de utilização dos pacotes consultivos</div>
+          <div class="kpi-item"><span class="kdot"></span>Cumprimento do cronograma</div>
+          <div class="kpi-item"><span class="kdot"></span>Quantidade de reuniões realizadas</div>
+          <div class="kpi-item"><span class="kdot"></span>Reports entregues no prazo</div>
+          <div class="kpi-item"><span class="kdot"></span>Planos de ação concluídos</div>
+          <div class="kpi-item"><span class="kdot"></span>Melhorias implementadas</div>
+          <div class="kpi-item"><span class="kdot"></span>Demandas encaminhadas ao Produto</div>
+          <div class="kpi-item"><span class="kdot"></span>% de atividades registradas corretamente em tickets</div>
+          <div class="kpi-item"><span class="kdot"></span>Evolução dos indicadores operacionais dos clientes</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1910,6 +2940,7 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
       <button class="cat-tab" data-cat="Qualidade">Qualidade</button>
       <button class="cat-tab" data-cat="Conhecimento">Conhecimento</button>
       <button class="cat-tab" data-cat="Pessoas">Pessoas</button>
+      <button class="cat-tab" data-cat="Implantação">Implantação</button>
     </div>
 
     <table class="cat-table" id="catTable">
@@ -1917,14 +2948,17 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
         <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Registro de Ticket</td></tr>
         <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Escalonamento e Priorização de Tickets</td></tr>
         <tr class="visible has-ficha" data-cat="Atendimento" data-ficha="ficha-assistente" data-ficha-label="Atendimento &amp; Relacionamento"><td class="proc-cat">Atendimento</td><td class="proc-name">Atendimento e Relacionamento — Assistente de Atendimento</td></tr>
+        <tr class="visible has-ficha" data-cat="Atendimento" data-ficha="ficha-n1n2" data-ficha-label="Suporte Técnico"><td class="proc-cat">Atendimento</td><td class="proc-name">Atendimento N1 e N2 — Análise, tratativa e escalonamento</td></tr>
         <tr class="visible" data-cat="Atendimento"><td class="proc-cat">Atendimento</td><td class="proc-name">Encerramento</td></tr>
         <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de Backlog</td></tr>
         <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de SLA</td></tr>
         <tr class="visible" data-cat="Gestão"><td class="proc-cat">Gestão</td><td class="proc-name">Gestão de Incidentes</td></tr>
         <tr class="visible" data-cat="Qualidade"><td class="proc-cat">Qualidade</td><td class="proc-name">Auditoria de Atendimentos</td></tr>
         <tr class="visible" data-cat="Conhecimento"><td class="proc-cat">Conhecimento</td><td class="proc-name">Criação de Base de Conhecimento</td></tr>
-        <tr class="visible has-ficha" data-cat="Conhecimento" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA"><td class="proc-cat">Conhecimento</td><td class="proc-name">Aprimoramento da Base &amp; IA — Analista KCS</td></tr>
+        <tr class="visible has-ficha" data-cat="Conhecimento" data-ficha="ficha-kcs" data-ficha-label="Conhecimento &amp; IA"><td class="proc-cat">Conhecimento</td><td class="proc-name">Aprimoramento da Base &amp; IA — Analista de KCS e Ferramentas de IA</td></tr>
         <tr class="visible" data-cat="Pessoas"><td class="proc-cat">Pessoas</td><td class="proc-name">Treinamento e Capacitação</td></tr>
+        <tr class="visible has-ficha" data-cat="Implantação" data-ficha="ficha-setup" data-ficha-label="Onboarding &middot; Bronze &amp; Silver"><td class="proc-cat">Implantação</td><td class="proc-name">Onboarding Bronze &amp; Silver — Time de Setup</td></tr>
+        <tr class="visible has-ficha" data-cat="Implantação" data-ficha="ficha-consultoria" data-ficha-label="Consultoria &middot; Gold &amp; Platinum"><td class="proc-cat">Implantação</td><td class="proc-name">Onboarding Gold &amp; Platinum e Consultorias — Consultoria</td></tr>
       </tbody>
     </table>
   </div>
@@ -2228,7 +3262,7 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
         <div class="chart-label"><span class="weekdot"></span>Volume de tickets por hora</div>
         <div class="chart-source">Fonte: Grafana interno · atualização semanal</div>
       </div>
-      <div class="chart-sub">17/06 a 23/06 · faixa vermelha indica horários de pico (≥ 40 tickets/h)</div>
+      <div class="chart-sub">15/07 a 21/07 · faixa vermelha indica horários de pico (≥ 40 tickets/h)</div>
       <div class="chart-wrap" id="ticketsChartWrap" style="position:relative;">
         <svg id="ticketsChart" viewBox="0 0 1180 260" preserveAspectRatio="none"></svg>
         <div class="chart-tooltip" id="ticketsTooltip"></div>
@@ -2241,7 +3275,7 @@ html[data-theme="dark"] .sit-card.warn h6{color:var(--laranja-claro);}
   </div>
 </section>
 
-<script id="ticketsHourData" type="application/json">[["Qua 17/06 00h", 0], ["Qua 17/06 01h", 0], ["Qua 17/06 02h", 0], ["Qua 17/06 03h", 0], ["Qua 17/06 04h", 0], ["Qua 17/06 05h", 0], ["Qua 17/06 06h", 0], ["Qua 17/06 07h", 2], ["Qua 17/06 08h", 38], ["Qua 17/06 09h", 37], ["Qua 17/06 10h", 49], ["Qua 17/06 11h", 43], ["Qua 17/06 12h", 16], ["Qua 17/06 13h", 17], ["Qua 17/06 14h", 44], ["Qua 17/06 15h", 37], ["Qua 17/06 16h", 29], ["Qua 17/06 17h", 28], ["Qua 17/06 18h", 15], ["Qua 17/06 19h", 4], ["Qua 17/06 20h", 5], ["Qua 17/06 21h", 1], ["Qua 17/06 22h", 1], ["Qua 17/06 23h", 1], ["Qui 18/06 00h", 0], ["Qui 18/06 01h", 0], ["Qui 18/06 02h", 0], ["Qui 18/06 03h", 0], ["Qui 18/06 04h", 0], ["Qui 18/06 05h", 0], ["Qui 18/06 06h", 1], ["Qui 18/06 07h", 7], ["Qui 18/06 08h", 58], ["Qui 18/06 09h", 44], ["Qui 18/06 10h", 42], ["Qui 18/06 11h", 38], ["Qui 18/06 12h", 17], ["Qui 18/06 13h", 11], ["Qui 18/06 14h", 39], ["Qui 18/06 15h", 45], ["Qui 18/06 16h", 39], ["Qui 18/06 17h", 29], ["Qui 18/06 18h", 13], ["Qui 18/06 19h", 5], ["Qui 18/06 20h", 1], ["Qui 18/06 21h", 1], ["Qui 18/06 22h", 1], ["Qui 18/06 23h", 0], ["Sex 19/06 00h", 0], ["Sex 19/06 01h", 0], ["Sex 19/06 02h", 0], ["Sex 19/06 03h", 0], ["Sex 19/06 04h", 0], ["Sex 19/06 05h", 1], ["Sex 19/06 06h", 1], ["Sex 19/06 07h", 1], ["Sex 19/06 08h", 21], ["Sex 19/06 09h", 34], ["Sex 19/06 10h", 49], ["Sex 19/06 11h", 47], ["Sex 19/06 12h", 17], ["Sex 19/06 13h", 20], ["Sex 19/06 14h", 42], ["Sex 19/06 15h", 33], ["Sex 19/06 16h", 29], ["Sex 19/06 17h", 26], ["Sex 19/06 18h", 16], ["Sex 19/06 19h", 8], ["Sex 19/06 20h", 4], ["Sex 19/06 21h", 3], ["Sex 19/06 22h", 0], ["Sex 19/06 23h", 0], ["Sáb 20/06 00h", 0], ["Sáb 20/06 01h", 0], ["Sáb 20/06 02h", 0], ["Sáb 20/06 03h", 0], ["Sáb 20/06 04h", 0], ["Sáb 20/06 05h", 0], ["Sáb 20/06 06h", 2], ["Sáb 20/06 07h", 3], ["Sáb 20/06 08h", 15], ["Sáb 20/06 09h", 31], ["Sáb 20/06 10h", 32], ["Sáb 20/06 11h", 26], ["Sáb 20/06 12h", 12], ["Sáb 20/06 13h", 4], ["Sáb 20/06 14h", 3], ["Sáb 20/06 15h", 3], ["Sáb 20/06 16h", 2], ["Sáb 20/06 17h", 1], ["Sáb 20/06 18h", 2], ["Sáb 20/06 19h", 1], ["Sáb 20/06 20h", 1], ["Sáb 20/06 21h", 1], ["Sáb 20/06 22h", 0], ["Sáb 20/06 23h", 0], ["Dom 21/06 00h", 0], ["Dom 21/06 01h", 1], ["Dom 21/06 02h", 0], ["Dom 21/06 03h", 0], ["Dom 21/06 04h", 0], ["Dom 21/06 05h", 0], ["Dom 21/06 06h", 0], ["Dom 21/06 07h", 0], ["Dom 21/06 08h", 6], ["Dom 21/06 09h", 3], ["Dom 21/06 10h", 4], ["Dom 21/06 11h", 1], ["Dom 21/06 12h", 1], ["Dom 21/06 13h", 1], ["Dom 21/06 14h", 3], ["Dom 21/06 15h", 1], ["Dom 21/06 16h", 3], ["Dom 21/06 17h", 1], ["Dom 21/06 18h", 1], ["Dom 21/06 19h", 0], ["Dom 21/06 20h", 0], ["Dom 21/06 21h", 0], ["Dom 21/06 22h", 0], ["Dom 21/06 23h", 0], ["Seg 22/06 00h", 0], ["Seg 22/06 01h", 0], ["Seg 22/06 02h", 0], ["Seg 22/06 03h", 0], ["Seg 22/06 04h", 0], ["Seg 22/06 05h", 0], ["Seg 22/06 06h", 0], ["Seg 22/06 07h", 2], ["Seg 22/06 08h", 30], ["Seg 22/06 09h", 29], ["Seg 22/06 10h", 39], ["Seg 22/06 11h", 34], ["Seg 22/06 12h", 15], ["Seg 22/06 13h", 15], ["Seg 22/06 14h", 41], ["Seg 22/06 15h", 57], ["Seg 22/06 16h", 36], ["Seg 22/06 17h", 34], ["Seg 22/06 18h", 10], ["Seg 22/06 19h", 8], ["Seg 22/06 20h", 9], ["Seg 22/06 21h", 1], ["Seg 22/06 22h", 0], ["Seg 22/06 23h", 1], ["Ter 23/06 00h", 0], ["Ter 23/06 01h", 0], ["Ter 23/06 02h", 0], ["Ter 23/06 03h", 0], ["Ter 23/06 04h", 0], ["Ter 23/06 05h", 0], ["Ter 23/06 06h", 1], ["Ter 23/06 07h", 6], ["Ter 23/06 08h", 38], ["Ter 23/06 09h", 17]]</script>
+<script id="ticketsHourData" type="application/json">[["Qua 15/07 00h", 0], ["Qua 15/07 01h", 0], ["Qua 15/07 02h", 0], ["Qua 15/07 03h", 0], ["Qua 15/07 04h", 0], ["Qua 15/07 05h", 1], ["Qua 15/07 06h", 0], ["Qua 15/07 07h", 0], ["Qua 15/07 08h", 22], ["Qua 15/07 09h", 31], ["Qua 15/07 10h", 40], ["Qua 15/07 11h", 38], ["Qua 15/07 12h", 12], ["Qua 15/07 13h", 14], ["Qua 15/07 14h", 28], ["Qua 15/07 15h", 48], ["Qua 15/07 16h", 33], ["Qua 15/07 17h", 39], ["Qua 15/07 18h", 10], ["Qua 15/07 19h", 12], ["Qua 15/07 20h", 6], ["Qua 15/07 21h", 5], ["Qua 15/07 22h", 3], ["Qua 15/07 23h", 0], ["Qui 16/07 00h", 0], ["Qui 16/07 01h", 0], ["Qui 16/07 02h", 0], ["Qui 16/07 03h", 0], ["Qui 16/07 04h", 0], ["Qui 16/07 05h", 0], ["Qui 16/07 06h", 0], ["Qui 16/07 07h", 7], ["Qui 16/07 08h", 32], ["Qui 16/07 09h", 50], ["Qui 16/07 10h", 71], ["Qui 16/07 11h", 120], ["Qui 16/07 12h", 13], ["Qui 16/07 13h", 21], ["Qui 16/07 14h", 30], ["Qui 16/07 15h", 44], ["Qui 16/07 16h", 34], ["Qui 16/07 17h", 30], ["Qui 16/07 18h", 12], ["Qui 16/07 19h", 3], ["Qui 16/07 20h", 4], ["Qui 16/07 21h", 3], ["Qui 16/07 22h", 3], ["Qui 16/07 23h", 0], ["Sex 17/07 00h", 0], ["Sex 17/07 01h", 2], ["Sex 17/07 02h", 0], ["Sex 17/07 03h", 0], ["Sex 17/07 04h", 0], ["Sex 17/07 05h", 0], ["Sex 17/07 06h", 1], ["Sex 17/07 07h", 2], ["Sex 17/07 08h", 24], ["Sex 17/07 09h", 24], ["Sex 17/07 10h", 43], ["Sex 17/07 11h", 35], ["Sex 17/07 12h", 5], ["Sex 17/07 13h", 13], ["Sex 17/07 14h", 65], ["Sex 17/07 15h", 97], ["Sex 17/07 16h", 47], ["Sex 17/07 17h", 24], ["Sex 17/07 18h", 9], ["Sex 17/07 19h", 2], ["Sex 17/07 20h", 1], ["Sex 17/07 21h", 1], ["Sex 17/07 22h", 1], ["Sex 17/07 23h", 1], ["Sáb 18/07 00h", 0], ["Sáb 18/07 01h", 0], ["Sáb 18/07 02h", 0], ["Sáb 18/07 03h", 0], ["Sáb 18/07 04h", 1], ["Sáb 18/07 05h", 0], ["Sáb 18/07 06h", 1], ["Sáb 18/07 07h", 0], ["Sáb 18/07 08h", 9], ["Sáb 18/07 09h", 8], ["Sáb 18/07 10h", 13], ["Sáb 18/07 11h", 17], ["Sáb 18/07 12h", 9], ["Sáb 18/07 13h", 2], ["Sáb 18/07 14h", 2], ["Sáb 18/07 15h", 2], ["Sáb 18/07 16h", 0], ["Sáb 18/07 17h", 1], ["Sáb 18/07 18h", 0], ["Sáb 18/07 19h", 2], ["Sáb 18/07 20h", 0], ["Sáb 18/07 21h", 0], ["Sáb 18/07 22h", 1], ["Sáb 18/07 23h", 0], ["Dom 19/07 00h", 0], ["Dom 19/07 01h", 0], ["Dom 19/07 02h", 0], ["Dom 19/07 03h", 0], ["Dom 19/07 04h", 0], ["Dom 19/07 05h", 0], ["Dom 19/07 06h", 0], ["Dom 19/07 07h", 0], ["Dom 19/07 08h", 0], ["Dom 19/07 09h", 1], ["Dom 19/07 10h", 0], ["Dom 19/07 11h", 1], ["Dom 19/07 12h", 0], ["Dom 19/07 13h", 0], ["Dom 19/07 14h", 0], ["Dom 19/07 15h", 0], ["Dom 19/07 16h", 0], ["Dom 19/07 17h", 0], ["Dom 19/07 18h", 0], ["Dom 19/07 19h", 0], ["Dom 19/07 20h", 0], ["Dom 19/07 21h", 1], ["Dom 19/07 22h", 0], ["Dom 19/07 23h", 0], ["Seg 20/07 00h", 1], ["Seg 20/07 01h", 0], ["Seg 20/07 02h", 0], ["Seg 20/07 03h", 0], ["Seg 20/07 04h", 0], ["Seg 20/07 05h", 0], ["Seg 20/07 06h", 1], ["Seg 20/07 07h", 3], ["Seg 20/07 08h", 19], ["Seg 20/07 09h", 32], ["Seg 20/07 10h", 32], ["Seg 20/07 11h", 34], ["Seg 20/07 12h", 8], ["Seg 20/07 13h", 15], ["Seg 20/07 14h", 37], ["Seg 20/07 15h", 54], ["Seg 20/07 16h", 37], ["Seg 20/07 17h", 54], ["Seg 20/07 18h", 9], ["Seg 20/07 19h", 5], ["Seg 20/07 20h", 0], ["Seg 20/07 21h", 0], ["Seg 20/07 22h", 1], ["Seg 20/07 23h", 0], ["Ter 21/07 00h", 0], ["Ter 21/07 01h", 0], ["Ter 21/07 02h", 0], ["Ter 21/07 03h", 0], ["Ter 21/07 04h", 0], ["Ter 21/07 05h", 0], ["Ter 21/07 06h", 0], ["Ter 21/07 07h", 1], ["Ter 21/07 08h", 23], ["Ter 21/07 09h", 28], ["Ter 21/07 10h", 46], ["Ter 21/07 11h", 27], ["Ter 21/07 12h", 5], ["Ter 21/07 13h", 20], ["Ter 21/07 14h", 13]]</script>
 
 
 
@@ -2486,9 +3520,26 @@ function applyTheme(theme){
   }
   try{ localStorage.setItem('atua-theme', theme); }catch(e){}
 }
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 themeToggle.addEventListener('click', ()=>{
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  applyTheme(isDark ? 'light' : 'dark');
+  const next = isDark ? 'light' : 'dark';
+
+  // Sem suporte a View Transitions (ou com movimento reduzido): troca direta
+  if(!document.startViewTransition || reduceMotion.matches){ applyTheme(next); return; }
+
+  // Wipe circular saindo do próprio botão
+  const r = themeToggle.getBoundingClientRect();
+  const x = r.left + r.width / 2;
+  const y = r.top + r.height / 2;
+  const raio = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  const vt = document.startViewTransition(()=> applyTheme(next));
+  vt.ready.then(()=>{
+    document.documentElement.animate(
+      { clipPath:[`circle(0px at ${x}px ${y}px)`, `circle(${raio}px at ${x}px ${y}px)`] },
+      { duration:560, easing:'cubic-bezier(.16,1,.3,1)', pseudoElement:'::view-transition-new(root)' }
+    );
+  }).catch(()=>{});
 });
 
 // Barra de progresso de leitura
@@ -2497,6 +3548,8 @@ function updateScrollProgress(){
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
   scrollProgress.style.width = pct + '%';
+  // Evita o brilho residual quando a barra ainda está zerada
+  scrollProgress.style.opacity = pct > 0.3 ? '1' : '0';
 }
 window.addEventListener('scroll', updateScrollProgress, {passive:true});
 updateScrollProgress();
@@ -2592,6 +3645,63 @@ document.querySelectorAll('.faq-item').forEach(item=>{
   document.addEventListener('keydown', e=>{
     if(e.key === 'Escape' && modal.classList.contains('open')) closeFicha();
   });
+
+  // Progresso de leitura da ficha + sombra na barra ao rolar
+  const dialog = modal.querySelector('.pmodal-dialog');
+  if(dialog){
+    const prog = document.createElement('div');
+    prog.className = 'pmodal-progress';
+    dialog.prepend(prog);
+    body.addEventListener('scroll', ()=>{
+      const max = body.scrollHeight - body.clientHeight;
+      prog.style.width = (max > 0 ? (body.scrollTop / max) * 100 : 0) + '%';
+      dialog.classList.toggle('body-scrolled', body.scrollTop > 4);
+    }, {passive:true});
+  }
+})();
+
+/* ============ ACABAMENTO — comportamentos de superfície ============ */
+(function(){
+  const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 1. Header compacta ao sair do topo
+  const header = document.querySelector('header.main');
+  if(header){
+    const marcarHeader = ()=> header.classList.toggle('is-stuck', window.scrollY > 24);
+    window.addEventListener('scroll', marcarHeader, {passive:true});
+    marcarHeader();
+  }
+
+  // 2. Título do hero entra linha por linha, atrás de uma máscara
+  const h1 = document.querySelector('.hero h1');
+  if(h1 && !reduz){
+    const linhas = h1.innerHTML.split(/<br\s*\/?>/i);
+    h1.innerHTML = linhas.map((linha, i) =>
+      `<span class="h-line"><span class="h-line-in" style="--d:${i * 110}ms">${linha}</span></span>`
+    ).join('');
+
+    ['.hero-eyebrow', '.hero p.lede', '.hero-actions', '.hero-route'].forEach((sel, i)=>{
+      const el = document.querySelector(sel);
+      if(!el) return;
+      el.classList.add('hero-boot');
+      el.style.setProperty('--d', (260 + i * 110) + 'ms');
+    });
+  }
+
+  // 3. Spotlight: o brilho do card segue o cursor
+  // Delegado no documento para valer também nas fichas clonadas dentro do modal.
+  const SELETOR_SPOT = '.func-card, .role-card, .fe-card, .pd-cell, .bc-product';
+  if(!reduz){
+    document.querySelectorAll(SELETOR_SPOT).forEach(c => c.classList.add('spot'));
+    document.addEventListener('pointermove', e=>{
+      const card = e.target.closest && e.target.closest(SELETOR_SPOT);
+      if(!card) return;
+      card.classList.add('spot');
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, {passive:true});
+  }
 })();
 </script>
 
