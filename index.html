@@ -132,7 +132,7 @@ header.main{
 .nav-row{
   display:flex; align-items:center; justify-content:space-between;
   padding:16px 0;
-  gap:24px;
+  gap:16px;
 }
 .brandblock{display:flex; align-items:center; gap:12px;}
 .brand-logo{
@@ -144,13 +144,13 @@ header.main{
 .brand-text .b1{font-family:var(--display); font-size:15px; letter-spacing:0.01em;}
 .brand-text .b2{font-family:var(--mono); font-size:10.5px; color:var(--ink-dim); letter-spacing:0.06em; text-transform:uppercase;}
 
-nav.primary{display:flex; gap:4px; flex-wrap:wrap;}
+nav.primary{display:flex; gap:2px; flex-wrap:nowrap;}
 nav.primary a{
   font-family:var(--mono);
-  font-size:12px;
-  letter-spacing:0.03em;
+  font-size:11.5px;
+  letter-spacing:0.02em;
   text-transform:uppercase;
-  padding:9px 13px;
+  padding:9px 10px;
   border-radius:8px;
   color:var(--ink-dim);
   transition:background .2s var(--ease), color .2s var(--ease);
@@ -1078,7 +1078,7 @@ header.main.is-stuck .brand-logo{height:26px;}
 /* Sublinhado que cresce sob o item de menu ativo */
 nav.primary a{position:relative;}
 nav.primary a::after{
-  content:""; position:absolute; left:13px; right:13px; bottom:4px; height:2px;
+  content:""; position:absolute; left:10px; right:10px; bottom:4px; height:2px;
   background:var(--laranja); border-radius:2px;
   transform:scaleX(0); transform-origin:left; transition:transform .3s var(--ease);
 }
@@ -1196,6 +1196,106 @@ html[data-theme="dark"] .pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6p
   .h-line-in, .hero-boot{animation:none; transform:none; opacity:1;}
 }
 
+/* ============ ATENDIMENTO — SLA e canais ============ */
+.atendimento{background:var(--cinza-claro); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); transition:background .25s var(--ease);}
+.atd-lead{color:var(--ink-dim); font-size:15px; max-width:680px; margin-top:-8px;}
+.atd-block{margin-top:clamp(38px,5vw,60px);}
+.atd-h{
+  font-family:var(--display); font-size:clamp(18px,2.4vw,23px); letter-spacing:-.01em;
+  margin-bottom:16px; display:flex; align-items:center; gap:12px;
+}
+.atd-h .atd-num{
+  font-family:var(--mono); font-size:12px; font-weight:600; color:var(--laranja-escuro);
+  border:1px solid var(--laranja); border-radius:8px; padding:3px 9px; flex-shrink:0;
+}
+html[data-theme="dark"] .atd-h .atd-num{color:var(--laranja-claro);}
+.atd-sub{color:var(--ink-dim); font-size:14px; max-width:640px; margin:-8px 0 18px;}
+
+/* Cards de horário */
+.atd-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.atd-card{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius);
+  box-shadow:var(--shadow-sm); padding:24px 24px 26px;
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s;
+}
+.atd-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:var(--laranja-claro);}
+.atd-card.accent{border-top:3px solid var(--laranja);}
+.atd-card-tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--laranja-escuro); margin-bottom:14px;}
+html[data-theme="dark"] .atd-card-tag{color:var(--laranja-claro);}
+.atd-window{font-family:var(--display); font-size:26px; letter-spacing:-.01em; color:var(--azul);}
+html[data-theme="dark"] .atd-window{color:var(--ink);}
+.atd-days{font-family:var(--mono); font-size:11.5px; color:var(--ink-dim); margin:6px 0 12px;}
+.atd-card p{font-size:13.5px; color:var(--ink-dim); line-height:1.5;}
+
+/* Faixa de telefone / central */
+.atd-central{
+  margin-top:16px; display:flex; align-items:center; gap:8px 18px; flex-wrap:wrap;
+  background:var(--surface); border:1px solid var(--border-soft); border-left:3px solid var(--laranja);
+  border-radius:var(--radius-sm); padding:16px 20px;
+}
+.atd-central .lab{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim);}
+.atd-central .num{font-family:var(--mono); font-weight:700; font-size:19px; color:var(--laranja-escuro);}
+html[data-theme="dark"] .atd-central .num{color:var(--laranja-claro);}
+
+/* Tabela de SLA (par tipo → prazo) */
+.sla-table{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm);}
+.sla-row{display:grid; grid-template-columns:1fr 210px; border-top:1px solid var(--border-soft); align-items:stretch;}
+.sla-row:first-child{border-top:none;}
+.sla-row.head > div{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); padding:13px 22px; background:var(--cinza-claro);}
+.sla-type{padding:16px 22px; font-weight:700; font-size:14.5px; display:flex; flex-direction:column; justify-content:center;}
+.sla-type small{font-weight:400; font-size:12.5px; color:var(--ink-dim); margin-top:3px; line-height:1.4;}
+.sla-val{padding:16px 22px; font-family:var(--mono); font-weight:600; font-size:15px; color:var(--laranja-escuro); border-left:1px solid var(--border-soft); display:flex; align-items:center;}
+html[data-theme="dark"] .sla-val{color:var(--laranja-claro);}
+
+/* Painéis de canais (2 colunas) */
+.atd-2col{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.atd-panel{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:24px 26px 26px; box-shadow:var(--shadow-sm);}
+.atd-panel.wide{grid-column:1 / -1;}
+.atd-panel h4{font-family:var(--corpo); font-weight:700; font-size:15.5px; margin-bottom:8px;}
+.atd-panel > p{font-size:13.5px; color:var(--ink-dim); line-height:1.55;}
+.atd-panel ul{display:flex; flex-direction:column; gap:6px; margin-top:12px;}
+.atd-panel li{font-size:13.5px; color:var(--ink); display:flex; gap:8px; line-height:1.45;}
+.atd-panel li::before{content:"—"; color:var(--laranja); flex-shrink:0;}
+.atd-badge-off{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--laranja-escuro); background:rgba(255,61,3,.07); border:1px solid var(--laranja-claro); border-radius:100px; padding:3px 10px; display:inline-block; margin-bottom:12px;}
+html[data-theme="dark"] .atd-badge-off{color:var(--laranja-claro); background:rgba(255,61,3,.12);}
+.atd-contact{margin-top:14px; display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-weight:700; font-size:16px; color:var(--laranja-escuro); background:var(--cinza-claro); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:10px 15px;}
+html[data-theme="dark"] .atd-contact{color:var(--laranja-claro);}
+.atd-hours{font-family:var(--mono); font-size:11px; color:var(--ink-dim); margin-top:9px;}
+
+/* Nota neutra */
+.atd-note{background:var(--surface); border:1px solid var(--border-soft); border-left:3px solid var(--chumbo); border-radius:var(--radius-sm); padding:18px 22px; font-size:13.5px; color:var(--ink-dim); line-height:1.6;}
+.atd-note b{color:var(--ink);}
+
+/* Meta de SLA */
+.atd-meta{display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center; background:var(--azul); color:white; border-radius:var(--radius); padding:30px 34px; position:relative; overflow:hidden;}
+.atd-meta::before{content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size:40px 40px;}
+.atd-meta .big{position:relative; font-family:var(--display); font-size:clamp(46px,7vw,66px); line-height:1; color:var(--laranja-claro);}
+.atd-meta .big small{font-size:.4em; vertical-align:super; color:var(--laranja-claro);}
+.atd-meta .txt{position:relative;}
+.atd-meta .txt h4{font-family:var(--display); font-size:18px; margin-bottom:8px;}
+.atd-meta .txt p{font-size:13.5px; color:#B6B8D6; line-height:1.55; max-width:520px;}
+
+/* Tabela-resumo */
+.resumo-table{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm);}
+.resumo-table tr{border-top:1px solid var(--cinza-claro);}
+.resumo-table tr:first-child{border-top:none;}
+.resumo-table tr:hover{background:var(--cinza-claro);}
+.resumo-table th{text-align:left; font-family:var(--mono); font-size:13.5px; font-weight:700; color:var(--ink); padding:14px 22px; width:38%; vertical-align:top;}
+.resumo-table td{font-size:13.5px; color:var(--ink-dim); padding:14px 22px; line-height:1.5;}
+
+@media (max-width:880px){
+  .atd-cards{grid-template-columns:1fr;}
+  .atd-2col{grid-template-columns:1fr;}
+  .atd-meta{grid-template-columns:1fr; gap:14px; text-align:left;}
+}
+@media (max-width:620px){
+  .sla-row{grid-template-columns:1fr;}
+  .sla-val{border-left:none; border-top:1px solid var(--border-soft);}
+  .sla-row.head{display:none;}
+  .resumo-table th{width:auto; display:block; padding-bottom:2px;}
+  .resumo-table td{display:block; padding-top:2px;}
+}
+
 </style>
 </head>
 <body>
@@ -1230,6 +1330,7 @@ html[data-theme="dark"] .pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6p
       <a href="#procedimentos">Procedimentos</a>
       <a href="#conhecimento">Base&nbsp;Conhec.</a>
       <a href="#indicadores">Indicadores</a>
+      <a href="#atendimento">Atendimento</a>
       <a href="#faq" class="cta">FAQ</a>
     </nav>
     <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro" type="button">
@@ -1247,6 +1348,7 @@ html[data-theme="dark"] .pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6p
     <a href="#procedimentos">Procedimentos</a>
     <a href="#conhecimento">Base de Conhecimento</a>
     <a href="#indicadores">Indicadores</a>
+    <a href="#atendimento">SLA e Atendimento</a>
     <a href="#faq" class="cta">FAQ</a>
   </nav>
 </header>
@@ -3289,6 +3391,177 @@ html[data-theme="dark"] .pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6p
 
 
 
+<!-- ===================== ATENDIMENTO — SLA E CANAIS ===================== -->
+<section class="atendimento" id="atendimento">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Informativo ao cliente</div>
+        <h2>SLA e canais de atendimento.</h2>
+      </div>
+      <p>Os padrões de atendimento do Suporte TMS Agro: prazos, horários, canais oficiais e a forma de atuação da equipe.</p>
+    </div>
+
+    <p class="atd-lead">Este informativo apresenta os padrões de atendimento do Suporte TMS Agro, esclarecendo os prazos, horários de funcionamento, canais disponíveis e como a equipe atua em cada situação.</p>
+
+    <!-- 1 · HORÁRIO DE ATENDIMENTO -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">01</span>Horário de atendimento</h3>
+      <p class="atd-sub">A equipe atende em diferentes janelas, conforme a criticidade da solicitação.</p>
+      <div class="atd-cards">
+        <div class="atd-card">
+          <div class="atd-card-tag">Atendimento regular</div>
+          <div class="atd-window">08h00 – 18h00</div>
+          <div class="atd-days">Segunda a sexta-feira</div>
+          <p>Atendimento para todas as modalidades de chamados.</p>
+        </div>
+        <div class="atd-card accent">
+          <div class="atd-card-tag">Emergencial · Caminhão parado</div>
+          <div class="atd-window">18h00 – 21h00</div>
+          <div class="atd-days">Segunda a sexta-feira</div>
+          <p>Exclusivo para ocorrências de Caminhão Parado, pela Central de Atendimento.</p>
+        </div>
+        <div class="atd-card accent">
+          <div class="atd-card-tag">Plantão · Caminhão parado</div>
+          <div class="atd-window">08h00 – 20h00</div>
+          <div class="atd-days">Sábados, domingos e feriados</div>
+          <p>Exclusivo para ocorrências de Caminhão Parado, em regime de plantão.</p>
+        </div>
+      </div>
+      <div class="atd-central">
+        <span class="lab">Central de Atendimento · Caminhão parado</span>
+        <span class="num">☎ (54) 3045-8100 — Opção 1</span>
+      </div>
+    </div>
+
+    <!-- 2 · SLA DE INÍCIO -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">02</span>SLA de início de atendimento</h3>
+      <p class="atd-sub">O prazo para que a equipe realize a primeira interação no chamado, iniciando sua análise.</p>
+      <div class="sla-table">
+        <div class="sla-row head">
+          <div>Tipo de atendimento</div>
+          <div>SLA de início</div>
+        </div>
+        <div class="sla-row">
+          <div class="sla-type">Caminhão Parado<small>Ocorrências que impedem a continuidade da operação.</small></div>
+          <div class="sla-val">Até 30 minutos</div>
+        </div>
+        <div class="sla-row">
+          <div class="sla-type">Demais solicitações<small>Todos os outros chamados registrados.</small></div>
+          <div class="sla-val">Até 3 horas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 · CANAIS OFICIAIS -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">03</span>Canais oficiais de atendimento</h3>
+      <div class="atd-2col">
+        <div class="atd-panel wide">
+          <h4>O ticket é o canal oficial do Suporte TMS Agro</h4>
+          <p>As orientações e tratativas são realizadas prioritariamente por meio dos tickets. Essa prática garante:</p>
+          <ul>
+            <li>Registro completo das solicitações</li>
+            <li>Histórico das orientações realizadas</li>
+            <li>Rastreabilidade das ações</li>
+            <li>Continuidade do atendimento por qualquer membro da equipe</li>
+          </ul>
+        </div>
+        <div class="atd-panel">
+          <h4>Atendimento telefônico</h4>
+          <p>O contato telefônico é realizado, em regra, por iniciativa da equipe de suporte, quando necessário para agilizar esclarecimentos ou validar informações. A única exceção é para situações de <b>Caminhão Parado</b>, nas quais o cliente poderá acionar diretamente a Central de Atendimento.</p>
+        </div>
+        <div class="atd-panel">
+          <h4>Consulta ao andamento dos chamados</h4>
+          <p>O andamento pode ser acompanhado a qualquer momento pelo <b>Portal do Cliente</b> — com histórico, atualizações e status. Quando necessário, também pelo:</p>
+          <div class="atd-contact">☎ (54) 3045-8100 — Ramal 5</div>
+          <div class="atd-hours">Segunda a sexta · 08h00 às 17h00</div>
+          <p style="margin-top:12px;">O Ramal 5 apoia o acompanhamento e a organização dos tickets — não é um canal para abertura de novos atendimentos técnicos.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 · RELACIONAMENTO E OUVIDORIA -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">04</span>Canal de Relacionamento e Ouvidoria</h3>
+      <p class="atd-sub">Para situações excepcionais, reclamações, sugestões, elogios ou ocorrências fora do fluxo normal de atendimento.</p>
+      <div class="atd-2col">
+        <div class="atd-panel">
+          <span class="atd-badge-off">WhatsApp da Ouvidoria</span>
+          <div class="atd-contact">✆ (42) 99961-0212</div>
+          <div class="atd-hours">Segunda a sexta · 08h00 às 17h00</div>
+          <p style="margin-top:14px;">Também é possível registrar manifestações diretamente pelo Portal do Cliente.</p>
+        </div>
+        <div class="atd-panel">
+          <h4>Importante</h4>
+          <ul>
+            <li>Não substitui a abertura de tickets de suporte</li>
+            <li>Não é um canal de atendimento técnico</li>
+            <li>Atua como apoio ao relacionamento e à organização das demandas</li>
+            <li>Pode, em casos justificados, solicitar reavaliação de prioridades junto à gestão</li>
+          </ul>
+          <p style="margin-top:12px;">As manifestações da Ouvidoria não possuem SLA específico de resposta — o retorno segue a evolução das análises de cada caso.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 · BASE DE DADOS -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">05</span>Alterações na base de dados</h3>
+      <div class="atd-note">
+        Como procedimento padrão, o Suporte TMS Agro <b>não realiza ajustes diretamente na base de dados</b> do cliente. Quando houver necessidade de correções técnicas, elas serão avaliadas pelas equipes responsáveis e poderão exigir autorizações internas e eventual escalonamento, conforme os processos estabelecidos.
+      </div>
+    </div>
+
+    <!-- 6 · SLA DE ENCERRAMENTO -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">06</span>SLA de encerramento</h3>
+      <p class="atd-sub">Alguns contratos possuem SLA específico para conclusão dos chamados, por prioridade.</p>
+      <div class="crit-table" style="max-width:520px;">
+        <div class="crit-row alta"><div class="crit-label">Alta</div><div class="crit-desc">36 horas úteis</div></div>
+        <div class="crit-row media"><div class="crit-label">Média</div><div class="crit-desc">72 horas úteis</div></div>
+        <div class="crit-row baixa"><div class="crit-label">Baixa</div><div class="crit-desc">120 horas úteis</div></div>
+      </div>
+      <div class="atd-note" style="margin-top:16px;">
+        Os prazos são contabilizados <b>exclusivamente em dias úteis</b>, de segunda a sexta-feira, das 08h00 às 18h00. Essa regra considera que eventuais escalonamentos para desenvolvimento ou outras equipes especializadas ocorrem dentro desse horário de expediente.
+      </div>
+    </div>
+
+    <!-- 7 · META DE CUMPRIMENTO -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">07</span>Meta de cumprimento dos SLAs</h3>
+      <div class="atd-meta">
+        <div class="big">85<small>%</small></div>
+        <div class="txt">
+          <h4>Objetivo mínimo de desempenho</h4>
+          <p>Todos os indicadores de SLA têm meta mínima de 85%. SLA igual ou superior a 85% = meta atingida; inferior a 85% = meta não atingida. A metodologia considera o volume total de atendimentos do período e representa o desempenho operacional esperado da equipe.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMO -->
+    <div class="atd-block">
+      <h3 class="atd-h"><span class="atd-num">✓</span>Resumo</h3>
+      <table class="resumo-table">
+        <tr><th>Horário de atendimento geral</th><td>Segunda a sexta, das 08h00 às 18h00</td></tr>
+        <tr><th>Atendimento estendido</th><td>Segunda a sexta, das 18h00 às 21h00 — exclusivamente Caminhão Parado</td></tr>
+        <tr><th>Plantão</th><td>Sábados, domingos e feriados, das 08h00 às 20h00 — exclusivamente Caminhão Parado</td></tr>
+        <tr><th>Central Caminhão Parado</th><td>(54) 3045-8100 — Opção 1</td></tr>
+        <tr><th>Consulta de andamento</th><td>Portal do Cliente ou Ramal 5 (08h00 às 17h00)</td></tr>
+        <tr><th>Ouvidoria</th><td>WhatsApp (42) 99961-0212 ou Portal do Cliente (08h00 às 17h00)</td></tr>
+        <tr><th>Canal oficial de suporte</th><td>Ticket</td></tr>
+        <tr><th>Atendimento telefônico</th><td>Iniciativa do suporte, exceto Caminhão Parado</td></tr>
+        <tr><th>Ajustes em banco de dados</th><td>Não realizados pelo suporte como procedimento padrão</td></tr>
+        <tr><th>SLA de início</th><td>30 minutos (Caminhão Parado) • 3 horas (demais chamados)</td></tr>
+        <tr><th>SLA de encerramento (contratos específicos)</th><td>Alta: 36h úteis • Média: 72h úteis • Baixa: 120h úteis</td></tr>
+        <tr><th>Base de cálculo dos SLAs de encerramento</th><td>Dias úteis, de segunda a sexta, das 08h00 às 18h00</td></tr>
+        <tr><th>Meta operacional de SLA</th><td>85% ou superior</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== FAQ ===================== -->
 <section class="faq" id="faq">
   <div class="wrap">
@@ -3344,6 +3617,7 @@ html[data-theme="dark"] .pmodal-dialog.body-scrolled .pmodal-bar{box-shadow:0 6p
           <h6>Recursos</h6>
           <a href="#conhecimento">Base de conhecimento</a>
           <a href="#indicadores">Indicadores</a>
+          <a href="#atendimento">SLA e atendimento</a>
           <a href="#faq">FAQ</a>
         </div>
         <div class="footer-col">
