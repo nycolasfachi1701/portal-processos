@@ -984,6 +984,24 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
   z-index:1000; transition:width .08s linear;
 }
 
+/* ============ BRILHO QUE SEGUE O CURSOR (página inteira) ============ */
+#cursor-glow{
+  position:fixed; top:0; left:0;
+  width:240px; height:240px; margin:-120px 0 0 -120px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,61,3,.30) 0%, rgba(255,61,3,.15) 42%, transparent 72%);
+  pointer-events:none;
+  z-index:998;
+  opacity:0;
+  transform:translate3d(var(--cx,-9999px), var(--cy,-9999px), 0);
+  transition:opacity .35s var(--ease), transform .14s var(--ease-out);
+  will-change:transform, opacity;
+}
+body.cursor-glow-on #cursor-glow{opacity:1;}
+/* sem brilho para quem prefere menos movimento ou usa toque */
+@media (prefers-reduced-motion: reduce){ #cursor-glow{display:none;} }
+@media (hover:none){ #cursor-glow{display:none;} }
+
 /* ============ REVEAL ANIMATIONS ============ */
 .reveal{opacity:0; transform:translateY(26px) scale(.985); transition:opacity .7s var(--ease), transform .7s var(--ease); transition-delay:var(--reveal-delay,0ms); will-change:opacity,transform;}
 .reveal.is-visible{opacity:1; transform:none;}
@@ -4362,6 +4380,32 @@ document.querySelectorAll('.faq-item').forEach(item=>{
     hero.addEventListener('pointerleave', ()=>{ mx = 0; my = 0; hero.classList.remove('glow-on'); agendar(); }, {passive:true});
     aoRolar(()=>{ sy = window.scrollY; agendar(); });
   }
+})();
+</script>
+
+<script>
+// Brilho alaranjado que acompanha o cursor em toda a página (spotlight sutil).
+(function(){
+  if(window.matchMedia && (matchMedia('(prefers-reduced-motion: reduce)').matches || matchMedia('(hover: none)').matches)) return;
+  const glow = document.createElement('div');
+  glow.id = 'cursor-glow';
+  glow.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(glow);
+  let x = 0, y = 0, raf = null, ligado = false;
+  function aplicar(){
+    raf = null;
+    glow.style.setProperty('--cx', x + 'px');
+    glow.style.setProperty('--cy', y + 'px');
+  }
+  window.addEventListener('pointermove', e=>{
+    if(e.pointerType === 'touch') return;
+    x = e.clientX; y = e.clientY;
+    if(!ligado){ ligado = true; document.body.classList.add('cursor-glow-on'); }
+    if(!raf) raf = requestAnimationFrame(aplicar);
+  }, {passive:true});
+  function apagar(){ ligado = false; document.body.classList.remove('cursor-glow-on'); }
+  document.addEventListener('mouseleave', apagar);
+  window.addEventListener('blur', apagar);
 })();
 </script>
 
