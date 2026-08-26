@@ -987,7 +987,7 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
 /* ============ BRILHO QUE SEGUE O CURSOR (página inteira) ============ */
 #cursor-glow{
   position:fixed; top:0; left:0;
-  width:240px; height:240px; margin:-120px 0 0 -120px;
+  width:180px; height:180px; margin:-90px 0 0 -90px;
   border-radius:50%;
   background:radial-gradient(circle, rgba(255,61,3,.30) 0%, rgba(255,61,3,.15) 42%, transparent 72%);
   pointer-events:none;
@@ -998,9 +998,8 @@ footer{background:var(--preto); color:#888; padding:56px 0 32px;}
   will-change:transform, opacity;
 }
 body.cursor-glow-on #cursor-glow{opacity:1;}
-/* sem brilho para quem prefere menos movimento ou usa toque */
-@media (prefers-reduced-motion: reduce){ #cursor-glow{display:none;} }
-@media (hover:none){ #cursor-glow{display:none;} }
+/* movimento-reduzido: mantém o brilho, mas sem a trilha suave (segue direto o cursor) */
+@media (prefers-reduced-motion: reduce){ #cursor-glow{transition:opacity .25s linear;} }
 
 /* ============ REVEAL ANIMATIONS ============ */
 .reveal{opacity:0; transform:translateY(26px) scale(.985); transition:opacity .7s var(--ease), transform .7s var(--ease); transition-delay:var(--reveal-delay,0ms); will-change:opacity,transform;}
@@ -4386,7 +4385,6 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 <script>
 // Brilho alaranjado que acompanha o cursor em toda a página (spotlight sutil).
 (function(){
-  if(window.matchMedia && (matchMedia('(prefers-reduced-motion: reduce)').matches || matchMedia('(hover: none)').matches)) return;
   const glow = document.createElement('div');
   glow.id = 'cursor-glow';
   glow.setAttribute('aria-hidden', 'true');
