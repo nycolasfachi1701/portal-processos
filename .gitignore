@@ -1,0 +1,6 @@
+# Exports do Grafana (fonte dos dados dos gráficos) — não versionar
+Qtd. Tickets por Hora-data-*.csv
+*.csv
+
+# Config local de preview
+.claude/launch.json
