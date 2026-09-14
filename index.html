@@ -989,14 +989,6 @@ html[data-theme="dark"] .pd-card .decision-branch.no{color:var(--laranja-claro);
 }
 .sla-num .n-val{font-family:var(--display); font-size:42px; line-height:1; color:white; margin-top:2px;}
 .sla-num .n-val.empty{color:rgba(255,255,255,.22);}
-.sla-mini{margin-top:18px; border-top:1px solid rgba(255,255,255,.08); padding-top:14px;}
-.sla-mini-label{
-  font-family:var(--mono); font-size:9.5px; letter-spacing:.04em; text-transform:uppercase;
-  color:#C5CAD2; margin-bottom:8px; display:flex; align-items:center; gap:6px;
-}
-.sla-mini-label .weekdot{width:6px; height:6px; border-radius:50%; background:var(--laranja-claro);}
-.sla-mini svg{width:100%; height:auto; display:block;}
-
 @media (max-width:820px){
   .sla-grid{grid-template-columns:1fr;}
   .sla-body{grid-template-columns:1fr;}
@@ -3845,7 +3837,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
         <div class="chart-label"><span class="weekdot"></span>Volume de tickets por hora</div>
         <div class="chart-source">Fonte: Grafana interno · atualização semanal</div>
       </div>
-      <div class="chart-sub">05/09 a 11/09 · faixa laranja indica horários de pico (≥ 40 tickets/h)</div>
+      <div class="chart-sub">07/09 a 14/09 · faixa laranja indica horários de pico (≥ 40 tickets/h)</div>
       <div class="chart-wrap" id="ticketsChartWrap" style="position:relative;">
         <svg id="ticketsChart" viewBox="0 0 1180 260" preserveAspectRatio="none"></svg>
         <div class="chart-tooltip" id="ticketsTooltip"></div>
@@ -3858,7 +3850,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
   </div>
 </section>
 
-<script id="ticketsHourData" type="application/json">[["Sáb 05/09 00h",0], ["Sáb 05/09 01h",0], ["Sáb 05/09 02h",0], ["Sáb 05/09 03h",0], ["Sáb 05/09 04h",0], ["Sáb 05/09 05h",0], ["Sáb 05/09 06h",1], ["Sáb 05/09 07h",1], ["Sáb 05/09 08h",4], ["Sáb 05/09 09h",8], ["Sáb 05/09 10h",8], ["Sáb 05/09 11h",10], ["Sáb 05/09 12h",3], ["Sáb 05/09 13h",1], ["Sáb 05/09 14h",4], ["Sáb 05/09 15h",1], ["Sáb 05/09 16h",1], ["Sáb 05/09 17h",2], ["Sáb 05/09 18h",1], ["Sáb 05/09 19h",2], ["Sáb 05/09 20h",1], ["Sáb 05/09 21h",0], ["Sáb 05/09 22h",1], ["Sáb 05/09 23h",0], ["Dom 06/09 00h",0], ["Dom 06/09 01h",0], ["Dom 06/09 02h",0], ["Dom 06/09 03h",0], ["Dom 06/09 04h",0], ["Dom 06/09 05h",0], ["Dom 06/09 06h",0], ["Dom 06/09 07h",0], ["Dom 06/09 08h",1], ["Dom 06/09 09h",2], ["Dom 06/09 10h",0], ["Dom 06/09 11h",3], ["Dom 06/09 12h",1], ["Dom 06/09 13h",0], ["Dom 06/09 14h",1], ["Dom 06/09 15h",1], ["Dom 06/09 16h",0], ["Dom 06/09 17h",0], ["Dom 06/09 18h",2], ["Dom 06/09 19h",1], ["Dom 06/09 20h",1], ["Dom 06/09 21h",0], ["Dom 06/09 22h",0], ["Dom 06/09 23h",0], ["Seg 07/09 00h",0], ["Seg 07/09 01h",0], ["Seg 07/09 02h",0], ["Seg 07/09 03h",0], ["Seg 07/09 04h",0], ["Seg 07/09 05h",0], ["Seg 07/09 06h",0], ["Seg 07/09 07h",0], ["Seg 07/09 08h",0], ["Seg 07/09 09h",4], ["Seg 07/09 10h",4], ["Seg 07/09 11h",4], ["Seg 07/09 12h",0], ["Seg 07/09 13h",2], ["Seg 07/09 14h",2], ["Seg 07/09 15h",0], ["Seg 07/09 16h",1], ["Seg 07/09 17h",1], ["Seg 07/09 18h",1], ["Seg 07/09 19h",0], ["Seg 07/09 20h",1], ["Seg 07/09 21h",0], ["Seg 07/09 22h",0], ["Seg 07/09 23h",0], ["Ter 08/09 00h",0], ["Ter 08/09 01h",0], ["Ter 08/09 02h",0], ["Ter 08/09 03h",0], ["Ter 08/09 04h",0], ["Ter 08/09 05h",0], ["Ter 08/09 06h",0], ["Ter 08/09 07h",2], ["Ter 08/09 08h",26], ["Ter 08/09 09h",46], ["Ter 08/09 10h",38], ["Ter 08/09 11h",32], ["Ter 08/09 12h",14], ["Ter 08/09 13h",16], ["Ter 08/09 14h",27], ["Ter 08/09 15h",34], ["Ter 08/09 16h",42], ["Ter 08/09 17h",21], ["Ter 08/09 18h",9], ["Ter 08/09 19h",7], ["Ter 08/09 20h",12], ["Ter 08/09 21h",5], ["Ter 08/09 22h",0], ["Ter 08/09 23h",0], ["Qua 09/09 00h",0], ["Qua 09/09 01h",0], ["Qua 09/09 02h",0], ["Qua 09/09 03h",0], ["Qua 09/09 04h",0], ["Qua 09/09 05h",0], ["Qua 09/09 06h",0], ["Qua 09/09 07h",4], ["Qua 09/09 08h",20], ["Qua 09/09 09h",34], ["Qua 09/09 10h",39], ["Qua 09/09 11h",32], ["Qua 09/09 12h",11], ["Qua 09/09 13h",24], ["Qua 09/09 14h",39], ["Qua 09/09 15h",35], ["Qua 09/09 16h",103], ["Qua 09/09 17h",30], ["Qua 09/09 18h",8], ["Qua 09/09 19h",3], ["Qua 09/09 20h",1], ["Qua 09/09 21h",3], ["Qua 09/09 22h",0], ["Qua 09/09 23h",2], ["Qui 10/09 00h",0], ["Qui 10/09 01h",0], ["Qui 10/09 02h",0], ["Qui 10/09 03h",0], ["Qui 10/09 04h",0], ["Qui 10/09 05h",0], ["Qui 10/09 06h",0], ["Qui 10/09 07h",3], ["Qui 10/09 08h",35], ["Qui 10/09 09h",36], ["Qui 10/09 10h",44], ["Qui 10/09 11h",45], ["Qui 10/09 12h",9], ["Qui 10/09 13h",18], ["Qui 10/09 14h",45], ["Qui 10/09 15h",44], ["Qui 10/09 16h",39], ["Qui 10/09 17h",39], ["Qui 10/09 18h",4], ["Qui 10/09 19h",2], ["Qui 10/09 20h",4], ["Qui 10/09 21h",2], ["Qui 10/09 22h",2], ["Qui 10/09 23h",2], ["Sex 11/09 00h",0], ["Sex 11/09 01h",0], ["Sex 11/09 02h",0], ["Sex 11/09 03h",0], ["Sex 11/09 04h",0], ["Sex 11/09 05h",0], ["Sex 11/09 06h",0], ["Sex 11/09 07h",2], ["Sex 11/09 08h",31], ["Sex 11/09 09h",30], ["Sex 11/09 10h",25], ["Sex 11/09 11h",28], ["Sex 11/09 12h",13], ["Sex 11/09 13h",13], ["Sex 11/09 14h",28], ["Sex 11/09 15h",54], ["Sex 11/09 16h",37], ["Sex 11/09 17h",17]]</script>
+<script id="ticketsHourData" type="application/json">[["Seg 07/09 00h",0], ["Seg 07/09 01h",0], ["Seg 07/09 02h",0], ["Seg 07/09 03h",0], ["Seg 07/09 04h",0], ["Seg 07/09 05h",0], ["Seg 07/09 06h",0], ["Seg 07/09 07h",0], ["Seg 07/09 08h",0], ["Seg 07/09 09h",4], ["Seg 07/09 10h",4], ["Seg 07/09 11h",4], ["Seg 07/09 12h",0], ["Seg 07/09 13h",2], ["Seg 07/09 14h",2], ["Seg 07/09 15h",0], ["Seg 07/09 16h",1], ["Seg 07/09 17h",1], ["Seg 07/09 18h",1], ["Seg 07/09 19h",0], ["Seg 07/09 20h",1], ["Seg 07/09 21h",0], ["Seg 07/09 22h",0], ["Seg 07/09 23h",0], ["Ter 08/09 00h",0], ["Ter 08/09 01h",0], ["Ter 08/09 02h",0], ["Ter 08/09 03h",0], ["Ter 08/09 04h",0], ["Ter 08/09 05h",0], ["Ter 08/09 06h",0], ["Ter 08/09 07h",2], ["Ter 08/09 08h",26], ["Ter 08/09 09h",46], ["Ter 08/09 10h",38], ["Ter 08/09 11h",32], ["Ter 08/09 12h",14], ["Ter 08/09 13h",16], ["Ter 08/09 14h",27], ["Ter 08/09 15h",34], ["Ter 08/09 16h",42], ["Ter 08/09 17h",21], ["Ter 08/09 18h",9], ["Ter 08/09 19h",7], ["Ter 08/09 20h",12], ["Ter 08/09 21h",5], ["Ter 08/09 22h",0], ["Ter 08/09 23h",0], ["Qua 09/09 00h",0], ["Qua 09/09 01h",0], ["Qua 09/09 02h",0], ["Qua 09/09 03h",0], ["Qua 09/09 04h",0], ["Qua 09/09 05h",0], ["Qua 09/09 06h",0], ["Qua 09/09 07h",4], ["Qua 09/09 08h",20], ["Qua 09/09 09h",34], ["Qua 09/09 10h",39], ["Qua 09/09 11h",32], ["Qua 09/09 12h",11], ["Qua 09/09 13h",24], ["Qua 09/09 14h",39], ["Qua 09/09 15h",35], ["Qua 09/09 16h",103], ["Qua 09/09 17h",30], ["Qua 09/09 18h",8], ["Qua 09/09 19h",3], ["Qua 09/09 20h",1], ["Qua 09/09 21h",3], ["Qua 09/09 22h",0], ["Qua 09/09 23h",2], ["Qui 10/09 00h",0], ["Qui 10/09 01h",0], ["Qui 10/09 02h",0], ["Qui 10/09 03h",0], ["Qui 10/09 04h",0], ["Qui 10/09 05h",0], ["Qui 10/09 06h",0], ["Qui 10/09 07h",3], ["Qui 10/09 08h",35], ["Qui 10/09 09h",36], ["Qui 10/09 10h",44], ["Qui 10/09 11h",45], ["Qui 10/09 12h",9], ["Qui 10/09 13h",18], ["Qui 10/09 14h",45], ["Qui 10/09 15h",44], ["Qui 10/09 16h",39], ["Qui 10/09 17h",39], ["Qui 10/09 18h",4], ["Qui 10/09 19h",2], ["Qui 10/09 20h",4], ["Qui 10/09 21h",2], ["Qui 10/09 22h",2], ["Qui 10/09 23h",2], ["Sex 11/09 00h",0], ["Sex 11/09 01h",0], ["Sex 11/09 02h",0], ["Sex 11/09 03h",0], ["Sex 11/09 04h",0], ["Sex 11/09 05h",0], ["Sex 11/09 06h",0], ["Sex 11/09 07h",2], ["Sex 11/09 08h",31], ["Sex 11/09 09h",30], ["Sex 11/09 10h",25], ["Sex 11/09 11h",28], ["Sex 11/09 12h",13], ["Sex 11/09 13h",13], ["Sex 11/09 14h",28], ["Sex 11/09 15h",54], ["Sex 11/09 16h",37], ["Sex 11/09 17h",26], ["Sex 11/09 18h",20], ["Sex 11/09 19h",4], ["Sex 11/09 20h",2], ["Sex 11/09 21h",2], ["Sex 11/09 22h",4], ["Sex 11/09 23h",0], ["Sáb 12/09 00h",0], ["Sáb 12/09 01h",0], ["Sáb 12/09 02h",0], ["Sáb 12/09 03h",0], ["Sáb 12/09 04h",0], ["Sáb 12/09 05h",0], ["Sáb 12/09 06h",0], ["Sáb 12/09 07h",2], ["Sáb 12/09 08h",5], ["Sáb 12/09 09h",8], ["Sáb 12/09 10h",4], ["Sáb 12/09 11h",8], ["Sáb 12/09 12h",4], ["Sáb 12/09 13h",1], ["Sáb 12/09 14h",1], ["Sáb 12/09 15h",4], ["Sáb 12/09 16h",2], ["Sáb 12/09 17h",1], ["Sáb 12/09 18h",3], ["Sáb 12/09 19h",0], ["Sáb 12/09 20h",0], ["Sáb 12/09 21h",0], ["Sáb 12/09 22h",0], ["Sáb 12/09 23h",0], ["Dom 13/09 00h",0], ["Dom 13/09 01h",0], ["Dom 13/09 02h",0], ["Dom 13/09 03h",0], ["Dom 13/09 04h",0], ["Dom 13/09 05h",0], ["Dom 13/09 06h",0], ["Dom 13/09 07h",1], ["Dom 13/09 08h",0], ["Dom 13/09 09h",2], ["Dom 13/09 10h",0], ["Dom 13/09 11h",3], ["Dom 13/09 12h",2], ["Dom 13/09 13h",4], ["Dom 13/09 14h",2], ["Dom 13/09 15h",0], ["Dom 13/09 16h",1], ["Dom 13/09 17h",0], ["Dom 13/09 18h",0], ["Dom 13/09 19h",0], ["Dom 13/09 20h",0], ["Dom 13/09 21h",0], ["Dom 13/09 22h",1], ["Dom 13/09 23h",0], ["Seg 14/09 00h",0], ["Seg 14/09 01h",0], ["Seg 14/09 02h",0], ["Seg 14/09 03h",0], ["Seg 14/09 04h",0], ["Seg 14/09 05h",0], ["Seg 14/09 06h",0], ["Seg 14/09 07h",2], ["Seg 14/09 08h",7]]</script>
 
 
 
@@ -3868,18 +3860,18 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
   Campos por área:
     slaAlta / slaOutros / csat .. 0 a 100 (medidor). Use null quando não houver medição.
     fcr / repasse .............. número exibido em destaque (% FCR e % Repasse p/ Análise). null = sem dado.
-    tickets .................... série do mini-gráfico "Qtd. Tickets Abertos": [["05/09", 12], ["06/09", 40], ...]. [] = vazio.
-  "periodo" aparece como subtítulo (ex.: "05/09 a 11/09").
+  "periodo" aparece como subtítulo (ex.: "07/09 a 14/09").
+  Obs.: o volume de tickets por hora fica só no gráfico "Volume de tickets por hora" (abaixo).
 -->
 <script id="slaAreasData" type="application/json">
 {
-  "periodo": "05/09 a 11/09 · valores lidos dos painéis do Grafana",
+  "periodo": "07/09 a 14/09 · valores lidos dos painéis do Grafana",
   "areas": [
-    { "key": "geral", "nome": "Suporte — Geral", "destaque": true, "slaAlta": 100, "slaOutros": 100, "csat": 100, "fcr": 71.4, "repasse": 4.8, "tickets": [["05/09", 32], ["06/09", 20], ["07/09", 26], ["08/09", 204], ["09/09", 279], ["10/09", 256], ["11/09", 207]] },
-    { "key": "emissao", "nome": "Emissão", "slaAlta": 100, "slaOutros": 100, "csat": 90.5, "fcr": 61.3, "repasse": 4.1, "tickets": [["05/09", 22], ["06/09", 12], ["07/09", 14], ["08/09", 150], ["09/09", 210], ["10/09", 180], ["11/09", 130]] },
-    { "key": "financeiro-rh", "nome": "Financeiro / RH", "slaAlta": null, "slaOutros": null, "csat": 89.2, "fcr": 50.5, "repasse": 3.3, "tickets": [["05/09", 5], ["06/09", 4], ["07/09", 6], ["08/09", 40], ["09/09", 48], ["10/09", 50], ["11/09", 42]] },
-    { "key": "frota", "nome": "Frota", "slaAlta": null, "slaOutros": 100, "csat": 100, "fcr": 51.5, "repasse": 4.4, "tickets": [["05/09", 3], ["06/09", 2], ["07/09", 3], ["08/09", 8], ["09/09", 12], ["10/09", 15], ["11/09", 20]] },
-    { "key": "contabil-gerencial", "nome": "Contábil / Gerencial", "slaAlta": null, "slaOutros": null, "csat": 90.0, "fcr": 61.1, "repasse": 16.7, "tickets": [["05/09", 2], ["06/09", 2], ["07/09", 3], ["08/09", 6], ["09/09", 9], ["10/09", 11], ["11/09", 15]] }
+    { "key": "geral", "nome": "Suporte — Geral", "destaque": true, "slaAlta": 100, "slaOutros": 91.7, "csat": 90.0, "fcr": 58.4, "repasse": 4.4 },
+    { "key": "emissao", "nome": "Emissão", "slaAlta": 100, "slaOutros": 99.3, "csat": 89.2, "fcr": 62.6, "repasse": 3.6 },
+    { "key": "financeiro-rh", "nome": "Financeiro / RH", "slaAlta": null, "slaOutros": 67.0, "csat": 92.4, "fcr": 41.2, "repasse": 3.6 },
+    { "key": "frota", "nome": "Frota", "slaAlta": null, "slaOutros": 95.0, "csat": 100, "fcr": 50.0, "repasse": 4.1 },
+    { "key": "contabil-gerencial", "nome": "Contábil / Gerencial", "slaAlta": null, "slaOutros": 92.3, "csat": 87.5, "fcr": 56.5, "repasse": 11.1 }
   ]
 }
 </script>
@@ -4394,29 +4386,6 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
     return w;
   }
 
-  function miniChart(tickets){
-    const W=320, H=90, PAD=6;
-    const svg = svgEl('svg',{viewBox:'0 0 '+W+' '+H, preserveAspectRatio:'none'});
-    if(!tickets || !tickets.length){
-      svg.appendChild(svgEl('line',{x1:PAD,x2:W-PAD,y1:H-PAD,y2:H-PAD,stroke:'rgba(255,255,255,.12)','stroke-width':1}));
-      return svg;
-    }
-    const n=tickets.length, maxV=Math.max(...tickets.map(t=>t[1]),1);
-    const xAt=i=>PAD+(W-2*PAD)*i/(n>1?n-1:1);
-    const yAt=v=>PAD+(H-2*PAD)*(1-v/maxV);
-    let line='';
-    tickets.forEach((t,i)=>{ line += (i===0?'M':'L') + xAt(i).toFixed(1) + ' ' + yAt(t[1]).toFixed(1) + ' '; });
-    const gid = 'slaMini_'+Math.random().toString(36).slice(2,8);
-    const defs = svgEl('defs',{});
-    const g = svgEl('linearGradient',{id:gid,x1:'0',y1:'0',x2:'0',y2:'1'});
-    g.appendChild(svgEl('stop',{offset:'0%','stop-color':'#FF9D5C','stop-opacity':'0.35'}));
-    g.appendChild(svgEl('stop',{offset:'100%','stop-color':'#FF3D03','stop-opacity':'0'}));
-    defs.appendChild(g); svg.appendChild(defs);
-    svg.appendChild(svgEl('path',{d:line+'L '+xAt(n-1).toFixed(1)+' '+(H-PAD)+' L '+xAt(0).toFixed(1)+' '+(H-PAD)+' Z',fill:'url(#'+gid+')',stroke:'none'}));
-    svg.appendChild(svgEl('path',{d:line,fill:'none',stroke:'#FF9D5C','stroke-width':1.5,'stroke-linejoin':'round','stroke-linecap':'round'}));
-    return svg;
-  }
-
   areas.forEach(a=>{
     const card = el('div','sla-card'+(a.destaque?' is-geral':''));
     card.appendChild(el('div','sla-card-head', a.nome || a.key || 'Área'));
@@ -4433,14 +4402,6 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
     nums.appendChild(bigNum('% Repasse p/ Análise', a.repasse));
     body.appendChild(nums);
     card.appendChild(body);
-
-    const mini = el('div','sla-mini');
-    const ml = el('div','sla-mini-label');
-    ml.appendChild(el('span','weekdot'));
-    ml.appendChild(document.createTextNode('Qtd. Tickets Abertos'));
-    mini.appendChild(ml);
-    mini.appendChild(miniChart(a.tickets));
-    card.appendChild(mini);
 
     grid.appendChild(card);
   });
