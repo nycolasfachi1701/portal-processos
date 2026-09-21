@@ -4748,5 +4748,28 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 })();
 </script>
 
+<!-- Vercel Web Analytics — contagem anônima de acessos (sem cookies). Ativar em Vercel → projeto → Analytics. -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+<script>
+// Eventos de visualização por seção — dispara 1x quando cada seção entra no centro da tela.
+// Aparece em Vercel → Analytics → Events (name: view_secao, data.secao: id da seção).
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  const vistos = new Set();
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && e.target.id && !vistos.has(e.target.id)){
+        vistos.add(e.target.id);
+        try{ window.va && window.va('event', { name: 'view_secao', data: { secao: e.target.id } }); }catch(_){}
+        io.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '-20% 0px -20% 0px', threshold: 0 });
+  document.querySelectorAll('section[id]').forEach(function(s){ io.observe(s); });
+})();
+</script>
+
 </body>
 </html>
