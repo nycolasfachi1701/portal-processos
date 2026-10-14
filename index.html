@@ -996,6 +996,33 @@ html[data-theme="dark"] .pd-card .decision-branch.no{color:var(--laranja-claro);
   .sla-gauges{justify-content:space-between;}
 }
 
+/* ============ STATUS DAS INTEGRAÇÕES (resumo) ============ */
+.si-block{position:relative; z-index:2; border-top:1px solid rgba(255,255,255,.15); padding:36px 0 12px;}
+.si-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px;}
+.si-sub{font-family:var(--mono); font-size:10.5px; color:#C5CAD2; margin-bottom:18px;}
+.si-sub b{color:var(--laranja-claro); font-weight:600;}
+.si-link{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--laranja-claro); text-decoration:none; white-space:nowrap;}
+.si-link:hover{text-decoration:underline;}
+.si-tiles{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+.si-tile{
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.12);
+  border-radius:6px; padding:18px 18px 16px; position:relative; overflow:hidden; text-align:center;
+}
+.si-tile::before{content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--si,#5a5d63);}
+.si-tile .si-val{font-family:var(--display); font-size:40px; line-height:1; color:var(--si,#fff);}
+.si-tile .si-lab{
+  font-family:var(--mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase;
+  color:#C5CAD2; margin-top:8px; display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.si-tile .si-ic{font-size:11px; color:var(--si,#fff);}
+.si-tile--parada{--si:#FF3D03;}
+.si-tile--bloqueada{--si:#8a9099;}
+.si-tile--instavel{--si:#FF8A00;}
+.si-tile--atencao{--si:#FFC24B;}
+.si-tile--semfalhas{--si:#3FBF6A;}
+@media (max-width:760px){ .si-tiles{grid-template-columns:1fr 1fr 1fr;} }
+@media (max-width:460px){ .si-tiles{grid-template-columns:1fr 1fr;} }
+
 /* ============ TNS — ECOSSISTEMA ============ */
 .tns{background:var(--azul); color:white; position:relative; overflow:hidden; border-top:6px solid var(--laranja); border-bottom:6px solid var(--laranja);}
 .tns::before{
@@ -3832,6 +3859,22 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
     </div>
   </div>
   <div class="wrap" style="padding:0;">
+    <div class="si-block" id="statusIntegracoes" hidden>
+      <div class="si-head">
+        <div class="chart-label"><span class="weekdot"></span>Status das integrações</div>
+        <a class="si-link" id="siLink" href="https://adm.atua.com.br/adm/con_status_integracao.php" target="_blank" rel="noopener">Ver detalhes →</a>
+      </div>
+      <div class="si-sub">177 integrações monitoradas · <span id="siAtualizado">—</span></div>
+      <div class="si-tiles">
+        <div class="si-tile si-tile--parada"><div class="si-val" id="siParada">—</div><div class="si-lab"><span class="si-ic">✖</span>Parada</div></div>
+        <div class="si-tile si-tile--bloqueada"><div class="si-val" id="siBloqueada">—</div><div class="si-lab"><span class="si-ic">⊘</span>Bloqueada</div></div>
+        <div class="si-tile si-tile--instavel"><div class="si-val" id="siInstavel">—</div><div class="si-lab"><span class="si-ic">▲</span>Instável</div></div>
+        <div class="si-tile si-tile--atencao"><div class="si-val" id="siAtencao">—</div><div class="si-lab"><span class="si-ic">⚠</span>Atenção</div></div>
+        <div class="si-tile si-tile--semfalhas"><div class="si-val" id="siSemFalhas">—</div><div class="si-lab"><span class="si-ic">✔</span>Sem falhas</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
     <div class="chart-block">
       <div class="chart-head">
         <div class="chart-label"><span class="weekdot"></span>Volume de tickets por hora</div>
@@ -4745,6 +4788,34 @@ document.querySelectorAll('.faq-item').forEach(item=>{
   function apagar(){ ligado = false; document.body.classList.remove('cursor-glow-on'); }
   document.addEventListener('mouseleave', apagar);
   window.addEventListener('blur', apagar);
+})();
+</script>
+
+<script>
+// Status das Integrações — lê o resumo publicado no Gist pelo coletor interno.
+// PREENCHA com a URL "raw" do Gist (ver coletor/README.md). Vazio = card fica oculto.
+(function(){
+  const FONTE_STATUS_INTEGRACOES = ""; // ex.: https://gist.githubusercontent.com/<user>/<id>/raw/status-integracoes.json
+  const bloco = document.getElementById('statusIntegracoes');
+  if(!bloco || !FONTE_STATUS_INTEGRACOES) return;
+
+  const setVal = (id, v) => { const e = document.getElementById(id); if(e) e.textContent = (v==null?'—':v); };
+
+  async function carregar(){
+    try{
+      const r = await fetch(FONTE_STATUS_INTEGRACOES + (FONTE_STATUS_INTEGRACOES.includes('?')?'&':'?') + 'cb=' + Date.now(), { cache:'no-store' });
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const d = await r.json();
+      setVal('siParada', d.parada); setVal('siBloqueada', d.bloqueada);
+      setVal('siInstavel', d.instavel); setVal('siAtencao', d.atencao);
+      setVal('siSemFalhas', d.semFalhas);
+      const sub = document.getElementById('siAtualizado');
+      if(sub) sub.innerHTML = 'atualizado às <b>' + (d.atualizadoEm || '—') + '</b>';
+      bloco.hidden = false;
+    }catch(e){ /* mantém oculto em caso de falha */ }
+  }
+  carregar();
+  setInterval(carregar, 5*60*1000); // revalida a cada 5 min
 })();
 </script>
 

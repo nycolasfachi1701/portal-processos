@@ -4,3 +4,7 @@ Qtd. Tickets por Hora-data-*.csv
 
 # Config local de preview
 .claude/launch.json
+
+# Segredos do coletor (nunca versionar)
+.env
+coletor/.env

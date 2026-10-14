@@ -1,0 +1,4 @@
+# Não publicar no site: o coletor roda na rede interna, não é parte do portal
+coletor/
+Qtd. Tickets por Hora-data-*.csv
+contexto.md
