@@ -8,3 +8,4 @@ Qtd. Tickets por Hora-data-*.csv
 # Segredos do coletor (nunca versionar)
 .env
 coletor/.env
+coletor/executar.bat

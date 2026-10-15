@@ -4795,7 +4795,7 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 // Status das Integrações — lê o resumo publicado no Gist pelo coletor interno.
 // PREENCHA com a URL "raw" do Gist (ver coletor/README.md). Vazio = card fica oculto.
 (function(){
-  const FONTE_STATUS_INTEGRACOES = ""; // ex.: https://gist.githubusercontent.com/<user>/<id>/raw/status-integracoes.json
+  const FONTE_STATUS_INTEGRACOES = "https://gist.githubusercontent.com/nycolasfachi1701/e98a8cbebd6c5e75e3b6cb3c1bbe1df5/raw/status-integracoes.json";
   const bloco = document.getElementById('statusIntegracoes');
   if(!bloco || !FONTE_STATUS_INTEGRACOES) return;
 
@@ -4806,6 +4806,8 @@ document.querySelectorAll('.faq-item').forEach(item=>{
       const r = await fetch(FONTE_STATUS_INTEGRACOES + (FONTE_STATUS_INTEGRACOES.includes('?')?'&':'?') + 'cb=' + Date.now(), { cache:'no-store' });
       if(!r.ok) throw new Error('HTTP '+r.status);
       const d = await r.json();
+      // só mostra quando houver dados reais (gist vazio {} mantém o card oculto)
+      if(typeof d.semFalhas !== 'number' && typeof d.total !== 'number') return;
       setVal('siParada', d.parada); setVal('siBloqueada', d.bloqueada);
       setVal('siInstavel', d.instavel); setVal('siAtencao', d.atencao);
       setVal('siSemFalhas', d.semFalhas);

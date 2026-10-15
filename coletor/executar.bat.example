@@ -1,0 +1,15 @@
+@echo off
+REM ============================================================
+REM  Coletor de Status das Integracoes — execucao agendada
+REM  1) Copie este arquivo para "executar.bat" (mesma pasta)
+REM  2) Preencha GH_TOKEN e GIST_ID abaixo
+REM  3) Agende no Agendador de Tarefas (ver README)
+REM  OBS: "executar.bat" NAO vai pro git (esta no .gitignore)
+REM ============================================================
+
+set "GH_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx"
+set "GIST_ID=xxxxxxxxxxxxxxxxxxxx"
+set "STATUS_URL=https://adm.atua.com.br/adm/con_status_integracao.php"
+
+REM Caminho do node (ajuste se necessario) e do script
+node "%~dp0coletor-status.js"
