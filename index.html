@@ -644,6 +644,11 @@ html[data-theme="dark"] .fm-step.decision{background:rgba(255,61,3,.12);}
 .crit-row.media .crit-label{color:var(--laranja-escuro); background:rgba(255,61,3,.06);}
 .crit-row.alta .crit-label{color:white; background:var(--laranja);}
 .crit-row.critica .crit-label{color:white; background:var(--azul);}
+.crit-row.st-parada .crit-label{color:white; background:#FF3D03;}
+.crit-row.st-bloqueada .crit-label{color:white; background:#8a9099;}
+.crit-row.st-instavel .crit-label{color:white; background:#FF8A00;}
+.crit-row.st-atencao .crit-label{color:#333; background:#FFC24B;}
+.crit-row.st-semfalhas .crit-label{color:white; background:#3FBF6A;}
 
 @media (max-width:620px){
   .crit-row{grid-template-columns:1fr;}
@@ -3862,7 +3867,10 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
     <div class="si-block" id="statusIntegracoes" hidden>
       <div class="si-head">
         <div class="chart-label"><span class="weekdot"></span>Status das integrações</div>
-        <a class="si-link" id="siLink" href="https://adm.atua.com.br/adm/con_status_integracao.php" target="_blank" rel="noopener">Ver detalhes →</a>
+        <div style="display:flex; gap:18px; flex-wrap:wrap;">
+          <a class="si-link" href="#processo-status-integracoes">Regras de escalonamento →</a>
+          <a class="si-link" id="siLink" href="https://adm.atua.com.br/adm/con_status_integracao.php" target="_blank" rel="noopener">Ver detalhes →</a>
+        </div>
       </div>
       <div class="si-sub">177 integrações monitoradas · <span id="siAtualizado">—</span></div>
       <div class="si-tiles">
@@ -3918,6 +3926,95 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
   ]
 }
 </script>
+
+<!-- ===================== FICHA — MONITORAMENTO DE INTEGRAÇÕES ===================== -->
+<section class="processo-detalhe" id="processo-status-integracoes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Ficha de processo</div>
+        <h2>Monitoramento e escalonamento de integrações.</h2>
+      </div>
+      <p>Como ler o status, o que fazer em cada situação e quando escalar — base para o plantão de suporte.</p>
+    </div>
+
+    <div class="pd-card">
+      <div class="pd-header">
+        <div>
+          <div class="pd-tag">Processo · Suporte &amp; Monitoramento</div>
+          <h3>Monitoramento de Status das Integrações</h3>
+        </div>
+        <span class="pd-badge">177 integrações monitoradas</span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-cell">
+          <h5>Objetivo</h5>
+          <p>Detectar e responder rapidamente a falhas nas integrações, reduzindo o impacto no cliente e dando previsibilidade à operação.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Como o status é calculado</h5>
+          <p>Falha = chamada à transportadora sem resposta e mais lenta que 10 s. Cada host tem seu status; a integração mostra o <b>pior</b> entre os hosts dela.</p>
+        </div>
+        <div class="pd-cell">
+          <h5>Monitoria &amp; cadência</h5>
+          <ul>
+            <li>Tela do Grafana/ADM recarrega a cada 60 s</li>
+            <li>Card no portal atualiza a cada ~10 min (coletor)</li>
+            <li>Plantão acompanha com o filtro "Só com problema"</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Registro via ticket</h5>
+          <ul>
+            <li>Obrigatório para Parada e Bloqueada (e Instável persistente)</li>
+            <li>Conteúdo: integração, host(s), janela, última falha e ação tomada</li>
+            <li>O ticket é o comprovante oficial da tratativa</li>
+          </ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Papéis envolvidos</h5>
+          <ul><li>Plantão / NOC (monitora)</li><li>Técnico de integrações (investiga e escala)</li><li>Liderança do Suporte</li><li>Fornecedor da integração</li></ul>
+        </div>
+        <div class="pd-cell">
+          <h5>Ligações no portal</h5>
+          <ul><li><a href="#escalonamento-priorizacao" style="color:var(--laranja-escuro);text-decoration:underline;">Escalonamento e priorização</a></li><li>Fluxo de Incidente (múltiplos clientes)</li><li><a href="#indicadores" style="color:var(--laranja-escuro);text-decoration:underline;">Card "Status das integrações"</a></li></ul>
+        </div>
+      </div>
+
+      <div class="pd-block">
+        <h5>Ação por status — o que fazer em cada situação</h5>
+        <div class="crit-table">
+          <div class="crit-row st-parada">
+            <div class="crit-label">✖ Parada</div>
+            <div class="crit-desc"><b>Ação imediata.</b> Abrir incidente, acionar técnico de integrações + fornecedor e comunicar áreas/clientes afetados. <em>Gatilho: falhas em 10+ bases nos últimos 15 min.</em></div>
+          </div>
+          <div class="crit-row st-bloqueada">
+            <div class="crit-label">⊘ Bloqueada</div>
+            <div class="crit-desc">Verificar se é <b>bloqueio automático temporário</b> (aguardar a janela esvaziar, ~120 s) ou <b>blacklist manual</b>; se persistir, acionar o fornecedor / tratar a blacklist conforme política. <em>Gatilho: blacklist do SMF, ou 5+ falhas na mesma URL em 120 s.</em></div>
+          </div>
+          <div class="crit-row st-instavel">
+            <div class="crit-label">▲ Instável</div>
+            <div class="crit-desc">Investigar em até <b>[definir] min</b> e monitorar de perto; se evoluir, escalar para Parada. <em>Gatilho: 3+ bases ou 5+ falhas nos últimos 15 min.</em></div>
+          </div>
+          <div class="crit-row st-atencao">
+            <div class="crit-label">⚠ Atenção</div>
+            <div class="crit-desc">Observar e registrar; agir apenas se <b>recorrente</b>. <em>Gatilho: alguma falha nos últimos 60 min.</em></div>
+          </div>
+          <div class="crit-row st-semfalhas">
+            <div class="crit-label">✔ Sem falhas</div>
+            <div class="crit-desc">Sem ação. <em>Atenção: "sem falhas" não confirma que a integração responde; erro rápido (conexão recusada / HTTP 500 em menos de 10 s) não aparece aqui.</em></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-block" style="border-bottom:none;">
+        <h5>Fluxo de escalonamento</h5>
+        <p style="font-size:14px; color:var(--ink);">⚠ Atenção → ▲ Instável → ✖ Parada, por gatilhos de tempo. Parada e Bloqueada acionam o fluxo de Incidente; prazos fora do padrão exigem registro e justificativa no ticket.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ===================== ATENDIMENTO — SLA E CANAIS ===================== -->
 <section class="atendimento" id="atendimento">
