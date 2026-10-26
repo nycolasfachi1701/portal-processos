@@ -144,7 +144,7 @@ header.main{
 .brand-text .b1{font-family:var(--display); font-size:15px; letter-spacing:0.01em;}
 .brand-text .b2{font-family:var(--mono); font-size:10.5px; color:var(--ink-dim); letter-spacing:0.06em; text-transform:uppercase;}
 
-nav.primary{display:flex; gap:2px; flex-wrap:nowrap;}
+nav.primary{display:flex; gap:4px; flex-wrap:nowrap; align-items:center;}
 nav.primary a{
   font-family:var(--mono);
   font-size:11.5px;
@@ -162,6 +162,38 @@ nav.primary a.cta{
   background:var(--ink); color:var(--surface);
 }
 nav.primary a.cta:hover{background:var(--laranja); color:white;}
+
+/* --- Menu agrupado (dropdown) --- */
+.nav-group{position:relative;}
+.nav-group-btn{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:0.02em; text-transform:uppercase;
+  padding:9px 12px; border-radius:8px; color:var(--ink-dim); background:none; border:none;
+  cursor:pointer; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.nav-group-btn:hover, .nav-group:hover .nav-group-btn{background:var(--cinza-claro); color:var(--ink);}
+.nav-group-btn.active{color:var(--laranja-escuro); background:var(--cinza-claro);}
+.nav-caret{font-size:9px; transition:transform .2s var(--ease); opacity:.7;}
+.nav-group:hover .nav-caret, .nav-group.open .nav-caret{transform:rotate(180deg);}
+.nav-dropdown{
+  position:absolute; top:calc(100% + 6px); left:0; min-width:210px;
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-lg); padding:6px; z-index:200;
+  display:flex; flex-direction:column; gap:2px;
+  opacity:0; visibility:hidden; transform:translateY(-6px);
+  transition:opacity .18s var(--ease), transform .18s var(--ease), visibility .18s;
+}
+.nav-group:hover .nav-dropdown, .nav-group.open .nav-dropdown{opacity:1; visibility:visible; transform:translateY(0);}
+.nav-dropdown a{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.02em; text-transform:uppercase;
+  padding:10px 12px; border-radius:6px; color:var(--ink-dim); white-space:nowrap;
+  transition:background .15s var(--ease), color .15s var(--ease);
+}
+.nav-dropdown a:hover{background:var(--cinza-claro); color:var(--ink);}
+.nav-dropdown a.active{color:var(--laranja-escuro); background:rgba(255,61,3,.06);}
+/* ponte invisível pra não fechar ao mover o mouse até o submenu */
+.nav-group::after{content:""; position:absolute; top:100%; left:0; right:0; height:8px;}
+nav.primary .nav-dropdown a::after{display:none;}
 
 .theme-toggle{
   display:flex; align-items:center; justify-content:center;
@@ -1646,16 +1678,31 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
       </div>
     </a>
     <nav class="primary">
-      <a href="#tns">TNS</a>
-      <a href="#estrutura-agro">TMS&nbsp;Agro</a>
-      <a href="#funcoes">Funções</a>
-      <a href="#jornada">Fluxo</a>
-      <a href="#processos">Processos</a>
-      <a href="#procedimentos">Procedimentos</a>
-      <a href="#onboarding">Onboarding</a>
-      <a href="#conhecimento">Base&nbsp;Conhec.</a>
-      <a href="#indicadores">Indicadores</a>
-      <a href="#atendimento">Atendimento</a>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Estrutura<span class="nav-caret">▾</span></button>
+        <div class="nav-dropdown" role="menu">
+          <a href="#tns" role="menuitem">TNS</a>
+          <a href="#estrutura-agro" role="menuitem">TMS Agro</a>
+          <a href="#funcoes" role="menuitem">Funções</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Processos<span class="nav-caret">▾</span></button>
+        <div class="nav-dropdown" role="menu">
+          <a href="#jornada" role="menuitem">Fluxo</a>
+          <a href="#processos" role="menuitem">Processos</a>
+          <a href="#procedimentos" role="menuitem">Procedimentos</a>
+          <a href="#onboarding" role="menuitem">Onboarding</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-haspopup="true" aria-expanded="false">Operação<span class="nav-caret">▾</span></button>
+        <div class="nav-dropdown" role="menu">
+          <a href="#indicadores" role="menuitem">Indicadores</a>
+          <a href="#atendimento" role="menuitem">Atendimento</a>
+          <a href="#conhecimento" role="menuitem">Base de Conhecimento</a>
+        </div>
+      </div>
       <a href="#faq" class="cta">FAQ</a>
     </nav>
     <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro" type="button">
@@ -4207,6 +4254,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
           <h6>Navegação</h6>
           <a href="#tns">TNS · Ecossistema</a>
           <a href="#estrutura-agro">Estrutura · TMS Agro</a>
+          <a href="#funcoes">Processos por função</a>
           <a href="#jornada">Fluxo de atendimento</a>
           <a href="#processos">Processos</a>
           <a href="#procedimentos">Procedimentos</a>
@@ -4630,8 +4678,9 @@ if('ResizeObserver' in window){
 }
 aoRolar(pintarScrollProgress);
 
-// Scrollspy — destaca o link do menu correspondente à seção visível
+// Scrollspy — destaca o link do menu (e o grupo) correspondente à seção visível
 const navLinks = document.querySelectorAll('nav.primary a[href^="#"]');
+const navGroups = document.querySelectorAll('nav.primary .nav-group');
 const spySections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
 if('IntersectionObserver' in window && spySections.length){
   const spyObserver = new IntersectionObserver((entries)=>{
@@ -4639,11 +4688,40 @@ if('IntersectionObserver' in window && spySections.length){
       if(entry.isIntersecting){
         const id = '#' + entry.target.id;
         navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === id));
+        // reflete o estado ativo no botão do grupo que contém o link
+        navGroups.forEach(g=>{
+          const btn = g.querySelector('.nav-group-btn');
+          if(btn) btn.classList.toggle('active', !!g.querySelector('a.active'));
+        });
       }
     });
   }, {rootMargin:'-40% 0px -55% 0px'});
   spySections.forEach(sec => spyObserver.observe(sec));
 }
+
+// Dropdowns do menu — clique/teclado (o hover é via CSS)
+(function(){
+  const grupos = Array.from(document.querySelectorAll('nav.primary .nav-group'));
+  if(!grupos.length) return;
+  const fecharTodos = (exceto)=> grupos.forEach(g=>{
+    if(g!==exceto){ g.classList.remove('open'); const b=g.querySelector('.nav-group-btn'); if(b) b.setAttribute('aria-expanded','false'); }
+  });
+  grupos.forEach(g=>{
+    const btn = g.querySelector('.nav-group-btn');
+    if(!btn) return;
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const abrir = !g.classList.contains('open');
+      fecharTodos(g);
+      g.classList.toggle('open', abrir);
+      btn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+    });
+    // ao clicar num item, fecha o dropdown
+    g.querySelectorAll('.nav-dropdown a').forEach(a=> a.addEventListener('click', ()=>fecharTodos(null)));
+  });
+  document.addEventListener('click', ()=>fecharTodos(null));
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') fecharTodos(null); });
+})();
 
 // Animações de entrada ao rolar a página
 const revealTargets = Array.from(document.querySelectorAll('.sec-head, .principio, .org-col, .stage, .fe-card, .doc-row, .bc-product, .faq-item, .pd-cell, .proc-col, .org-legend-item, .role-card, .func-card, .atd-card, .atd-panel, .atd-meta, .sla-table, .resumo-table, .chart-block, .tns-lead, .tns-narrativa, .tns-foot')).filter(el => !el.closest('.ficha-src'));
