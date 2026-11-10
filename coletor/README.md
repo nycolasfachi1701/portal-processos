@@ -51,3 +51,59 @@ ambiente definidas no sistema (ou num `.bat` que as exporta antes de chamar o no
 No `index.html`, preencha a constante `FONTE_STATUS_INTEGRACOES` com a URL **raw**
 do Gist (passo 1.4). O card "Status das Integrações" aparece sozinho quando o
 JSON é lido com sucesso.
+
+---
+
+## Rodar em servidor 24/7 (recomendado)
+
+Pré-requisitos: **Node 18+**, o servidor precisa **alcançar o `adm.atua.com.br`**
+(rede interna) e um **token com escopo `gist`**.
+
+### Linux — systemd (robusto e seguro)
+1. Copie `coletor-status.js` para `/opt/coletor/` (ou `git clone` do repo).
+2. Crie `/opt/coletor/coletor.env` e proteja: `chmod 600 /opt/coletor/coletor.env`
+   ```
+   STATUS_URL=https://adm.atua.com.br/adm/con_status_integracao.php
+   GH_TOKEN=ghp_xxx
+   GIST_ID=e98a8cbebd6c5e75e3b6cb3c1bbe1df5
+   ```
+3. `/etc/systemd/system/coletor-status.service`
+   ```ini
+   [Unit]
+   Description=Coletor Status Integracoes
+   [Service]
+   Type=oneshot
+   EnvironmentFile=/opt/coletor/coletor.env
+   ExecStart=/usr/bin/node /opt/coletor/coletor-status.js
+   ```
+4. `/etc/systemd/system/coletor-status.timer`
+   ```ini
+   [Unit]
+   Description=Roda o coletor a cada 10 min
+   [Timer]
+   OnBootSec=2min
+   OnUnitActiveSec=10min
+   Persistent=true
+   [Install]
+   WantedBy=timers.target
+   ```
+5. Ativar e testar:
+   ```
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now coletor-status.timer
+   sudo systemctl start coletor-status.service   # roda uma vez
+   journalctl -u coletor-status -n 20            # deve mostrar "OK — Gist ... atualizado"
+   ```
+
+Alternativa simples (cron), com o env protegido:
+```
+*/10 * * * * set -a; . /opt/coletor/coletor.env; set +a; /usr/bin/node /opt/coletor/coletor-status.js >> /var/log/coletor.log 2>&1
+```
+
+### Windows Server — Agendador de Tarefas
+Mesmo `executar.bat`, mas na tarefa marque **"Executar estando o usuário conectado ou não"**
+(com uma conta de serviço) para rodar 24/7. Defina as variáveis no nível do sistema
+ou mantenha-as no `.bat` (com a pasta protegida).
+
+> Segurança: nunca versione o token. Em servidor, prefira `EnvironmentFile`/variável
+> de ambiente com permissão restrita (chmod 600) em vez de deixá-lo em arquivo aberto.
