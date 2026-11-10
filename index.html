@@ -3844,7 +3844,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
         <div class="sec-tag">Ficha de processo</div>
         <h2>Apoio técnico para o Comercial.</h2>
       </div>
-      <p>Como solicitar apoio ou esclarecimento do suporte em situações comerciais que envolvem o sistema.</p>
+      <p>Como solicitar apoio ou esclarecimento do suporte em situações comerciais que envolvem o sistema — suporte planejado via ticket, não priorização de chamado.</p>
     </div>
 
     <div class="pd-card">
@@ -4283,7 +4283,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>Posso pedir prioridade para o comercial, a implantação ou por WhatsApp?</span><span class="plus">+</span></button>
-        <div class="faq-a"><p>Não. Priorizações só são aceitas pelo canal oficial de Ouvidoria, pelo escalonamento telefônico ou pelas lideranças internas do Suporte. Pedidos via equipes comerciais/administrativas, desenvolvimento, implantação, WhatsApp individual ou comunicação verbal não são considerados — e devem ser redirecionados para a Ouvidoria.</p></div>
+        <div class="faq-a"><p>Não. Priorizações só são aceitas pelo canal oficial de Ouvidoria, pelo escalonamento telefônico ou pelas lideranças internas do Suporte. Pedidos via equipes comerciais/administrativas, desenvolvimento, implantação, WhatsApp individual ou comunicação verbal não são considerados — e devem ser redirecionados para a Ouvidoria. <b>Importante:</b> isso é diferente de <a href="#apoio-comercial" style="color:var(--laranja-escuro);text-decoration:underline;">apoio técnico ao Comercial</a> — que é suporte planejado via ticket, e não priorização de chamado.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>Como solicitar apoio técnico do suporte para uma situação comercial?</span><span class="plus">+</span></button>
@@ -4561,9 +4561,10 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
 
   // Cor por faixa (maior = melhor)
   function statusColor(v){
+    // Alinhado à meta operacional (85%): verde = bate a meta, âmbar = atenção, vermelho = crítico
     if(v==null) return '#5a5d63';
-    if(v>=95) return '#3FBF6A';
-    if(v>=85) return '#FFB020';
+    if(v>=85) return '#3FBF6A';
+    if(v>=70) return '#FFB020';
     return '#FF3D03';
   }
 
@@ -5020,7 +5021,17 @@ document.querySelectorAll('.faq-item').forEach(item=>{
       setVal('siInstavel', d.instavel); setVal('siAtencao', d.atencao);
       setVal('siSemFalhas', d.semFalhas);
       const sub = document.getElementById('siAtualizado');
-      if(sub) sub.innerHTML = 'atualizado às <b>' + (d.atualizadoEm || '—') + '</b>';
+      if(sub){
+        let txt = 'atualizado às <b>' + (d.atualizadoEm || '—') + '</b>';
+        if(d.coletadoEm){
+          const mins = Math.round((Date.now() - new Date(d.coletadoEm).getTime()) / 60000);
+          if(mins >= 0){
+            txt += ' · coletado ' + (mins < 1 ? 'agora' : 'há ' + mins + ' min');
+            if(mins > 30) txt += ' <span style="color:#FF8A00; font-weight:600;">⚠ possível desatualização</span>';
+          }
+        }
+        sub.innerHTML = txt;
+      }
       bloco.hidden = false;
     }catch(e){ /* mantém oculto em caso de falha */ }
   }
