@@ -27,8 +27,18 @@
     var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     if(theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   }catch(e){}
+  /* Abertura com a logo: aparece uma vez por sessão do navegador.
+     Para rever, abra o site em uma nova aba ou use o endereço com ?intro no final. */
+  var h = document.documentElement;
+  h.className += ' js';
+  try{
+    var rever = /[?&]intro(=|&|$)/.test(location.search);
+    if(sessionStorage.getItem('pp-intro') && !rever) h.className += ' sem-intro';
+    else sessionStorage.setItem('pp-intro', '1');
+  }catch(e){}
 })();
 </script>
+<link rel="preload" as="image" href="LogoUrl.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1658,6 +1668,59 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
 .sla-row:not(.head){transition:background .15s var(--ease);}
 .sla-row:not(.head):hover{background:var(--cinza-claro);}
 
+/* ============ ABERTURA COM A LOGO ============ */
+/* Só aparece com JS ativo, sem preferência por menos movimento e uma vez por sessão.
+   A saída é feita só em CSS: se algum script falhar, a abertura não trava a página. */
+.intro{display:none;}
+@media (prefers-reduced-motion: no-preference){
+  .js:not(.sem-intro) .intro{
+    position:fixed; inset:0; z-index:3000;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+    background:radial-gradient(ellipse 60% 50% at 50% 42%, rgba(255,61,3,.16) 0%, transparent 65%), #000;
+    border-bottom:5px solid var(--laranja);
+    animation:intro-sai .6s cubic-bezier(.7,0,.2,1) 1.8s forwards;
+  }
+  /* O conteúdo do topo espera a abertura terminar para entrar */
+  .js:not(.sem-intro) .hero-boot,
+  .js:not(.sem-intro) .h-line-in{animation-delay:calc(var(--d,0ms) + 1950ms);}
+}
+.intro-logo{position:relative; width:min(420px,64vw); aspect-ratio:903 / 240;}
+.intro-logo img{display:block; max-width:none;}
+/* Símbolo: a faixa esquerda da logo (36,102% da largura), montada em 12 peças */
+.intro-mark{position:absolute; left:0; top:0; width:36.102%; height:100%;}
+.intro-cell{
+  position:absolute; overflow:hidden;
+  left:calc(var(--c) * 25%); top:calc(var(--r) * 33.3333%); width:25%; height:33.3334%;
+  opacity:0; transform:translate(-18px,18px) scale(.84);
+  animation:intro-entra .5s var(--ease) forwards, intro-some 1ms linear forwards;
+  animation-delay:calc(120ms + (var(--c) + 2 - var(--r)) * 60ms), .98s;
+}
+.intro-cell img{
+  position:absolute; left:calc(var(--c) * -100%); top:calc(var(--r) * -100%);
+  width:calc(100% / .090255); height:300%;
+}
+/* Logo inteira por cima: o símbolo troca as peças pela imagem única; a palavra "atua" é revelada da esquerda para a direita */
+.intro-inteira{position:absolute; inset:0; width:100%; height:100%;}
+.intro-simbolo{clip-path:inset(0 63.898% 0 0); opacity:0; animation:intro-aparece 1ms linear .98s forwards;}
+.intro-palavra{clip-path:inset(0 63.898% 0 36.102%); animation:intro-palavra .7s cubic-bezier(.2,.7,.2,1) .6s forwards;}
+.intro-by{
+  font-family:var(--corpo); font-size:clamp(13px,1.6vw,16px); letter-spacing:.34em; color:#C5CAD2;
+  opacity:0; transform:translateY(8px); animation:intro-entra .5s var(--ease) 1.05s forwards;
+}
+.intro-by b{color:#fff; font-weight:700;}
+.intro-linha{width:min(180px,40vw); height:2px; border-radius:2px; background:rgba(255,255,255,.16); overflow:hidden;}
+.intro-linha i{
+  display:block; height:100%; background:var(--laranja); transform:scaleX(0); transform-origin:left;
+  animation:intro-barra 1.5s cubic-bezier(.4,0,.2,1) .2s forwards;
+}
+@keyframes intro-entra{to{opacity:1; transform:none;}}
+@keyframes intro-some{to{opacity:0;}}
+@keyframes intro-aparece{to{opacity:1;}}
+@keyframes intro-palavra{to{clip-path:inset(0 0 0 36.102%);}}
+@keyframes intro-barra{to{transform:scaleX(1);}}
+@keyframes intro-sai{to{transform:translateY(-100%); visibility:hidden;}}
+@media print{ .intro{display:none !important;} }
+
 /* ---- Movimento reduzido: silencia os novos movimentos infinitos e o parallax ---- */
 @media (prefers-reduced-motion: reduce){
   .route-pulse, .route-stop .pin::after, .chart-peak-ring{animation:none;}
@@ -1668,6 +1731,30 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
 </style>
 </head>
 <body>
+
+<!-- Abertura: logo da Atua montada em peças, depois "by nstech", e a cortina sobe -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-logo">
+    <div class="intro-mark">
+      <span class="intro-cell" style="--c:0;--r:0"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:1;--r:0"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:2;--r:0"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:3;--r:0"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:0;--r:1"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:1;--r:1"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:2;--r:1"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:3;--r:1"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:0;--r:2"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:1;--r:2"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:2;--r:2"><img src="LogoUrl.png" alt=""></span>
+      <span class="intro-cell" style="--c:3;--r:2"><img src="LogoUrl.png" alt=""></span>
+    </div>
+    <img class="intro-inteira intro-simbolo" src="LogoUrl.png" alt="">
+    <img class="intro-inteira intro-palavra" src="LogoUrl.png" alt="">
+  </div>
+  <div class="intro-by">by <b>nstech</b></div>
+  <div class="intro-linha"><i></i></div>
+</div>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
