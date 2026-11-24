@@ -134,6 +134,8 @@ ul{list-style:none;}
 }
 .topstrip .ts-left{display:flex;gap:22px;flex-wrap:wrap;}
 .topstrip b{color:var(--laranja-claro); font-weight:600;}
+.topstrip .ts-right a{transition:color .15s var(--ease);}
+.topstrip .ts-right a:hover{color:var(--laranja-claro);}
 .dot-live{
   display:inline-block;width:7px;height:7px;border-radius:50%;
   background:#ffffff; margin-right:6px; box-shadow:0 0 0 0 rgba(255,255,255,.6);
@@ -1764,7 +1766,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
     <div class="ts-left">
       <span><span class="dot-live"></span>PORTAL EM OPERAÇÃO</span>
     </div>
-    <div class="ts-right">adm.atua.com.br/ajuda · atualizacoes-antt.vercel.app</div>
+    <div class="ts-right"><a href="https://adm.atua.com.br/ajuda/#/" target="_blank" rel="noopener">adm.atua.com.br/ajuda</a> · <a href="https://atualizacoes-antt.vercel.app/" target="_blank" rel="noopener">atualizacoes-antt.vercel.app</a> · <a href="https://reformatributaria-atua.vercel.app/" target="_blank" rel="noopener">reformatributaria-atua.vercel.app</a></div>
   </div>
 </div>
 
@@ -4395,6 +4397,10 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
         <div class="faq-a"><p>Em atualizacoes-antt.vercel.app, mantida internamente pela equipe. Toda resposta sobre CIOT, CT-e ou MDF-e deve refletir a versão mais recente publicada lá.</p></div>
       </div>
       <div class="faq-item">
+        <button class="faq-q"><span>Onde ficam as orientações e demandas da Reforma Tributária (IBS e CBS)?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Na página dedicada <a href="https://reformatributaria-atua.vercel.app/" target="_blank" rel="noopener" style="color:var(--laranja-escuro);text-decoration:underline;">reformatributaria-atua.vercel.app</a>, mantida internamente pela equipe: o que muda com IBS e CBS, como configurar no Atua, régua da transição, calculadora, simulador de CST e plano de ação. Toda resposta sobre a Reforma Tributária deve seguir o que está publicado lá.</p></div>
+      </div>
+      <div class="faq-item">
         <button class="faq-q"><span>Um ticket resolvido sempre precisa gerar artigo na Base de Conhecimento?</span><span class="plus">+</span></button>
         <div class="faq-a"><p>Não — apenas quando a solução representa um aprendizado novo, não documentado anteriormente. Repetições de casos já catalogados não precisam de novo artigo.</p></div>
       </div>
@@ -4434,6 +4440,7 @@ html[data-theme="dark"] .pd-card .stage:hover .stage-body h4{color:var(--laranja
           <a href="https://tns-marketing.nstech.com.br/faq-interno/#top" target="_blank" rel="noopener">FAQ interno · TNS</a>
           <a href="https://adm.atua.com.br/ajuda/#/" target="_blank" rel="noopener">Base de Conhecimento - Wiki</a>
           <a href="https://atualizacoes-antt.vercel.app/" target="_blank" rel="noopener">Atualizações - ANTT</a>
+          <a href="https://reformatributaria-atua.vercel.app/" target="_blank" rel="noopener">Reforma Tributária - Atua</a>
         </div>
       </div>
     </div>
